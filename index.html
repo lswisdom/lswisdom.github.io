@@ -79,12 +79,14 @@
 
 
 
+<meta name="description" content="谋事在人成事在天">
 <meta property="og:type" content="website">
 <meta property="og:title" content="塔罗斯的博客">
 <meta property="og:url" content="http://example.com/index.html">
 <meta property="og:site_name" content="塔罗斯的博客">
+<meta property="og:description" content="谋事在人成事在天">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="ls">
 <meta name="twitter:card" content="summary">
 
 
@@ -178,7 +180,7 @@
       
         
         <li class="menu-item menu-item-主页">
-          <a href="/%20" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -188,7 +190,7 @@
       
         
         <li class="menu-item menu-item-标签">
-          <a href="/tags/%20" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -198,7 +200,7 @@
       
         
         <li class="menu-item menu-item-分类">
-          <a href="/categories/%20" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -208,7 +210,7 @@
       
         
         <li class="menu-item menu-item-归档">
-          <a href="/archives/%20" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -249,7 +251,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/04/%E6%B5%8B%E8%AF%95blog%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/05/SpringBoot%E4%B8%AD%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -268,7 +270,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2021/04/04/%E6%B5%8B%E8%AF%95blog%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B/" itemprop="url">测试blog搭建过程111</a></h1>
+                <a class="post-title-link" href="/2021/04/05/SpringBoot%E4%B8%AD%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E9%85%8D%E7%BD%AE/" itemprop="url">Untitled</a></h1>
         
 
         <div class="post-meta">
@@ -280,8 +282,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-04T14:22:50+08:00">
-                2021-04-04
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-05T12:34:28+08:00">
+                2021-04-05
               </time>
             
 
@@ -320,126 +322,28 @@
       
         
           
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
+            <h2 id="SpringBoot中添加多数据源配置"><a href="#SpringBoot中添加多数据源配置" class="headerlink" title="SpringBoot中添加多数据源配置"></a>SpringBoot中添加多数据源配置</h2><h3 id="1-application-yml的配置如下："><a href="#1-application-yml的配置如下：" class="headerlink" title="1.application.yml的配置如下："></a>1.application.yml的配置如下：</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动端口</span></span><br><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 日志配置 </span></span><br><span class="line"><span class="attr">logging:</span></span><br><span class="line">  <span class="attr">config:</span> <span class="string">classpath:logback-spring.xml</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span> </span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">oa_data_synchronization</span></span><br><span class="line">  <span class="comment"># 数据源配置</span></span><br><span class="line">  <span class="attr">datasource:</span></span><br><span class="line">    <span class="attr">ds1:</span> <span class="comment">#数据源1</span></span><br><span class="line">      <span class="attr">driverClassName:</span> <span class="string">oracle.jdbc.OracleDriver</span> <span class="comment"># oracle驱动类</span></span><br><span class="line">      <span class="attr">url: jdbc:oracle:thin:</span>  <span class="comment">#oracle1地址</span></span><br><span class="line">      <span class="string">username:#</span> <span class="string">用户名</span></span><br><span class="line">      <span class="attr">password:</span>  <span class="comment"># 密码</span></span><br><span class="line">    <span class="attr">ds2:</span> <span class="comment"># 数据源2</span></span><br><span class="line">      <span class="attr">driverClassName:</span> <span class="string">oracle.jdbc.OracleDriver</span> <span class="comment"># oracle驱动类</span></span><br><span class="line">      <span class="attr">url: jdbc:oracle:thin:</span> <span class="string">oracle2地址</span></span><br><span class="line">      <span class="attr">username:</span>  <span class="comment"># 用户名</span></span><br><span class="line">      <span class="attr">password:</span>  <span class="comment"># 密码</span></span><br><span class="line"><span class="comment"># 开启下划线转驼峰</span></span><br><span class="line"><span class="attr">mybatis:</span></span><br><span class="line">  <span class="attr">configuration:</span></span><br><span class="line">    <span class="attr">map-underscore-to-camel-case:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">log-impl:</span> <span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br><span class="line">  <span class="attr">mapper-locations:</span> <span class="string">classpath:mybatis/**/*Mapper.xml</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
-    
-      
 
-  
+<h3 id="MybatisConfig4ds1"><a href="#MybatisConfig4ds1" class="headerlink" title="MybatisConfig4ds1"></a>MybatisConfig4ds1</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.naton.oa.dbconfig;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionTemplate;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Primary;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PathMatchingResourcePatternResolver;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.DataSourceTransactionManager;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mybatis主数据源ds1配置</span></span><br><span class="line"><span class="comment"> * 多数据源配置依赖数据源配置</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> DataSourceConfig</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan(basePackages = &quot;com.naton.oa.mybatis.ds1.mapper&quot;, sqlSessionTemplateRef = &quot;ds1SqlSessionTemplate&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MybatisConfig4ds1</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * ds1 数据源的sqlSession工厂</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource ds1的数据源</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> SqlSessionFactory SqlSessionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(&quot;ds1SqlSessionFactory&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">ds1SqlSessionFactory</span><span class="params">(<span class="meta">@Qualifier(&quot;ds1DataSource&quot;)</span> DataSource dataSource)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        sqlSessionFactory.setDataSource(dataSource);</span><br><span class="line">        sqlSessionFactory.setMapperLocations(<span class="keyword">new</span> PathMatchingResourcePatternResolver().</span><br><span class="line">                getResources(<span class="string">&quot;classpath*:mybatis/ds1/mapper/*.xml&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactory.getObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource dataSource</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> DataSourceTransactionManager 数据源事物管理对象</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;ds1TransactionManager&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">ds1TransactionManager</span><span class="params">(<span class="meta">@Qualifier(&quot;ds1DataSource&quot;)</span> DataSource dataSource)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sqlSessionFactory sqlSessionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> SqlSessionTemplate SqlSessionTemplate</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;ds1SqlSessionTemplate&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionTemplate <span class="title">ds1SqlSessionTemplate</span><span class="params">(<span class="meta">@Qualifier(&quot;ds1SqlSessionFactory&quot;)</span> SqlSessionFactory sqlSessionFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-  
-  
-  
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/04/test-my-site/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="塔罗斯的博客">
-    </span>
 
-    
-      <header class="post-header">
+<p>数据源2</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.naton.oa.dbconfig;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.session.SqlSessionFactory;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionFactoryBean;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.SqlSessionTemplate;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.spring.annotation.MapperScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.io.support.PathMatchingResourcePatternResolver;</span><br><span class="line"><span class="keyword">import</span> org.springframework.jdbc.datasource.DataSourceTransactionManager;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.sql.DataSource;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Mybatis  ds2数据源配置</span></span><br><span class="line"><span class="comment"> * 多数据源配置依赖数据源配置</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> DataSourceConfig</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@MapperScan(basePackages = &quot;com.naton.oa.mybatis.ds2.mapper&quot;, sqlSessionTemplateRef = &quot;ds2SqlSessionTemplate&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MybatisConfig4ds2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 配置ds2的sqlSessionFactory</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource ds2的数据源对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> SqlSessionFactory SqlSessionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(&quot;ds2SqlSessionFactory&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">ds2SqlSessionFactory</span><span class="params">(<span class="meta">@Qualifier(&quot;ds2DataSource&quot;)</span> DataSource dataSource)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        sqlSessionFactory.setDataSource(dataSource);</span><br><span class="line">        sqlSessionFactory.setMapperLocations(<span class="keyword">new</span> PathMatchingResourcePatternResolver().</span><br><span class="line">                getResources(<span class="string">&quot;classpath*:mybatis/ds2/mapper/*.xml&quot;</span>));</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactory.getObject();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事物支持</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dataSource ds2的数据源</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> DataSourceTransactionManager DataSourceTransactionManager</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;ds2TransactionManager&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSourceTransactionManager <span class="title">ds2TransactionManager</span><span class="params">(<span class="meta">@Qualifier(&quot;ds2DataSource&quot;)</span> DataSource dataSource)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> sqlSessionFactory sqlSessionFactory</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> SqlSessionTemplate SqlSessionTemplate</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean(name = &quot;ds2SqlSessionTemplate&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionTemplate <span class="title">ds2SqlSessionTemplate</span><span class="params">(<span class="meta">@Qualifier(&quot;ds2SqlSessionFactory&quot;)</span> SqlSessionFactory sqlSessionFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> SqlSessionTemplate(sqlSessionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/04/04/test-my-site/" itemprop="url">test_my_site</a></h1>
-        
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2021-04-04T12:51:28+08:00">
-                2021-04-04
-              </time>
-            
 
-            
+<h3 id="DataSourceConfig"><a href="#DataSourceConfig" class="headerlink" title="DataSourceConfig"></a>DataSourceConfig</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * 多数据源配置</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Configuration</span><br><span class="line">public class DataSourceConfig &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 加载数据源ds1的属性配置</span><br><span class="line">     *</span><br><span class="line">     * @return DataSourceProperties 数据源属性信息</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Primary</span><br><span class="line">    @Bean(name &#x3D; &quot;ds1DataSourceProperties&quot;)</span><br><span class="line">    @ConfigurationProperties(prefix &#x3D; &quot;spring.datasource.ds1&quot;)</span><br><span class="line">    public DataSourceProperties ds1DataSourceProperties() &#123;</span><br><span class="line">        return new DataSourceProperties();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 创建ds1 的数据源对象</span><br><span class="line">     *</span><br><span class="line">     * @param dataSourceProperties ds1数据源的属性配置</span><br><span class="line">     * @return DataSource ds1的数据源对象</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Primary</span><br><span class="line">    @Bean(name &#x3D; &quot;ds1DataSource&quot;)</span><br><span class="line">    public DataSource ds1DataSource(@Qualifier(&quot;ds1DataSourceProperties&quot;) DataSourceProperties dataSourceProperties) &#123;</span><br><span class="line">        return dataSourceProperties.initializeDataSourceBuilder().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 加载ds2的数据源配置</span><br><span class="line">     *</span><br><span class="line">     * @return DataSourceProperties DataSourceProperties</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Bean(name &#x3D; &quot;ds2DataSourceProperties&quot;)</span><br><span class="line">    @ConfigurationProperties(prefix &#x3D; &quot;spring.datasource.ds2&quot;)</span><br><span class="line">    public DataSourceProperties ds2DataSourceProperties() &#123;</span><br><span class="line">        return new DataSourceProperties();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 创建ds2的数据源对象</span><br><span class="line">     *</span><br><span class="line">     * @param dataSourceProperties 数据源ds2的属性信息对象</span><br><span class="line">     * @return DataSource ds2的数据源对象</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Bean(&quot;ds2DataSource&quot;)</span><br><span class="line">    public DataSource ds2DataSource(@Qualifier(&quot;ds2DataSourceProperties&quot;) DataSourceProperties dataSourceProperties) &#123;</span><br><span class="line">        return dataSourceProperties.initializeDataSourceBuilder().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-            
-          </span>
 
-          
 
-          
-            
-          
+<h3 id="JdbcTemplateDataSourceConfig"><a href="#JdbcTemplateDataSourceConfig" class="headerlink" title="JdbcTemplateDataSourceConfig"></a>JdbcTemplateDataSourceConfig</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line"> * JdbcTemplate多数据源配置</span><br><span class="line"> * 依赖于数据源配置</span><br><span class="line"> *</span><br><span class="line"> * @see DataSourceConfig</span><br><span class="line"> *&#x2F;</span><br><span class="line">@Configuration</span><br><span class="line">public class JdbcTemplateDataSourceConfig &#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 数据源ds1的jdbcTemplate</span><br><span class="line">     *</span><br><span class="line">     * @param dataSource ds1的数据源</span><br><span class="line">     * @return JdbcTemplate JdbcTemplate</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Primary</span><br><span class="line">    @Bean(name &#x3D; &quot;ds1JdbcTemplate&quot;)</span><br><span class="line">    public JdbcTemplate ds1JdbcTemplate(@Qualifier(&quot;ds1DataSource&quot;) DataSource dataSource) &#123;</span><br><span class="line">        return new JdbcTemplate(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 数据源ds2的jdbcTemplate</span><br><span class="line">     *</span><br><span class="line">     * @param dataSource ds2的数据源对象</span><br><span class="line">     * @return JdbcTemplate JdbcTemplate</span><br><span class="line">     *&#x2F;</span><br><span class="line">    @Bean(name &#x3D; &quot;ds2JdbcTemplate&quot;)</span><br><span class="line">    public JdbcTemplate ds2JdbcTemplate(@Qualifier(&quot;ds2DataSource&quot;) DataSource dataSource) &#123;</span><br><span class="line">        return new JdbcTemplate(dataSource);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-          
-          
 
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
           
         
       
@@ -652,7 +556,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -697,7 +601,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">ls</span>
 
   
 </div>
@@ -881,5 +785,5 @@
 
   
 
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/01/assets/haru01.model.json"},"display":{"position":"right","hOffset":0,"vOffset":-20,"width":250,"height":400},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
 </html>
