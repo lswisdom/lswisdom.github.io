@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="CentOS7.3安装mysql第二步：下载和安装mysql源 先下载 mysql源安装包 [root@localhost ~]# wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm -bash: wget: 未找到命令 我们先安装下wget  yum -y install wget 然后执行 wge">
+<meta name="description" content="CentOS7.3安装mysql第一步：下载和安装mysql源 1.先下载 mysql源安装包 1wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm  2.安装mysql源 1yum -y localinstall mysql57-community-relea">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CentOS7安装MYSLQ5.7">
-<meta property="og:url" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/index.html">
+<meta property="og:url" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/index.html">
 <meta property="og:site_name" content="塔罗斯的博客">
-<meta property="og:description" content="CentOS7.3安装mysql第二步：下载和安装mysql源 先下载 mysql源安装包 [root@localhost ~]# wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm -bash: wget: 未找到命令 我们先安装下wget  yum -y install wget 然后执行 wge">
+<meta property="og:description" content="CentOS7.3安装mysql第一步：下载和安装mysql源 1.先下载 mysql源安装包 1wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm  2.安装mysql源 1yum -y localinstall mysql57-community-relea">
 <meta property="og:locale">
-<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/image/mysql%E7%9A%84%E5%AF%86%E7%A0%81.png">
-<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/%5Cimage%5C%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png">
-<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/%5Cimage%5C%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/image/mysql%E7%9A%84%E5%AF%86%E7%A0%81.png">
+<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/%5Cimage%5C%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/%5Cimage%5C%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png">
 <meta property="article:published_time" content="2021-04-05T09:54:08.000Z">
-<meta property="article:modified_time" content="2021-04-05T11:47:07.855Z">
+<meta property="article:modified_time" content="2021-04-05T13:01:14.818Z">
 <meta property="article:author" content="ls">
 <meta property="article:tag" content="标签名">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/image/mysql%E7%9A%84%E5%AF%86%E7%A0%81.png">
+<meta name="twitter:image" content="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/image/mysql%E7%9A%84%E5%AF%86%E7%A0%81.png">
 
 
 
@@ -124,7 +124,7 @@
 
 
 
-  <link rel="canonical" href="https://lswisdom.github.io/2021/04/05/CentOS7安装Rabbitmq/"/>
+  <link rel="canonical" href="https://lswisdom.github.io/2021/04/05/CentOS7安装MySQL5.7/"/>
 
 
 
@@ -259,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85Rabbitmq/">
+    <link itemprop="mainEntityOfPage" href="https://lswisdom.github.io/2021/04/05/CentOS7%E5%AE%89%E8%A3%85MySQL5.7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -342,7 +342,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  613
+                  577
                 </span>
               
 
@@ -379,24 +379,20 @@
       
 
       
-        <h2 id="CentOS7-3安装mysql"><a href="#CentOS7-3安装mysql" class="headerlink" title="CentOS7.3安装mysql"></a>CentOS7.3安装mysql</h2><p><strong>第二步：下载和安装mysql源</strong></p>
-<p>先下载 mysql源安装包</p>
-<p>[root@localhost ~]# wget <a target="_blank" rel="noopener" href="https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm">https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm</a></p>
-<p>-bash: wget: 未找到命令</p>
-<p>我们先安装下wget </p>
-<p>yum -y install wget</p>
-<p>然后执行 wget <a target="_blank" rel="noopener" href="https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm">https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm</a></p>
-<p>安装mysql源</p>
-<p>yum -y localinstall mysql57-community-release-el7-11.noarch.rpm </p>
-<p><strong>第三步：在线安装Mysql</strong></p>
-<p>yum -y install mysql-community-server</p>
-<p>下载的东西比较多 要稍微等会；</p>
-<p><strong>第四步：启动Mysql服务</strong></p>
-<p>systemctl start mysqld</p>
-<p><strong>第五步：设置开机启动</strong></p>
-<p>[root@localhost ~]# systemctl enable mysqld</p>
-<p>[root@localhost ~]# systemctl daemon-reload</p>
-<p><strong>第六步：修改root本地登录密码</strong></p>
+        <h2 id="CentOS7-3安装mysql"><a href="#CentOS7-3安装mysql" class="headerlink" title="CentOS7.3安装mysql"></a>CentOS7.3安装mysql</h2><p><strong>第一步：下载和安装mysql源</strong></p>
+<p>1.先下载 mysql源安装包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br></pre></td></tr></table></figure>
+
+<p>2.安装mysql源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y localinstall mysql57-community-release-el7-11.noarch.rpm </span><br></pre></td></tr></table></figure>
+<p><strong>第二步：在线安装Mysql</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mysql-community-server</span><br></pre></td></tr></table></figure>
+<p>下载的东西比较多,要稍微等会</p>
+<p><strong>第三步：启动Mysql服务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
+<p><strong>第四步：设置开机启动</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable mysqld</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+<p><strong>第五步：修改root本地登录密码</strong></p>
 <p>mysql安装完成之后，在/var/log/mysqld.log文件中给root生成了一个临时的默认密码。</p>
 <p>[root@localhost ~]# vi /var/log/mysqld.log</p>
 <p><img src="./image/mysql%E7%9A%84%E5%AF%86%E7%A0%81.png" alt="mysql的密码"></p>
