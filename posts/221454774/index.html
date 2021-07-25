@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux环境安装," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,21 +79,23 @@
 
 
 
-<meta name="description" content="基本环境配置1.CentOS7安装JDK1.检查系统中是否存在JDKCentOS一般会自带两个jdk，使用命令查看 12345678910rpm -qa | grep javarpm -e --nodeps 要卸载的包 (包通过上面的指令可以获取到)]如：rpm -e --nodeps java-1.7.0-openjdk-1.7.0.99-2.6.5.1.el6.x86_64rpm -e --n">
+<meta name="description" content="1.为服务器生成证书1keytool -genkey -v -alias tomcat -keyalg RSA -keystore E:\download\tomcat.keystore -validity 36500   2.为客户端生成证书1keytool -genkey -v -alias mykey -keyalg RSA -storetype PKCS12 -keystore E:\do">
 <meta property="og:type" content="article">
-<meta property="og:title" content="centos7安装JDK">
-<meta property="og:url" content="https://lswisdom.github.io/posts/3393234349/index.html">
+<meta property="og:title" content="证书生成方式">
+<meta property="og:url" content="https://lswisdom.github.io/posts/221454774/index.html">
 <meta property="og:site_name" content="LsWisdom的博客">
-<meta property="og:description" content="基本环境配置1.CentOS7安装JDK1.检查系统中是否存在JDKCentOS一般会自带两个jdk，使用命令查看 12345678910rpm -qa | grep javarpm -e --nodeps 要卸载的包 (包通过上面的指令可以获取到)]如：rpm -e --nodeps java-1.7.0-openjdk-1.7.0.99-2.6.5.1.el6.x86_64rpm -e --n">
+<meta property="og:description" content="1.为服务器生成证书1keytool -genkey -v -alias tomcat -keyalg RSA -keystore E:\download\tomcat.keystore -validity 36500   2.为客户端生成证书1keytool -genkey -v -alias mykey -keyalg RSA -storetype PKCS12 -keystore E:\do">
 <meta property="og:locale">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/JDK/JDK%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE.png?versionId=CAEQExiBgICo1cjz1hciIDhhZTk0OTFjZjllOTQzNjNiYTQ0OGI0YjM1Nzk5NGMy">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/JDK/%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF.png?versionId=CAEQExiBgICT9bzz1hciIDZhZTVmNDYyMTAxYzRmZmNhYzc1MDRiNzhmODRjNGQ0">
-<meta property="article:published_time" content="2021-07-25T08:54:55.000Z">
-<meta property="article:modified_time" content="2021-07-25T09:01:24.262Z">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128025572.png?versionId=CAEQExiBgMDmlp301hciIDI4OThjYmZjNzFlODQxMDY4MmIwZDNjODkyMzJlMzM3">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128094997.png?versionId=CAEQExiBgMC18p701hciIDA4OWM2ZmZiYTgxODQyMDk5YmVlNTc0ZDg0OGU2Mzcy">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618126654702.png?versionId=CAEQExiBgMC2nqD01hciIDRiNjdjZTlkNTU4MjQxZDhiMWFiYzY1MjI1NmIwYzNj">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128547443.png?versionId=CAEQExiBgIDH8qH01hciIGUzZTcwMzcwYTA0NjQ3ZTQ4N2FmNzcwZjk1ZTUxOTUy">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618129421310.png?versionId=CAEQExiBgMCR0qP01hciIDdiMDFmZTU3YzQ0YzRjNmJhZjk4N2NhNmNiZjBjNmU4">
+<meta property="article:published_time" content="2021-07-25T09:43:36.000Z">
+<meta property="article:modified_time" content="2021-07-25T09:52:51.610Z">
 <meta property="article:author" content="ls">
-<meta property="article:tag" content="Linux环境安装">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/JDK/JDK%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE.png?versionId=CAEQExiBgICo1cjz1hciIDhhZTk0OTFjZjllOTQzNjNiYTQ0OGI0YjM1Nzk5NGMy">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128025572.png?versionId=CAEQExiBgMDmlp301hciIDI4OThjYmZjNzFlODQxMDY4MmIwZDNjODkyMzJlMzM3">
 
 
 
@@ -123,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://lswisdom.github.io/posts/3393234349/"/>
+  <link rel="canonical" href="https://lswisdom.github.io/posts/221454774/"/>
 
 
 
 
 
-  <title>centos7安装JDK | LsWisdom的博客</title>
+  <title>证书生成方式 | LsWisdom的博客</title>
   
 
 
@@ -258,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lswisdom.github.io/posts/3393234349/">
+    <link itemprop="mainEntityOfPage" href="https://lswisdom.github.io/posts/221454774/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -275,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">centos7安装JDK</h1>
+          <h1 class="post-title" itemprop="name headline">证书生成方式</h1>
         
 
         <div class="post-meta">
@@ -287,7 +289,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-25T16:54:55+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-25T17:43:36+08:00">
                 2021-07-25
               </time>
             
@@ -297,28 +299,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -341,7 +321,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  285
+                  317
                 </span>
               
 
@@ -378,28 +358,44 @@
       
 
       
-        <h2 id="基本环境配置"><a href="#基本环境配置" class="headerlink" title="基本环境配置"></a>基本环境配置</h2><h3 id="1-CentOS7安装JDK"><a href="#1-CentOS7安装JDK" class="headerlink" title="1.CentOS7安装JDK"></a>1.CentOS7安装JDK</h3><h4 id="1-检查系统中是否存在JDK"><a href="#1-检查系统中是否存在JDK" class="headerlink" title="1.检查系统中是否存在JDK"></a>1.检查系统中是否存在JDK</h4><p>CentOS一般会自带两个jdk，使用命令查看</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep java</span><br><span class="line">rpm -e --nodeps 要卸载的包 (包通过上面的指令可以获取到)]</span><br><span class="line">如：</span><br><span class="line">rpm -e --nodeps java-1.7.0-openjdk-1.7.0.99-2.6.5.1.el6.x86_64</span><br><span class="line">rpm -e --nodeps java-1.6.0-openjdk-1.6.0.38-1.13.10.4.el6.x86_64</span><br><span class="line">rpm:用于管理套件</span><br><span class="line">-e:表示删除指定的套件</span><br><span class="line">-q:使用询问模式，当遇到任何问题时，rpm指令会先询问用户。</span><br><span class="line">-a:查询所有套件。</span><br><span class="line">|:把前一个命令原本要bai输出到屏幕的数据du当作是后一个命令的标准输入</span><br></pre></td></tr></table></figure>
+        <h3 id="1-为服务器生成证书"><a href="#1-为服务器生成证书" class="headerlink" title="1.为服务器生成证书"></a>1.为服务器生成证书</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -v -alias tomcat -keyalg RSA -keystore E:\download\tomcat.keystore -validity 36500</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128025572.png?versionId=CAEQExiBgMDmlp301hciIDI4OThjYmZjNzFlODQxMDY4MmIwZDNjODkyMzJlMzM3" alt="1618128025572"></p>
+<h3 id="2-为客户端生成证书"><a href="#2-为客户端生成证书" class="headerlink" title="2.为客户端生成证书"></a>2.为客户端生成证书</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -genkey -v -alias mykey -keyalg RSA -storetype PKCS12 -keystore E:\download\mykey.p12</span><br></pre></td></tr></table></figure>
+
+<p>会生成一个客户端的证书</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128094997.png?versionId=CAEQExiBgMC18p701hciIDA4OWM2ZmZiYTgxODQyMDk5YmVlNTc0ZDg0OGU2Mzcy" alt="1618128094997"></p>
+<h3 id="3-让服务器信任客户端证书"><a href="#3-让服务器信任客户端证书" class="headerlink" title="3.让服务器信任客户端证书"></a>3.让服务器信任客户端证书</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -export -alias mykey -keystore E:\downlaod\mykey.p12 -storetype PKCS12 -storepass 123456 -rfc -file E:\downlaod\mykey.cer</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618126654702.png?versionId=CAEQExiBgMC2nqD01hciIDRiNjdjZTlkNTU4MjQxZDhiMWFiYzY1MjI1NmIwYzNj" alt="1618126654702"></p>
+<h3 id="4-将该文件导入服务器的证书库，添加一个信任证书命令"><a href="#4-将该文件导入服务器的证书库，添加一个信任证书命令" class="headerlink" title="4.将该文件导入服务器的证书库，添加一个信任证书命令"></a>4.将该文件导入服务器的证书库，添加一个信任证书命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -import -v -file E:\download\mykey.cer -keystore E:\download\tomcat.keystore</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="2-上传JDK包"><a href="#2-上传JDK包" class="headerlink" title="2.上传JDK包"></a>2.上传JDK包</h4><p>上传JDK包到/usr/local/software目录下面</p>
-<p>执行解压JDK安装文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf jdk-8u151-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="5-查看证书命令："><a href="#5-查看证书命令：" class="headerlink" title="5.查看证书命令："></a>5.查看证书命令：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -list -keystore E:\download\tomcat.keystore</span><br></pre></td></tr></table></figure>
 
 
 
-<h4 id="3-配置环境变量"><a href="#3-配置环境变量" class="headerlink" title="3.配置环境变量"></a>3.配置环境变量</h4><p>vim /etc/profile</p>
-<p>在文件最末尾加上下面几句话</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/software/jdk1.8.0_151</span><br><span class="line">export JRE_HOME=/usr/local/software/jdk1.8.0_151/jre</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="6-让客户端信任服务器证书"><a href="#6-让客户端信任服务器证书" class="headerlink" title="6.让客户端信任服务器证书"></a>6.让客户端信任服务器证书</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -keystore E:\download\tomcat.keystore -export -alias tomcat -file E:\download\tomcat.cer(tomcat为你设置服务器端的证书名)</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/JDK/JDK%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E9%85%8D%E7%BD%AE.png?versionId=CAEQExiBgICo1cjz1hciIDhhZTk0OTFjZjllOTQzNjNiYTQ0OGI0YjM1Nzk5NGMy"></p>
-<p>保存退出</p>
-<p>让配置生效：</p>
-<p>source /etc/profile</p>
-<p>检查环境：</p>
-<p>运行java –version能看到版本信息</p>
-<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/JDK/%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF.png?versionId=CAEQExiBgICT9bzz1hciIDZhZTVmNDYyMTAxYzRmZmNhYzc1MDRiNzhmODRjNGQ0"></p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618128547443.png?versionId=CAEQExiBgIDH8qH01hciIGUzZTcwMzcwYTA0NjQ3ZTQ4N2FmNzcwZjk1ZTUxOTUy" alt="1618128547443"></p>
+<h3 id="7-配置tomcat的服务器"><a href="#7-配置tomcat的服务器" class="headerlink" title="7.配置tomcat的服务器"></a>7.配置tomcat的服务器</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8443&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">protocol</span>=<span class="string">&quot;org.apache.coyote.http11.Http11NioProtocol&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">SSLEnabled</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">maxThreads</span>=<span class="string">&quot;150&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">scheme</span>=<span class="string">&quot;https&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">secure</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">clientAuth</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">sslProtocol</span>=<span class="string">&quot;TLS&quot;</span></span></span><br><span class="line"><span class="tag">			  </span></span><br><span class="line"><span class="tag">			  <span class="attr">keystoreFile</span>=<span class="string">&quot;E:\download\tomcat.keystore&quot;</span></span></span><br><span class="line"><span class="tag">			  <span class="attr">keystorePass</span>=<span class="string">&quot;123456&quot;</span> </span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag">	</span></span><br><span class="line"><span class="tag">			  /&gt;</span></span><br><span class="line">			      </span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-把cas里面的证书位置替换一下"><a href="#8-把cas里面的证书位置替换一下" class="headerlink" title="8.把cas里面的证书位置替换一下"></a>8.把cas里面的证书位置替换一下</h3><p>cas/WEB-INF/classes/application.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.ssl.key-store&#x3D;E:\download\tomcat.keystore</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在e:download文件夹中执行cmd 会生成一个证书</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keytool -import -alias tomcat -keystore cacerts -file tomcat.cer </span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/Window/1618129421310.png?versionId=CAEQExiBgMCR0qP01hciIDdiMDFmZTU3YzQ0YzRjNmJhZjk4N2NhNmNiZjBjNmU4" alt="1618129421310"></p>
+<p>复制该文件，并替换java目录下面的证书文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files\Java\jdk1.8.0_251\jre\lib\security</span><br></pre></td></tr></table></figure>
+
+
 
       
     </div>
@@ -415,12 +411,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag"># Linux环境安装</a>
-          
-        </div>
-      
 
       
       
@@ -430,8 +420,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/2227500636/" rel="next" title="ElasticSearch的API使用">
-                <i class="fa fa-chevron-left"></i> ElasticSearch的API使用
+              <a href="/posts/3895306588/" rel="next" title="SpringBoot项目中配置druid的监控">
+                <i class="fa fa-chevron-left"></i> SpringBoot项目中配置druid的监控
               </a>
             
           </div>
@@ -439,10 +429,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/3326246757/" rel="prev" title="Centos7安装Tomcat">
-                Centos7安装Tomcat <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -588,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">基本环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-CentOS7%E5%AE%89%E8%A3%85JDK"><span class="nav-number">1.1.</span> <span class="nav-text">1.CentOS7安装JDK</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A3%80%E6%9F%A5%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8JDK"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.检查系统中是否存在JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%B8%8A%E4%BC%A0JDK%E5%8C%85"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.上传JDK包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.配置环境变量</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="nav-number">1.</span> <span class="nav-text">1.为服务器生成证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%BA%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="nav-number">2.</span> <span class="nav-text">2.为客户端生成证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%A9%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BF%A1%E4%BB%BB%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6"><span class="nav-number">3.</span> <span class="nav-text">3.让服务器信任客户端证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%B0%86%E8%AF%A5%E6%96%87%E4%BB%B6%E5%AF%BC%E5%85%A5%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9A%84%E8%AF%81%E4%B9%A6%E5%BA%93%EF%BC%8C%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E4%BF%A1%E4%BB%BB%E8%AF%81%E4%B9%A6%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">4.将该文件导入服务器的证书库，添加一个信任证书命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%9F%A5%E7%9C%8B%E8%AF%81%E4%B9%A6%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5.查看证书命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E8%AE%A9%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BF%A1%E4%BB%BB%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%81%E4%B9%A6"><span class="nav-number">6.</span> <span class="nav-text">6.让客户端信任服务器证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%85%8D%E7%BD%AEtomcat%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">7.</span> <span class="nav-text">7.配置tomcat的服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%8A%8Acas%E9%87%8C%E9%9D%A2%E7%9A%84%E8%AF%81%E4%B9%A6%E4%BD%8D%E7%BD%AE%E6%9B%BF%E6%8D%A2%E4%B8%80%E4%B8%8B"><span class="nav-number">8.</span> <span class="nav-text">8.把cas里面的证书位置替换一下</span></a></li></ol></div>
             
 
           </div>
