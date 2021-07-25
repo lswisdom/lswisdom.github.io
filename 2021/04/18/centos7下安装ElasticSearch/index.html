@@ -86,16 +86,16 @@
 <meta property="og:site_name" content="塔罗斯的博客">
 <meta property="og:description" content="CentOS7安装ElasticSearch7.121.安装JDK安装JDK 并配置环境变量,配置如下： 1234export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0">
 <meta property="og:locale">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?Expires=1627146590&OSSAccessKeyId=TMP.3KgdijnpnPsgA4aHHzM3sDgeQnGZR5C629ag5vtJwvW48PkhkdQMEjooKP1EXRKeD4RTEgxcrgdnigh4dQmrRMrqTFYpCZ&Signature=9ccwll38N2vM90OjnJXwbUtQ5/c=&versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5&response-content-type=application/octet-stream">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%97%A5%E5%BF%97.png?Expires=1627146419&OSSAccessKeyId=TMP.3KgdijnpnPsgA4aHHzM3sDgeQnGZR5C629ag5vtJwvW48PkhkdQMEjooKP1EXRKeD4RTEgxcrgdnigh4dQmrRMrqTFYpCZ&Signature=QuC97LRkK0SkjrZ96OGTF9xldVM=&versionId=CAEQExiBgMCM6Inl1hciIDJiZmM1MzJlMmMzODQ5NDJhOGIwYjdlNGJhNTAyZWE3&response-content-type=application/octet-stream">
-<meta property="og:image" content="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418214303980-1722814949.png">
-<meta property="og:image" content="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418215009649-790411671.png">
-<meta property="og:image" content="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418215433295-1382374832.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03elasticsearch.yml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png?versionId=CAEQExiBgMCf9fzt1hciIGZhZDAzMWZmOTQ2NTQ0MTQ4NWFjMTIwZDNlN2M3ODZm">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88.png?versionId=CAEQExiBgIC6j4Tu1hciIGRhNGI1MmNiY2Q3ZTQ3NzA5YjM2MDljMTlhNzU0N2Nk">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05elastic-search%E5%90%AF%E5%8A%A8%E6%95%88%E6%9E%9C.png?versionId=CAEQExiCgIC9j4Tu1hciIDEwYTAyMjA1MWI1YzQwOTk5ODIxOGU5YzJmZTg3ZWEw">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%AD%A3%E5%B8%B8%E8%AE%BF%E9%97%AE%E6%95%88%E6%9E%9C.png?versionId=CAEQExiBgIC9j4Tu1hciIGIzNmRjMGY2NDNjYTQ4Zjc4NTRmMDA5YWU4MmUyNzE3">
 <meta property="article:published_time" content="2021-04-18T11:25:45.000Z">
-<meta property="article:modified_time" content="2021-07-24T16:10:06.136Z">
+<meta property="article:modified_time" content="2021-07-25T02:35:47.541Z">
 <meta property="article:author" content="ls">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?Expires=1627146590&OSSAccessKeyId=TMP.3KgdijnpnPsgA4aHHzM3sDgeQnGZR5C629ag5vtJwvW48PkhkdQMEjooKP1EXRKeD4RTEgxcrgdnigh4dQmrRMrqTFYpCZ&Signature=9ccwll38N2vM90OjnJXwbUtQ5/c=&versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5&response-content-type=application/octet-stream">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5">
 
 
 
@@ -359,7 +359,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  6
+                  7
                 </span>
               
             </div>
@@ -388,7 +388,7 @@
 <p>ElasticSearch文档地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html</a><br>ElasticSearch下载地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/elasticsearch">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf elasticsearch-7.12.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
 
-<p>下载完成后的地址路径如下：<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?Expires=1627146590&OSSAccessKeyId=TMP.3KgdijnpnPsgA4aHHzM3sDgeQnGZR5C629ag5vtJwvW48PkhkdQMEjooKP1EXRKeD4RTEgxcrgdnigh4dQmrRMrqTFYpCZ&Signature=9ccwll38N2vM90OjnJXwbUtQ5/c=&versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5&response-content-type=application/octet-stream"></p>
+<p>下载完成后的地址路径如下：<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5"></p>
 <h2 id="3-启动ES-并解决ES启动报错"><a href="#3-启动ES-并解决ES启动报错" class="headerlink" title="3.启动ES,并解决ES启动报错"></a>3.启动ES,并解决ES启动报错</h2><p>进入bin目录下面执行  ./elasticsearch</p>
 <h3 id="错误一：ES7-12-需要使用JDK11的版本"><a href="#错误一：ES7-12-需要使用JDK11的版本" class="headerlink" title="错误一：ES7.12 需要使用JDK11的版本"></a>错误一：ES7.12 需要使用JDK11的版本</h3><p>报错，提示信息如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span><br><span class="line">warning: usage of JAVA_HOME is deprecated, use ES_JAVA_HOME</span><br><span class="line">Future versions of Elasticsearch will require Java <span class="number">11</span>; your Java version from [/usr/local/software/jdk1<span class="number">.8</span><span class="number">.0_281</span>/jre] does not meet <span class="keyword">this</span> requirement. Consider switching to a distribution of Elasticsearch with a bundled JDK. If you are already using a distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span><br><span class="line">[<span class="number">2021</span>-<span class="number">04</span>-18T19:<span class="number">54</span>:<span class="number">57</span>,<span class="number">709</span>][ERROR][o.e.b.ElasticsearchUncaughtExceptionHandler] [MiWiFi-R3-srv] uncaught exception in thread [main]</span><br></pre></td></tr></table></figure>
@@ -406,25 +406,26 @@
 
 
 
-<p>但是ES默认支持localhost启动，修改配置文件config下面的vim elasticsearch.yml 如下图所示<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%97%A5%E5%BF%97.png?Expires=1627146419&OSSAccessKeyId=TMP.3KgdijnpnPsgA4aHHzM3sDgeQnGZR5C629ag5vtJwvW48PkhkdQMEjooKP1EXRKeD4RTEgxcrgdnigh4dQmrRMrqTFYpCZ&Signature=QuC97LRkK0SkjrZ96OGTF9xldVM=&versionId=CAEQExiBgMCM6Inl1hciIDJiZmM1MzJlMmMzODQ5NDJhOGIwYjdlNGJhNTAyZWE3&response-content-type=application/octet-stream"><br>启动完成后，重新启动，又出现了新的警告信息</p>
+<p>但是ES默认支持localhost启动，修改配置文件config下面的vim elasticsearch.yml 如下图所示<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03elasticsearch.yml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png?versionId=CAEQExiBgMCf9fzt1hciIGZhZDAzMWZmOTQ2NTQ0MTQ4NWFjMTIwZDNlN2M3ODZm"><br>启动完成后，重新启动，又出现了新的警告信息</p>
 <h3 id="错误三：Option-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release"><a href="#错误三：Option-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release" class="headerlink" title="错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release"></a>错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release</h3><p>这个是警告信息，垃圾回收器的问题，可以不修改</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.</span><br></pre></td></tr></table></figure>
 
 <h3 id="错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点"><a href="#错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点" class="headerlink" title="错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点"></a>错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点</h3><p>提示信息如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [<span class="number">3</span>] bootstrap checks failed. You must address the points described in the following [<span class="number">3</span>] lines before starting Elasticsearch.</span><br><span class="line">bootstrap check failure [<span class="number">1</span>] of [<span class="number">3</span>]: max file descriptors [<span class="number">4096</span>] <span class="keyword">for</span> elasticsearch process is too low, increase to at least [<span class="number">65535</span>]</span><br><span class="line">bootstrap check failure [<span class="number">2</span>] of [<span class="number">3</span>]: max virtual memory areas vm.max_map_count [<span class="number">65530</span>] is too low, increase to at least [<span class="number">262144</span>]</span><br><span class="line">bootstrap check failure [<span class="number">3</span>] of [<span class="number">3</span>]: the <span class="keyword">default</span> discovery settings are unsuitable <span class="keyword">for</span> production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br><span class="line">ERROR: Elasticsearch did not exit normally - check the logs at /usr/local/software/elasticsearch-<span class="number">7.12</span><span class="number">.0</span>/logs/elasticsearch.log</span><br><span class="line">``</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [3] bootstrap checks failed. You must address the points described in the following [3] lines before starting Elasticsearch.</span><br><span class="line">bootstrap check failure [1] of [3]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]</span><br><span class="line">bootstrap check failure [2] of [3]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</span><br><span class="line">bootstrap check failure [3] of [3]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br><span class="line">ERROR: Elasticsearch did not exit normally - check the logs at &#x2F;usr&#x2F;local&#x2F;software&#x2F;elasticsearch-7.12.0&#x2F;logs&#x2F;elasticsearch.log</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="4-第一个错误，意思大概是：elasticsearch进程的文件描述符-4096-过低，增加到至少-65535"><a href="#4-第一个错误，意思大概是：elasticsearch进程的文件描述符-4096-过低，增加到至少-65535" class="headerlink" title="4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]"></a>4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]</h3><p>解决方案：<br> 修改 vim /etc/security/limits.conf<br> 在文件最下方加入如下配置：<br>注意：第一列是你刚才创建的用户名称,我刚才创建的用户是esuser</p>
 <p>esuser soft nofile 65536<br>esuser hard nofile 65536<br>esuser soft nproc 4096<br>esuser hard nproc 4096</p>
 <h3 id="5-第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max-map-count-65530-太低，增加到至少-262144"><a href="#5-第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max-map-count-65530-太低，增加到至少-262144" class="headerlink" title="5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]"></a>5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]</h3><p>解决办法：进入/etc 修改sysctl.conf文档，里面都是注释，添加如下面一行配置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.max_map_count&#x3D;655360 推荐信息提示至少262144</span><br></pre></td></tr></table></figure>
 
-<p>保存信息wq<br>注意：配置如果想要生效，需要执行如下配置：<br><img src="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418214303980-1722814949.png"></p>
-<h3 id="6-第三个错误："><a href="#6-第三个错误：" class="headerlink" title="6.第三个错误："></a>6.第三个错误：</h3><p>解决办法：在elasticsearch的config目录下，修改elasticsearch.yml配置文件，将下面的配置加入到该配置文件中：<br>注意：这里的node-1为node-name配置的值<br>cluster.initial_master_nodes: [“node-1”] </p>
+<p>保存信息wq<br>注意：配置如果想要生效，需要执行如下配置：<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88.png?versionId=CAEQExiBgIC6j4Tu1hciIGRhNGI1MmNiY2Q3ZTQ3NzA5YjM2MDljMTlhNzU0N2Nk"></p>
+<h3 id="6-第三个错误："><a href="#6-第三个错误：" class="headerlink" title="6.第三个错误："></a>6.第三个错误：</h3><p>解决办法：在elasticsearch的config目录下，修改elasticsearch.yml配置文件，将下面的配置加入到该配置文件中：<br>注意：这里的node-1为node-name配置的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster.initial_master_nodes: [&quot;node-1&quot;] </span><br></pre></td></tr></table></figure>
 <p>注意默认情况下：node-name的值是注释掉的。这里要放开</p>
-<h3 id="7-重新启动ES-看看效果-启动完成后-还是提示这个错误"><a href="#7-重新启动ES-看看效果-启动完成后-还是提示这个错误" class="headerlink" title="7. 重新启动ES 看看效果,启动完成后,还是提示这个错误"></a>7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</h3><p> check failure [1] of [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]<br>这种情况,可能是配置没有生效,重启虚拟机再看看效果<br><img src="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418215009649-790411671.png"><br>重新启动完成后，再次启动提示start，表示已经正常启动了</p>
+<h3 id="7-重新启动ES-看看效果-启动完成后-还是提示这个错误"><a href="#7-重新启动ES-看看效果-启动完成后-还是提示这个错误" class="headerlink" title="7. 重新启动ES 看看效果,启动完成后,还是提示这个错误"></a>7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</h3><p> check failure [1] of [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]<br>这种情况,可能是配置没有生效,重启虚拟机再看看效果<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05elastic-search%E5%90%AF%E5%8A%A8%E6%95%88%E6%9E%9C.png?versionId=CAEQExiCgIC9j4Tu1hciIDEwYTAyMjA1MWI1YzQwOTk5ODIxOGU5YzJmZTg3ZWEw"><br>重新启动完成后，再次启动提示start，表示已经正常启动了</p>
 <h3 id="8-windows电脑无法直接访问"><a href="#8-windows电脑无法直接访问" class="headerlink" title="8.windows电脑无法直接访问"></a>8.windows电脑无法直接访问</h3><p>开放9200端口</p>
-<p>firewall-cmd –zone=public –add-port=9200/tcp –permanent<br>firewall-cmd –reload</p>
-<p>使用windows客户端访问，能看到正常返回json了<br><img src="https://img2020.cnblogs.com/blog/1491423/202104/1491423-20210418215433295-1382374832.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;9200&#x2F;tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+<p>使用windows客户端访问，能看到正常返回json了<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%AD%A3%E5%B8%B8%E8%AE%BF%E9%97%AE%E6%95%88%E6%9E%9C.png?versionId=CAEQExiBgIC9j4Tu1hciIGIzNmRjMGY2NDNjYTQ4Zjc4NTRmMDA5YWU4MmUyNzE3"></p>
 
       
     </div>
@@ -458,6 +459,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/07/25/ElasticSearch%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" rel="prev" title="ElasticSearch基本语法">
+                ElasticSearch基本语法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -538,7 +543,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -549,7 +554,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
