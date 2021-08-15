@@ -1,403 +1,426 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next gemini use-motion" lang="zh-Hans">
+<html lang=zh>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="CentOS7安装ElasticSearch7.121.安装JDK安装JDK 并配置环境变量,配置如下： 1234export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0">
+  <title>centos7下安装ElasticSearch | Hexo</title>
+  <meta name="description" content="CentOS7安装ElasticSearch7.121.安装JDK安装JDK 并配置环境变量,配置如下： 1234export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0">
 <meta property="og:type" content="article">
 <meta property="og:title" content="centos7下安装ElasticSearch">
 <meta property="og:url" content="https://lswisdom.github.io/posts/3121942040/index.html">
 <meta property="og:site_name" content="LsWisdom的博客">
 <meta property="og:description" content="CentOS7安装ElasticSearch7.121.安装JDK安装JDK 并配置环境变量,配置如下： 1234export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03elasticsearch.yml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png?versionId=CAEQExiBgMCf9fzt1hciIGZhZDAzMWZmOTQ2NTQ0MTQ4NWFjMTIwZDNlN2M3ODZm">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88.png?versionId=CAEQExiBgIC6j4Tu1hciIGRhNGI1MmNiY2Q3ZTQ3NzA5YjM2MDljMTlhNzU0N2Nk">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05elastic-search%E5%90%AF%E5%8A%A8%E6%95%88%E6%9E%9C.png?versionId=CAEQExiCgIC9j4Tu1hciIDEwYTAyMjA1MWI1YzQwOTk5ODIxOGU5YzJmZTg3ZWEw">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%AD%A3%E5%B8%B8%E8%AE%BF%E9%97%AE%E6%95%88%E6%9E%9C.png?versionId=CAEQExiBgIC9j4Tu1hciIGIzNmRjMGY2NDNjYTQ4Zjc4NTRmMDA5YWU4MmUyNzE3">
 <meta property="article:published_time" content="2021-04-18T11:25:45.000Z">
-<meta property="article:modified_time" content="2021-07-25T09:09:47.427Z">
+<meta property="article:modified_time" content="2021-08-15T13:26:12.621Z">
 <meta property="article:author" content="ls">
+<meta property="article:tag" content="Linux环境安装">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '',
-    scheme: 'Gemini',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="https://lswisdom.github.io/posts/3121942040/"/>
-
-
-
-
-
-  <title>centos7下安装ElasticSearch | LsWisdom的博客</title>
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://lswisdom.github.io/posts/3121942040/index.html">
   
+    <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
 
-
-
-
-
-
-
-
+  
+  
+  
+  
 <meta name="generator" content="Hexo 5.4.0"></head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband">
-      <a target="_blank" rel="noopener" href="https://github.com/lswisdom" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-    </div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">LsWisdom的博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
       
-        <p class="site-subtitle">谋事在人成事在天</p>
       
-  </div>
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Hangzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
   </div>
 </div>
 
-<nav class="site-nav">
-  
 
-  
-    <ul id="menu" class="menu">
-      
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
         
-        <li class="menu-item menu-item-主页">
-          <a href="/" rel="section">
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            <i class="icon icon-home-fill"></i>
             
-            主页
+            <span class="menu-title">首页</span>
           </a>
         </li>
-      
         
-        <li class="menu-item menu-item-标签">
-          <a href="/tags/" rel="section">
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            <i class="icon icon-archives-fill"></i>
             
-            标签
+            <span class="menu-title">归档</span>
           </a>
         </li>
-      
         
-        <li class="menu-item menu-item-分类">
-          <a href="/categories/" rel="section">
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            <i class="icon icon-folder"></i>
             
-            分类
+            <span class="menu-title">分类</span>
           </a>
         </li>
-      
         
-        <li class="menu-item menu-item-归档">
-          <a href="/archives/" rel="section">
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            <i class="icon icon-tags"></i>
             
-            归档
+            <span class="menu-title">标签</span>
           </a>
         </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
       
-
-      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
     </ul>
-  
+
+    </nav>
+  </div>
+</header>
 
   
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
     
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lswisdom.github.io/posts/3121942040/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/timg.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="LsWisdom的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">centos7下安装ElasticSearch</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-04-18T19:25:45+08:00">
-                2021-04-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/linux/" itemprop="url" rel="index">
-                    <span itemprop="name">linux</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计&#58;</span>
-                
-                <span title="字数统计">
-                  1.4k
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
             </div>
-          
-
-          
-
         </div>
-      </header>
-    
+    </div>
+</div>
 
     
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ElasticSearch/">ElasticSearch</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
     
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">Linux环境安装</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SpringBoot/" rel="tag">SpringBoot -</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
     
-    <div class="post-body" itemprop="articleBody">
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 14px;">Linux环境安装</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/SpringBoot/" style="font-size: 13px;">SpringBoot -</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13px;">环境安装</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/221454774/" class="title">证书生成方式</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-25T09:43:36.000Z" itemprop="datePublished">2021-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/SpringBoot/">SpringBoot</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/3895306588/" class="title">SpringBoot项目中配置druid的监控</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-25T09:33:51.000Z" itemprop="datePublished">2021-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/Redis/">Redis</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/2813726945/" class="title">Centos7安装Redis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-25T09:17:42.000Z" itemprop="datePublished">2021-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/linux/">linux</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/3592562801/" class="title">Centos7开启防火墙命令</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-25T09:13:26.000Z" itemprop="datePublished">2021-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/linux/">linux</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/3393234349/" class="title">centos7安装JDK</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-07-25T08:54:55.000Z" itemprop="datePublished">2021-07-25</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#centos7%E5%AE%89%E8%A3%85elasticsearch712"><span class="toc-number">1.</span> <span class="toc-text">CentOS7安装ElasticSearch7.12</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%AE%89%E8%A3%85jdk"><span class="toc-number">1.1.</span> <span class="toc-text">1.安装JDK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E5%AE%89%E8%A3%85elasticsearch"><span class="toc-number">1.2.</span> <span class="toc-text">2.安装ElasticSearch</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E5%90%AF%E5%8A%A8es%E5%B9%B6%E8%A7%A3%E5%86%B3es%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99"><span class="toc-number">1.3.</span> <span class="toc-text">3.启动ES,并解决ES启动报错</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%B8%80es712-%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8jdk11%E7%9A%84%E7%89%88%E6%9C%AC"><span class="toc-number">1.3.1.</span> <span class="toc-text">错误一：ES7.12 需要使用JDK11的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%BA%8Ces%E6%8F%90%E7%A4%BA%E6%88%91%E4%BB%AC%E4%B8%8D%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7"><span class="toc-number">1.3.2.</span> <span class="toc-text">错误二：Es提示我们不可以使用root用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E4%B8%89option-useconcmarksweepgc-was-deprecated-in-version-90-and-will-likely-be-removed-in-a-future-release"><span class="toc-number">1.3.3.</span> <span class="toc-text">错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%9B%9B%E6%8F%90%E7%A4%BA%E5%9C%A8%E5%90%AF%E5%8A%A8elasticsearch%E4%B9%8B%E5%89%8D%E6%82%A8%E5%BF%85%E9%A1%BB%E8%A7%A3%E5%86%B3%E4%BB%A5%E4%B8%8B%E8%A1%8C%E4%B8%AD%E6%8F%8F%E8%BF%B0%E7%9A%84%E8%A6%81%E7%82%B9"><span class="toc-number">1.3.4.</span> <span class="toc-text">错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%E6%84%8F%E6%80%9D%E5%A4%A7%E6%A6%82%E6%98%AFelasticsearch%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A64096%E8%BF%87%E4%BD%8E%E5%A2%9E%E5%8A%A0%E5%88%B0%E8%87%B3%E5%B0%9165535"><span class="toc-number">1.3.5.</span> <span class="toc-text">4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E7%AC%AC%E4%BA%8C%E4%B8%AA%E9%94%99%E8%AF%AF%E6%84%8F%E6%80%9D%E5%A4%A7%E6%A6%82%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9C%80%E5%A4%A7%E7%9A%84%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F-max_map_count65530%E5%A4%AA%E4%BD%8E%E5%A2%9E%E5%8A%A0%E5%88%B0%E8%87%B3%E5%B0%91262144"><span class="toc-number">1.3.6.</span> <span class="toc-text">5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E7%AC%AC%E4%B8%89%E4%B8%AA%E9%94%99%E8%AF%AF"><span class="toc-number">1.3.7.</span> <span class="toc-text">6.第三个错误：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8es-%E7%9C%8B%E7%9C%8B%E6%95%88%E6%9E%9C%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90%E5%90%8E%E8%BF%98%E6%98%AF%E6%8F%90%E7%A4%BA%E8%BF%99%E4%B8%AA%E9%94%99%E8%AF%AF"><span class="toc-number">1.3.8.</span> <span class="toc-text">7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8windows%E7%94%B5%E8%84%91%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.9.</span> <span class="toc-text">8.windows电脑无法直接访问</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-linux/centos7下安装ElasticSearch" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      centos7下安装ElasticSearch
+    </h1>
+  
 
       
-      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/3121942040/" class="article-date">
+	  <time datetime="2021-04-18T11:25:45.000Z" itemprop="datePublished">2021-04-18</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </span>
 
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">Linux环境安装</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/3121942040/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="CentOS7安装ElasticSearch7-12"><a href="#CentOS7安装ElasticSearch7-12" class="headerlink" title="CentOS7安装ElasticSearch7.12"></a>CentOS7安装ElasticSearch7.12</h1><h2 id="1-安装JDK"><a href="#1-安装JDK" class="headerlink" title="1.安装JDK"></a>1.安装JDK</h2><p>安装JDK 并配置环境变量,配置如下：</p>
+        <h1 id="centos7安装elasticsearch712"><a href="#CentOS7安装ElasticSearch7-12" class="headerlink" title="CentOS7安装ElasticSearch7.12"></a>CentOS7安装ElasticSearch7.12</h1><h2 id="1安装jdk"><a href="#1-安装JDK" class="headerlink" title="1.安装JDK"></a>1.安装JDK</h2><p>安装JDK 并配置环境变量,配置如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281</span><br><span class="line">export JRE_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;software&#x2F;jdk1.8.0_281&#x2F;jre</span><br><span class="line">export CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
 
-<h2 id="2-安装ElasticSearch"><a href="#2-安装ElasticSearch" class="headerlink" title="2.安装ElasticSearch"></a>2.安装ElasticSearch</h2><p>注意：我下载的是7版本,需要jdk11的支持，但是开发环境我选择 jdk1.8</p>
+<h2 id="2安装elasticsearch"><a href="#2-安装ElasticSearch" class="headerlink" title="2.安装ElasticSearch"></a>2.安装ElasticSearch</h2><p>注意：我下载的是7版本,需要jdk11的支持，但是开发环境我选择 jdk1.8</p>
 <p>​下载6版本的可以使用jdk1.8 </p>
 <p>ElasticSearch文档地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html</a><br>ElasticSearch下载地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/cn/downloads/elasticsearch">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf elasticsearch-7.12.0-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
 
 <p>下载完成后的地址路径如下：<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E4%B8%8B%E8%BD%BD%E5%AE%8C%E6%88%90%E5%90%8E%E7%9B%AE%E5%BD%95.png?versionId=CAEQExiBgIDd547l1hciIDkwZTNkYWYxMTE0ZjRiZmU4MjAwYzY5ZWY5ZjZmYmE5"></p>
-<h2 id="3-启动ES-并解决ES启动报错"><a href="#3-启动ES-并解决ES启动报错" class="headerlink" title="3.启动ES,并解决ES启动报错"></a>3.启动ES,并解决ES启动报错</h2><p>进入bin目录下面执行  ./elasticsearch</p>
-<h3 id="错误一：ES7-12-需要使用JDK11的版本"><a href="#错误一：ES7-12-需要使用JDK11的版本" class="headerlink" title="错误一：ES7.12 需要使用JDK11的版本"></a>错误一：ES7.12 需要使用JDK11的版本</h3><p>报错，提示信息如下：</p>
+<h2 id="3启动es并解决es启动报错"><a href="#3-启动ES-并解决ES启动报错" class="headerlink" title="3.启动ES,并解决ES启动报错"></a>3.启动ES,并解决ES启动报错</h2><p>进入bin目录下面执行  ./elasticsearch</p>
+<h3 id="错误一es712-需要使用jdk11的版本"><a href="#错误一：ES7-12-需要使用JDK11的版本" class="headerlink" title="错误一：ES7.12 需要使用JDK11的版本"></a>错误一：ES7.12 需要使用JDK11的版本</h3><p>报错，提示信息如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span><br><span class="line">warning: usage of JAVA_HOME is deprecated, use ES_JAVA_HOME</span><br><span class="line">Future versions of Elasticsearch will require Java <span class="number">11</span>; your Java version from [/usr/local/software/jdk1<span class="number">.8</span><span class="number">.0_281</span>/jre] does not meet <span class="keyword">this</span> requirement. Consider switching to a distribution of Elasticsearch with a bundled JDK. If you are already using a distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span><br><span class="line">[<span class="number">2021</span>-<span class="number">04</span>-18T19:<span class="number">54</span>:<span class="number">57</span>,<span class="number">709</span>][ERROR][o.e.b.ElasticsearchUncaughtExceptionHandler] [MiWiFi-R3-srv] uncaught exception in thread [main]</span><br></pre></td></tr></table></figure>
 
 <p>这个意思提示我们，使用ES7.12需要jdk11的版本<br>下载安装jdk11,并修改es需要的jdk环境变量<br>修改vim elasticsearch 文件,并在文件最上方添加如下配置：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#配置自己的jdk11</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;jdk-11.0.10&#x2F;</span><br><span class="line">export PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH</span><br><span class="line"></span><br><span class="line">#添加jdk判断</span><br><span class="line">if [ -x &quot;$JAVA_HOME&#x2F;bin&#x2F;java&quot; ]; then</span><br><span class="line">        JAVA&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;jdk-11.0.10&#x2F;bin&#x2F;java&quot;</span><br><span class="line">else</span><br><span class="line">        JAVA&#x3D;&#96;which java&#96;</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
 
 <p>再次启动ES    ./elasticsearch</p>
-<h3 id="错误二：Es提示我们不可以使用root用户"><a href="#错误二：Es提示我们不可以使用root用户" class="headerlink" title="错误二：Es提示我们不可以使用root用户"></a>错误二：Es提示我们不可以使用root用户</h3><p> 提示信息如下：</p>
+<h3 id="错误二es提示我们不可以使用root用户"><a href="#错误二：Es提示我们不可以使用root用户" class="headerlink" title="错误二：Es提示我们不可以使用root用户"></a>错误二：Es提示我们不可以使用root用户</h3><p> 提示信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">java.lang.RuntimeException: can not run elasticsearch as root</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.initializeNatives(Bootstrap.java:101)</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.setup(Bootstrap.java:168)</span><br><span class="line">	at org.elasticsearch.bootstrap.Bootstrap.init(Bootstrap.java:397)</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.init(Elasticsearch.java:159)</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.execute(Elasticsearch.java:150)</span><br><span class="line">	at org.elasticsearch.cli.EnvironmentAwareCommand.execute(EnvironmentAwareCommand.java:75)</span><br><span class="line">	at org.elasticsearch.cli.Command.mainWithoutErrorHandling(Command.java:116)</span><br><span class="line">	at org.elasticsearch.cli.Command.main(Command.java:79)</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:115)</span><br><span class="line">	at org.elasticsearch.bootstrap.Elasticsearch.main(Elasticsearch.java:81)</span><br><span class="line">For complete error details, refer to the log at &#x2F;usr&#x2F;local&#x2F;software&#x2F;elasticsearch-7.12.0&#x2F;logs&#x2F;elasticsearch.log</span><br></pre></td></tr></table></figure>
 
 <p>解决办法：创建新用户，并用新用户进行启动<br>创建用户组：groupadd esgroup<br>创建es用户：useradd esuser -g esgroup -p 123456<br>然后使用chown命令来让这个文件夹属于这个用户<br>chown -R esuser:esgroup elasticsearch-7.12.0<br>切换用户，使用新用户esuser进行服务启动</p>
@@ -407,426 +430,258 @@
 
 
 <p>但是ES默认支持localhost启动，修改配置文件config下面的vim elasticsearch.yml 如下图所示<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03elasticsearch.yml%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png?versionId=CAEQExiBgMCf9fzt1hciIGZhZDAzMWZmOTQ2NTQ0MTQ4NWFjMTIwZDNlN2M3ODZm"><br>启动完成后，重新启动，又出现了新的警告信息</p>
-<h3 id="错误三：Option-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release"><a href="#错误三：Option-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release" class="headerlink" title="错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release"></a>错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release</h3><p>这个是警告信息，垃圾回收器的问题，可以不修改</p>
+<h3 id="错误三option-useconcmarksweepgc-was-deprecated-in-version-90-and-will-likely-be-removed-in-a-future-release"><a href="#错误三：Option-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release" class="headerlink" title="错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release"></a>错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release</h3><p>这个是警告信息，垃圾回收器的问题，可以不修改</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.</span><br></pre></td></tr></table></figure>
 
-<h3 id="错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点"><a href="#错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点" class="headerlink" title="错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点"></a>错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点</h3><p>提示信息如下：</p>
+<h3 id="错误四提示在启动elasticsearch之前您必须解决以下行中描述的要点"><a href="#错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点" class="headerlink" title="错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点"></a>错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点</h3><p>提示信息如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ERROR: [3] bootstrap checks failed. You must address the points described in the following [3] lines before starting Elasticsearch.</span><br><span class="line">bootstrap check failure [1] of [3]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]</span><br><span class="line">bootstrap check failure [2] of [3]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</span><br><span class="line">bootstrap check failure [3] of [3]: the default discovery settings are unsuitable for production use; at least one of [discovery.seed_hosts, discovery.seed_providers, cluster.initial_master_nodes] must be configured</span><br><span class="line">ERROR: Elasticsearch did not exit normally - check the logs at &#x2F;usr&#x2F;local&#x2F;software&#x2F;elasticsearch-7.12.0&#x2F;logs&#x2F;elasticsearch.log</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="4-第一个错误，意思大概是：elasticsearch进程的文件描述符-4096-过低，增加到至少-65535"><a href="#4-第一个错误，意思大概是：elasticsearch进程的文件描述符-4096-过低，增加到至少-65535" class="headerlink" title="4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]"></a>4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]</h3><p>解决方案：<br> 修改 vim /etc/security/limits.conf<br> 在文件最下方加入如下配置：<br>注意：第一列是你刚才创建的用户名称,我刚才创建的用户是esuser</p>
+<h3 id="4第一个错误意思大概是elasticsearch进程的文件描述符4096过低增加到至少65535"><a href="#4-第一个错误，意思大概是：elasticsearch进程的文件描述符-4096-过低，增加到至少-65535" class="headerlink" title="4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]"></a>4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]</h3><p>解决方案：<br> 修改 vim /etc/security/limits.conf<br> 在文件最下方加入如下配置：<br>注意：第一列是你刚才创建的用户名称,我刚才创建的用户是esuser</p>
 <p>esuser soft nofile 65536<br>esuser hard nofile 65536<br>esuser soft nproc 4096<br>esuser hard nproc 4096</p>
-<h3 id="5-第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max-map-count-65530-太低，增加到至少-262144"><a href="#5-第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max-map-count-65530-太低，增加到至少-262144" class="headerlink" title="5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]"></a>5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]</h3><p>解决办法：进入/etc 修改sysctl.conf文档，里面都是注释，添加如下面一行配置</p>
+<h3 id="5第二个错误意思大概是虚拟机最大的虚拟内存区域-max_map_count65530太低增加到至少262144"><a href="#5-第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max-map-count-65530-太低，增加到至少-262144" class="headerlink" title="5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]"></a>5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]</h3><p>解决办法：进入/etc 修改sysctl.conf文档，里面都是注释，添加如下面一行配置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vm.max_map_count&#x3D;655360 推荐信息提示至少262144</span><br></pre></td></tr></table></figure>
 
 <p>保存信息wq<br>注意：配置如果想要生效，需要执行如下配置：<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E9%85%8D%E7%BD%AE%E7%94%9F%E6%95%88.png?versionId=CAEQExiBgIC6j4Tu1hciIGRhNGI1MmNiY2Q3ZTQ3NzA5YjM2MDljMTlhNzU0N2Nk"></p>
-<h3 id="6-第三个错误："><a href="#6-第三个错误：" class="headerlink" title="6.第三个错误："></a>6.第三个错误：</h3><p>解决办法：在elasticsearch的config目录下，修改elasticsearch.yml配置文件，将下面的配置加入到该配置文件中：<br>注意：这里的node-1为node-name配置的值</p>
+<h3 id="6第三个错误"><a href="#6-第三个错误：" class="headerlink" title="6.第三个错误："></a>6.第三个错误：</h3><p>解决办法：在elasticsearch的config目录下，修改elasticsearch.yml配置文件，将下面的配置加入到该配置文件中：<br>注意：这里的node-1为node-name配置的值</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cluster.initial_master_nodes: [&quot;node-1&quot;] </span><br></pre></td></tr></table></figure>
 <p>注意默认情况下：node-name的值是注释掉的。这里要放开</p>
-<h3 id="7-重新启动ES-看看效果-启动完成后-还是提示这个错误"><a href="#7-重新启动ES-看看效果-启动完成后-还是提示这个错误" class="headerlink" title="7. 重新启动ES 看看效果,启动完成后,还是提示这个错误"></a>7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</h3><p> check failure [1] of [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]<br>这种情况,可能是配置没有生效,重启虚拟机再看看效果<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05elastic-search%E5%90%AF%E5%8A%A8%E6%95%88%E6%9E%9C.png?versionId=CAEQExiCgIC9j4Tu1hciIDEwYTAyMjA1MWI1YzQwOTk5ODIxOGU5YzJmZTg3ZWEw"><br>重新启动完成后，再次启动提示start，表示已经正常启动了</p>
-<h3 id="8-windows电脑无法直接访问"><a href="#8-windows电脑无法直接访问" class="headerlink" title="8.windows电脑无法直接访问"></a>8.windows电脑无法直接访问</h3><p>开放9200端口</p>
+<h3 id="7-重新启动es-看看效果启动完成后还是提示这个错误"><a href="#7-重新启动ES-看看效果-启动完成后-还是提示这个错误" class="headerlink" title="7. 重新启动ES 看看效果,启动完成后,还是提示这个错误"></a>7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</h3><p> check failure [1] of [1]: max file descriptors [4096] for elasticsearch process is too low, increase to at least [65535]<br>这种情况,可能是配置没有生效,重启虚拟机再看看效果<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05elastic-search%E5%90%AF%E5%8A%A8%E6%95%88%E6%9E%9C.png?versionId=CAEQExiCgIC9j4Tu1hciIDEwYTAyMjA1MWI1YzQwOTk5ODIxOGU5YzJmZTg3ZWEw"><br>重新启动完成后，再次启动提示start，表示已经正常启动了</p>
+<h3 id="8windows电脑无法直接访问"><a href="#8-windows电脑无法直接访问" class="headerlink" title="8.windows电脑无法直接访问"></a>8.windows电脑无法直接访问</h3><p>开放9200端口</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;9200&#x2F;tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
 <p>使用windows客户端访问，能看到正常返回json了<br><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%AD%A3%E5%B8%B8%E8%AE%BF%E9%97%AE%E6%95%88%E6%9E%9C.png?versionId=CAEQExiBgIC9j4Tu1hciIGIzNmRjMGY2NDNjYTQ4Zjc4NTRmMDA5YWU4MmUyNzE3"></p>
 
       
     </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
     
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://lswisdom.github.io/posts/3121942040/" title="centos7下安装ElasticSearch" target="_blank" rel="external">https://lswisdom.github.io/posts/3121942040/</a>
+    </li>
     
-    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
 
-    
 
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/posts/3633779439/" rel="next" title="使用CAS实现单点登录一">
-                <i class="fa fa-chevron-left"></i> 使用CAS实现单点登录一
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/posts/809474901/" rel="prev" title="ElasticSearch报错演示">
-                ElasticSearch报错演示 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
-  
-  
-  
+</div>
+
+
+    </div>
   </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
   
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
     
-    <div class="sidebar-inner">
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
+  
+</div>
 
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/timg.jpg"
-                alt="" />
-            
-              <p class="site-author-name" itemprop="name"></p>
-              <p class="site-description motion-element" itemprop="description"></p>
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/809474901/" title="ElasticSearch报错演示"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/3633779439/" title="使用CAS实现单点登录一"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
           </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives">
-              
-                  <span class="site-state-item-count">13</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
               </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-            <div class="links-of-author motion-element">
-                
-                  <span class="links-of-author-item">
-                    <a href="https://github.com/lswisdom" target="_blank" title="GitHub">
-                      
-                        <i class="fa fa-fw fa-github"></i>GitHub</a>
-                  </span>
-                
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
             </div>
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS7%E5%AE%89%E8%A3%85ElasticSearch7-12"><span class="nav-number">1.</span> <span class="nav-text">CentOS7安装ElasticSearch7.12</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85JDK"><span class="nav-number">1.1.</span> <span class="nav-text">1.安装JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85ElasticSearch"><span class="nav-number">1.2.</span> <span class="nav-text">2.安装ElasticSearch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%90%AF%E5%8A%A8ES-%E5%B9%B6%E8%A7%A3%E5%86%B3ES%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99"><span class="nav-number">1.3.</span> <span class="nav-text">3.启动ES,并解决ES启动报错</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%B8%80%EF%BC%9AES7-12-%E9%9C%80%E8%A6%81%E4%BD%BF%E7%94%A8JDK11%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">1.3.1.</span> <span class="nav-text">错误一：ES7.12 需要使用JDK11的版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%BA%8C%EF%BC%9AEs%E6%8F%90%E7%A4%BA%E6%88%91%E4%BB%AC%E4%B8%8D%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8root%E7%94%A8%E6%88%B7"><span class="nav-number">1.3.2.</span> <span class="nav-text">错误二：Es提示我们不可以使用root用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E4%B8%89%EF%BC%9AOption-UseConcMarkSweepGC-was-deprecated-in-version-9-0-and-will-likely-be-removed-in-a-future-release"><span class="nav-number">1.3.3.</span> <span class="nav-text">错误三：Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%9B%9B%EF%BC%9A%E6%8F%90%E7%A4%BA%EF%BC%9A%E5%9C%A8%E5%90%AF%E5%8A%A8Elasticsearch%E4%B9%8B%E5%89%8D%EF%BC%8C%E6%82%A8%E5%BF%85%E9%A1%BB%E8%A7%A3%E5%86%B3%E4%BB%A5%E4%B8%8B%E8%A1%8C%E4%B8%AD%E6%8F%8F%E8%BF%B0%E7%9A%84%E8%A6%81%E7%82%B9"><span class="nav-number">1.3.4.</span> <span class="nav-text">错误四：提示：在启动Elasticsearch之前，您必须解决以下行中描述的要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%AC%AC%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF%EF%BC%8C%E6%84%8F%E6%80%9D%E5%A4%A7%E6%A6%82%E6%98%AF%EF%BC%9Aelasticsearch%E8%BF%9B%E7%A8%8B%E7%9A%84%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6-4096-%E8%BF%87%E4%BD%8E%EF%BC%8C%E5%A2%9E%E5%8A%A0%E5%88%B0%E8%87%B3%E5%B0%91-65535"><span class="nav-number">1.3.5.</span> <span class="nav-text">4.第一个错误，意思大概是：elasticsearch进程的文件描述符[4096]过低，增加到至少[65535]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%AC%AC%E4%BA%8C%E4%B8%AA%E9%94%99%E8%AF%AF%EF%BC%8C%E6%84%8F%E6%80%9D%E5%A4%A7%E6%A6%82%E6%98%AF%EF%BC%9A%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%9C%80%E5%A4%A7%E7%9A%84%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%E3%80%82max-map-count-65530-%E5%A4%AA%E4%BD%8E%EF%BC%8C%E5%A2%9E%E5%8A%A0%E5%88%B0%E8%87%B3%E5%B0%91-262144"><span class="nav-number">1.3.6.</span> <span class="nav-text">5.第二个错误，意思大概是：虚拟机最大的虚拟内存区域。max_map_count[65530]太低，增加到至少[262144]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%AC%AC%E4%B8%89%E4%B8%AA%E9%94%99%E8%AF%AF%EF%BC%9A"><span class="nav-number">1.3.7.</span> <span class="nav-text">6.第三个错误：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%87%8D%E6%96%B0%E5%90%AF%E5%8A%A8ES-%E7%9C%8B%E7%9C%8B%E6%95%88%E6%9E%9C-%E5%90%AF%E5%8A%A8%E5%AE%8C%E6%88%90%E5%90%8E-%E8%BF%98%E6%98%AF%E6%8F%90%E7%A4%BA%E8%BF%99%E4%B8%AA%E9%94%99%E8%AF%AF"><span class="nav-number">1.3.8.</span> <span class="nav-text">7. 重新启动ES 看看效果,启动完成后,还是提示这个错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-windows%E7%94%B5%E8%84%91%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.9.</span> <span class="nav-text">8.windows电脑无法直接访问</span></a></li></ol></li></ol></li></ol></div>
-            
-
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
           </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">ls</span>
-
-  
-</div>
-
-
-<div class="powered-by">
-<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
-  本站访客数:<span id="busuanzi_value_site_uv"></span>
-</span>
-<!--
-</div>
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
--->
-
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
   </div>
+</div>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 </script>
 
+<script src="/js/plugin.min.js"></script>
 
 
+<script src="/js/application.js"></script>
 
 
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
 
+<script src="/js/insight.js"></script>
 
 
 
-  
 
 
 
+   
 
 
 
 
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
 
+     
 
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/01/assets/haru01.model.json"},"display":{"position":"right","hOffset":0,"vOffset":-20,"width":250,"height":400},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
 </html>
