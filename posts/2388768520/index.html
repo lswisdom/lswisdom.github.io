@@ -18,12 +18,12 @@
   
   
   <title>红黑树的简单介绍 | Hexo</title>
-  <meta name="description" content="红黑树基本讲解1、基本概念 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性: 1.1 性质 性质1: 每个节点要么是黑色，要么是红色。 性质2: 根节点是黑色。 性质3: 每个叶子节点(NIL) 是黑色。 性质4: 每个红色节点的两个子节点一定都是黑色。">
+  <meta name="description" content="红黑树基本讲解1、基本概念 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性: 1.1 性质 性质1: 每个节点要么是黑色，要么是红色。 性质2: 根节点是黑色。 性质3: 每个叶子节点(NIL) 是黑色。 性质4: 每个红色节点的两个子节点一定都是黑">
 <meta property="og:type" content="article">
 <meta property="og:title" content="红黑树的简单介绍">
 <meta property="og:url" content="https://lswisdom.github.io/posts/2388768520/index.html">
 <meta property="og:site_name" content="LsWisdom的博客">
-<meta property="og:description" content="红黑树基本讲解1、基本概念 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性: 1.1 性质 性质1: 每个节点要么是黑色，要么是红色。 性质2: 根节点是黑色。 性质3: 每个叶子节点(NIL) 是黑色。 性质4: 每个红色节点的两个子节点一定都是黑色。">
+<meta property="og:description" content="红黑树基本讲解1、基本概念 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性: 1.1 性质 性质1: 每个节点要么是黑色，要么是红色。 性质2: 根节点是黑色。 性质3: 每个叶子节点(NIL) 是黑色。 性质4: 每个红色节点的两个子节点一定都是黑">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/01%E7%BA%A2%E9%BB%91%E6%A0%91.png?versionId=CAEQGxiBgMDfgpax2hciIDA3YmY1NDIwZWI3ODRhOGJhMmVmY2Q4MTQxOGExYzY1">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/03%E7%BA%A2%E9%BB%91%E6%A0%91%E5%B7%A6%E6%97%8B%E6%93%8D%E4%BD%9C.png?versionId=CAEQGxiBgMDogpax2hciIGQ0NmQ2NDZhYmEzZjQ2NjRiNGU3Y2I1ODliN2ZkYzUz">
@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/%E7%BA%A2%E9%BB%91%E6%A0%91%E5%B7%A6%E5%8F%B3%E6%97%8B%E7%A4%BA%E6%84%8F%E5%9B%BE.png?versionId=CAEQGxiBgMDWhJax2hciIDU4NzYxMjk1NGRiMDQ0NTY5NzAwNjBkMzNiNTYyYThk">
 <meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/%E4%BB%A3%E7%A0%81%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C.png?versionId=CAEQGxiBgMDihJax2hciIDM0ZmZjMjI3ZDBlZDRhMzViZDUyNmZmNzIwZmNlZmZk">
 <meta property="article:published_time" content="2021-08-16T00:07:45.000Z">
-<meta property="article:modified_time" content="2021-08-16T00:21:12.643Z">
+<meta property="article:modified_time" content="2021-10-30T06:22:54.920Z">
 <meta property="article:author" content="ls">
 <meta property="article:tag" content="数据结构">
 <meta name="twitter:card" content="summary">
@@ -407,7 +407,9 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h1 id="红黑树基本讲解"><a href="#红黑树基本讲解" class="headerlink" title="红黑树基本讲解"></a>红黑树基本讲解</h1><h2 id="1-基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h2><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
+        <meta name="referrer" content="no-referrer">
+
+<h1 id="红黑树基本讲解"><a href="#红黑树基本讲解" class="headerlink" title="红黑树基本讲解"></a>红黑树基本讲解</h1><h2 id="1-基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h2><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
 <p><strong>红黑树的特性</strong>:</p>
 <h3 id="11-性质"><a href="#1-1-性质" class="headerlink" title="1.1 性质"></a>1.1 性质</h3><ul>
 <li>性质1: 每个节点要么是黑色，要么是红色。</li>
@@ -425,7 +427,7 @@
 <li><strong>右旋</strong> : 以某个结点作为支点(旋转结点),   其左子结点变为旋转结点的父结点，左子结点的右子结点变为旋转结点的左子结点，右子结点保持不变</li>
 </ul>
 <p>红黑树<strong>右旋</strong>操作如下所示：</p>
-<p>![](<a target="_blank" rel="noopener" href="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/02">https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/数据结构/红黑树/02</a> 红黑树右旋操作.png?versionId=CAEQGxiBgMDpgpax2hciIDhmMjExMWQ2ZjU4ZjQ2ODU4M2ZkYzc4MmQ4MjVlN2Fh)</p>
+<p>![](<a target="_blank" rel="noopener" href="http://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/02">http://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/数据结构/红黑树/02</a> 红黑树右旋操作.png?versionId=CAEQGxiBgMDpgpax2hciIDhmMjExMWQ2ZjU4ZjQ2ODU4M2ZkYzc4MmQ4MjVlN2Fh)</p>
 <p>红黑树<strong>左旋</strong> 操作</p>
 <p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%BA%A2%E9%BB%91%E6%A0%91/03%E7%BA%A2%E9%BB%91%E6%A0%91%E5%B7%A6%E6%97%8B%E6%93%8D%E4%BD%9C.png?versionId=CAEQGxiBgMDogpax2hciIGQ0NmQ2NDZhYmEzZjQ2NjRiNGU3Y2I1ODliN2ZkYzUz"></p>
 <h3 id="13-红黑树的查找"><a href="#1-3-红黑树的查找" class="headerlink" title="1.3 红黑树的查找"></a>1.3 红黑树的查找</h3><p>红黑树的查找和二叉树的查找操作类似</p>
@@ -652,5 +654,5 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/01/assets/haru01.model.json"},"display":{"position":"right","hOffset":0,"vOffset":-20,"width":250,"height":400},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</body>
 </html>
