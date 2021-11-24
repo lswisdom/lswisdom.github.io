@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>ElasticSearch索引学习 | Hexo</title>
+  <meta name="description" content="ElasticSearch索引学习作者：李帅 [TOC] 1.索引概念2 索引基本操作 文档地址：https:&#x2F;&#x2F;www.elastic.co&#x2F;guide&#x2F;en&#x2F;elasticsearch&#x2F;reference&#x2F;current&#x2F;indices.html?baymax&#x3D;rec&amp;rogue&#x3D;rec-1&amp;elektra&#x3D;guide  2.1 创建索引Elasticsearch采用Rest风">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ElasticSearch索引学习">
+<meta property="og:url" content="https://lswisdom.github.io/posts/221453123/index.html">
+<meta property="og:site_name" content="LsWisdom的博客">
+<meta property="og:description" content="ElasticSearch索引学习作者：李帅 [TOC] 1.索引概念2 索引基本操作 文档地址：https:&#x2F;&#x2F;www.elastic.co&#x2F;guide&#x2F;en&#x2F;elasticsearch&#x2F;reference&#x2F;current&#x2F;indices.html?baymax&#x3D;rec&amp;rogue&#x3D;rec-1&amp;elektra&#x3D;guide  2.1 创建索引Elasticsearch采用Rest风">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E7%9A%84%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84%E7%BB%93%E6%9E%9C.png?versionId=CAEQHRiBgID29v2f4BciIDllNTBiZGMzOGFjYjRiM2Q5NGEyZGExY2IxYmRlZmJk">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/02%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E7%B4%A2%E5%BC%95%E7%9A%84API.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B%E5%BC%83%E7%94%A8.png">
+<meta property="article:published_time" content="2021-08-18T16:09:14.000Z">
+<meta property="article:modified_time" content="2021-11-24T00:28:52.197Z">
+<meta property="article:author" content="ls">
+<meta property="article:tag" content="Es学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E7%9A%84%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84%E7%BB%93%E6%9E%9C.png?versionId=CAEQHRiBgID29v2f4BciIDllNTBiZGMzOGFjYjRiM2Q5NGEyZGExY2IxYmRlZmJk">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://lswisdom.github.io/posts/221453123/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/timg.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm"></h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">LsWisdom Blog</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Hangzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>知识的碰撞能擦出不一样的火花!<br/> 欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">5</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Es%E5%AD%A6%E4%B9%A0/" rel="tag">Es学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java%E5%9F%BA%E7%A1%80/" rel="tag">Java基础</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">Linux环境安装</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/" rel="tag">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" rel="tag">前端框架</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag">数据结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Es%E5%AD%A6%E4%B9%A0/" style="font-size: 13.5px;">Es学习</a> <a href="/tags/Java%E5%9F%BA%E7%A1%80/" style="font-size: 14px;">Java基础</a> <a href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13.5px;">Linux环境安装</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6/" style="font-size: 13px;">前端框架</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 13px;">数据结构</a> <a href="/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 13px;">环境安装</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">八月 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/1082886779/" class="title">VUE基本使用和的组件介绍</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-20T13:37:58.000Z" itemprop="datePublished">2021-08-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/221454123/" class="title">Es简介</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/221453123/" class="title">ElasticSearch索引学习</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/221454721/" class="title">线程与并发基础</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/posts/221454777/" class="title">HashMap简单讲解</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-17T16:09:14.000Z" itemprop="datePublished">2021-08-18</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#elasticsearch%E7%B4%A2%E5%BC%95%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">ElasticSearch索引学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E7%B4%A2%E5%BC%95%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">1.索引概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%B4%A2%E5%BC%95%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.</span> <span class="toc-text">2 索引基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#21-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 创建索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#211%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AF%B7%E6%B1%82%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">2.1.1创建索引的请求格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#212-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AF%B7%E6%B1%82demo"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">2.1.2 创建索引的请求Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#213-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E7%9A%84java%E4%BB%A3%E7%A0%81%E6%BC%94%E7%A4%BA"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">2.1.3 创建索引的Java代码演示</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#22-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 删除索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#221-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AF%B7%E6%B1%82demo"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">2.2.1 删除索引的请求Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#222-%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">2.2.2 删除索引通过Java代码方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#23-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 获取索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#231-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E7%9A%84%E8%AF%B7%E6%B1%82demo"><span class="toc-number">1.2.3.1.</span> <span class="toc-text">2.3.1 获取索引的请求Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#232-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E7%9A%84%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.3.2.</span> <span class="toc-text">2.3.2 获取索引的代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#24-%E6%A3%80%E6%9F%A5%E7%B4%A2%E5%BC%95%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">1.2.4.</span> <span class="toc-text">2.4 检查索引是否存在</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#241-%E6%A3%80%E6%9F%A5%E7%B4%A2%E5%BC%95%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%AF%B7%E6%B1%82demo"><span class="toc-number">1.2.4.1.</span> <span class="toc-text">2.4.1 检查索引是否存在的请求Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#242-%E6%A3%80%E6%9F%A5%E7%B4%A2%E5%BC%95%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%AF%B7%E6%B1%82java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.4.2.</span> <span class="toc-text">2.4.2  检查索引是否存在的请求JAVA实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#25-%E5%85%B3%E9%97%AD%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.5.</span> <span class="toc-text">2.5 关闭索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#26-%E6%89%93%E5%BC%80%E7%B4%A2%E5%BC%95"><span class="toc-number">1.2.6.</span> <span class="toc-text">2.6 打开索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#27-%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.7.</span> <span class="toc-text">2.7 其他操作</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%B4%A2%E5%BC%95%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.</span> <span class="toc-text">3 索引字段映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#31-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%97%B6%E6%8C%87%E5%AE%9A%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 创建索引时指定字段映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#311-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84demo"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">3.1.1 创建索引映射Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#312-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84demo%E7%9A%84java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">3.1.2 创建索引映射Demo的Java实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#32-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 获取索引字段映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#321-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84%E8%AF%B7%E6%B1%82"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">3.2.1 获取索引映射请求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#322-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84java%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">3.2.2 获取索引映射Java代码实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#33-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95mappping%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 获取索引Mappping字段映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#331-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95mapping%E7%9A%84%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84demo"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.3.1  获取索引Mapping的字段映射Demo</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#332-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95mapping%E7%9A%84%E5%AD%97%E6%AE%B5%E6%98%A0%E5%B0%84java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.3.2  获取索引Mapping的字段映射Java实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#34-%E6%9B%B4%E6%96%B0%E7%B4%A2%E5%BC%95mapping%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.4.</span> <span class="toc-text">3.4 更新索引Mapping映射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#341-%E6%9B%B4%E6%96%B0%E7%B4%A2%E5%BC%95mapping%E6%98%A0%E5%B0%84demo"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">3.4.1 更新索引Mapping映射DEMO</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#342-%E6%9B%B4%E6%96%B0%E7%B4%A2%E5%BC%95mapping%E6%98%A0%E5%B0%84java%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">3.4.2 更新索引Mapping映射Java实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#35-%E6%A3%80%E6%9F%A5%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="toc-number">1.3.5.</span> <span class="toc-text">3.5 检查索引类型是否存在</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#36-%E7%B4%A2%E5%BC%95%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5%E7%9A%84api"><span class="toc-number">1.3.6.</span> <span class="toc-text">3.6 索引使用情况的API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E7%B4%A2%E5%BC%95%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">4.索引设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#41-%E8%8E%B7%E5%8F%96%E7%B4%A2%E5%BC%95%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 获取索引设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#42-%E7%B4%A2%E5%BC%95%E5%88%86%E6%9E%90%E6%96%87%E6%9C%AC"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 索引分析文本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#43-ik%E5%88%86%E8%AF%8D%E5%99%A8%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.3.</span> <span class="toc-text">4.3 IK分词器安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#44-%E6%9B%B4%E6%96%B0%E7%B4%A2%E5%BC%95%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">4.4 更新索引设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%AB%E5%90%8D%E7%AE%A1%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">6.索引的别名管理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%B4%A2%E5%BC%95%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.6.</span> <span class="toc-text">7. 索引模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%B4%A2%E5%BC%95%E7%9B%91%E6%8E%A7"><span class="toc-number">1.7.</span> <span class="toc-text">8. 索引监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#81-%E7%B4%A2%E5%BC%95%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.7.1.</span> <span class="toc-text">8.1 索引统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#82-%E7%B4%A2%E5%BC%95%E5%AD%97%E6%AE%B5%E7%BB%9F%E8%AE%A1"><span class="toc-number">1.7.2.</span> <span class="toc-text">8.2 索引字段统计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#83-%E7%B4%A2%E5%BC%95%E5%88%86%E7%89%87%E5%AD%98%E5%82%A8"><span class="toc-number">1.7.3.</span> <span class="toc-text">8.3 索引分片存储</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#84-%E7%B4%A2%E5%BC%95%E6%81%A2%E5%A4%8D"><span class="toc-number">1.7.4.</span> <span class="toc-text">8.4 索引恢复</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9%E7%B4%A2%E5%BC%95%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86"><span class="toc-number">1.8.</span> <span class="toc-text">9.索引状态管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#91-%E6%B8%85%E9%99%A4%E7%B4%A2%E5%BC%95%E7%9A%84%E7%BC%93%E5%AD%98"><span class="toc-number">1.8.1.</span> <span class="toc-text">9.1 清除索引的缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#92-%E7%B4%A2%E5%BC%95%E5%88%B7%E6%96%B0"><span class="toc-number">1.8.2.</span> <span class="toc-text">9.2 索引刷新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#93-%E5%88%B7%E6%96%B0"><span class="toc-number">1.8.3.</span> <span class="toc-text">9.3 刷新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#94-%E5%BC%BA%E5%88%B6%E5%90%88%E5%B9%B6%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%89%87"><span class="toc-number">1.8.4.</span> <span class="toc-text">9.4 强制合并一个或多个索引的分片</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Es的学习文档/02Es的索引使用" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ElasticSearch索引学习
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/221453123/" class="article-date">
+	  <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Es%E5%AD%A6%E4%B9%A0/" rel="tag">Es学习</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/221453123/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 5.6k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 24(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="elasticsearch索引学习"><a href="#ElasticSearch索引学习" class="headerlink" title="ElasticSearch索引学习"></a>ElasticSearch索引学习</h1><p>作者：李帅</p>
+<p>[TOC]</p>
+<h2 id="1索引概念"><a href="#1-索引概念" class="headerlink" title="1.索引概念"></a>1.索引概念</h2><h2 id="2-索引基本操作"><a href="#2-索引基本操作" class="headerlink" title="2 索引基本操作"></a>2 索引基本操作</h2><blockquote>
+<p>文档地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices.html?baymax=rec&amp;rogue=rec-1&amp;elektra=guide">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices.html?baymax=rec&amp;rogue=rec-1&amp;elektra=guide</a></p>
+</blockquote>
+<h3 id="21-创建索引"><a href="#2-1-创建索引" class="headerlink" title="2.1 创建索引"></a>2.1 创建索引</h3><p>Elasticsearch采用Rest风格API，因此其API就是一次http请求，你可以用任何工具发起http请求</p>
+<p>请求分为 <code>PUT</code>  <code> POST</code>  <code> GET</code>  <code> DELETE</code> </p>
+<ul>
+<li><p><code>GET</code> : 查询数据</p>
+</li>
+<li><p><code>POST</code> : 插入数据,也可以实现查询,查询条件复杂时,参数可以使用json</p>
+</li>
+<li><p><code>PUT </code>: 更新数据,实际上很多情况下 es 不是很清晰你到底要作什么,所有有时候添加也需要使用 PUT 请求,如果错了,会告诉我请求方式不对</p>
+</li>
+<li><p><code>DELETE</code> : 删除数据</p>
+</li>
+</ul>
+<hr>
+<h4 id="211创建索引的请求格式"><a href="#2-1-1创建索引的请求格式" class="headerlink" title="2.1.1创建索引的请求格式"></a>2.1.1创建索引的请求格式</h4><ul>
+<li><p>请求方式：<code>PUT</code></p>
+</li>
+<li><p>请求路径：/索引库名</p>
+</li>
+<li><p>请求参数：json格式</p>
+</li>
+</ul>
+<p><code>索引的格式要求</code></p>
+<p>**<code>&lt;index&gt;</code>**（必需，字符串）要创建的索引的名称。</p>
+<p>索引名称必须满足以下条件：</p>
+<ul>
+<li>仅小写</li>
+<li>不能包含<code>\</code>, <code>/</code>, <code>*</code>, <code>?</code>, <code>&quot;</code>, <code>&lt;</code>, <code>&gt;</code>, <code>|</code>, <code> </code>（空格字符）, <code>,</code>,<code>#</code></li>
+<li>7.0 之前的索引可以包含冒号 ( <code>:</code>)，但它已被弃用并且在 7.0+ 中不受支持</li>
+<li>不能以<code>-</code>, <code>_</code>,开头<code>+</code></li>
+<li>不能是<code>.</code>或<code>..</code></li>
+<li>不能超过 255 个字节（注意它是字节，因此多字节字符将更快地计入 255 个限制）</li>
+<li><code>.</code>不推荐使用以 开头的名称，插件管理的<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-hidden">隐藏索引</a>和内部索引 除外</li>
+</ul>
+<p><strong><code>mappings</code></strong></p>
+<p>（可选，<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">映射对象</a>）索引中字段的映射。如果指定，此映射可以包括：</p>
+<ul>
+<li>字段名称</li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html">字段数据类型</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-params.html">映射参数</a></li>
+</ul>
+<p>请参阅<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">映射</a>。</p>
+<p><strong><code>settings</code></strong></p>
+<p>（可选，<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings">索引设置对象</a>）<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings">索引的</a>配置选项。请参阅<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings">索引设置</a>。</p>
+<p>其他略</p>
+<h4 id="212-创建索引的请求demo"><a href="#2-1-2-创建索引的请求Demo" class="headerlink" title="2.1.2 创建索引的请求Demo"></a>2.1.2 创建索引的请求Demo</h4><p><strong>直接创建索引</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引</span><br><span class="line">PUT /ls_person</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot; : true,    # 表示是否在集群中成功创建索引</span><br><span class="line">  &quot;shards_acknowledged&quot; : true,  # 表示是否在超时之前为索引中的每个分片启动了所需数量的分片副本</span><br><span class="line">  &quot;index&quot; : &quot;ls_person&quot;    # 索引的日志</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>出现如下,表示索引创建成功了</p>
+<p><strong>创建索引时设置<code>settings</code></strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引时添加setting 设置</span><br><span class="line">PUT /ls_person_two</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;settings&quot;</span>: &#123;</span><br><span class="line">    &quot;index&quot;: &#123;   #  index 可以不写</span><br><span class="line">      &quot;number_of_replicas&quot;: 1,  # 默认的备份数,也是 1 </span><br><span class="line">      &quot;number_of_shards&quot;: 1   # 分片数默认为1</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>创建索引时指定索引的结构<code>mapping</code></strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#创建索引的映射</span><br><span class="line">PUT /ls_person_three?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;settings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;number_of_shards&quot;</span>: <span class="number">1</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;age&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;birthday&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;date&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;format&quot;</span>: [<span class="string">&quot;yyyy-MM-dd&quot;</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在kibana中查看结构如下：</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/01%E7%9A%84%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84%E7%BB%93%E6%9E%9C.png?versionId=CAEQHRiBgID29v2f4BciIDllNTBiZGMzOGFjYjRiM2Q5NGEyZGExY2IxYmRlZmJk" alt="索引映射结果"></p>
+<p>**创建索引时允许提供<code>别名</code> **</p>
+<h4 id="213-创建索引的java代码演示"><a href="#2-1-3-创建索引的Java代码演示" class="headerlink" title="2.1.3 创建索引的Java代码演示"></a>2.1.3 创建索引的Java代码演示</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ESCreateIndexDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger logger = Logger.getLogger(ESCreateIndexDemo.class);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 索引名称 */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String index = <span class="string">&quot;ls_person_five811&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 创建索引测试类</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCreateIndex</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 1.创建ES高级客户端</span></span><br><span class="line">        HttpHost httpHost = <span class="keyword">new</span> HttpHost(<span class="string">&quot;192.168.154.129&quot;</span>, <span class="number">9200</span>);</span><br><span class="line">        RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">        RestHighLevelClient client = <span class="keyword">new</span> RestHighLevelClient(restClientBuilder);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.创建索引请求</span></span><br><span class="line">        CreateIndexRequest createIndexRequest = <span class="keyword">new</span> CreateIndexRequest(index);</span><br><span class="line">        <span class="comment">// 参数1表示创建索引的请求 .</span></span><br><span class="line">        CreateIndexResponse response = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">        <span class="comment">// 如果创建的索引存在,会抛出索引已经存在的异常</span></span><br><span class="line">        <span class="comment">// 结果为true 表示创建成功了</span></span><br><span class="line">        logger.debug(<span class="string">&quot;创建结果:&quot;</span> + response.isAcknowledged());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="22-删除索引"><a href="#2-2-删除索引" class="headerlink" title="2.2 删除索引"></a>2.2 删除索引</h3><p>删除索引使用<code>DELETE</code>请求</p>
+<p><code>语法</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;索引库名</span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code>删除索引会删除其<code>文档</code>、<code>分片</code>和<code>元数据</code></p>
+<p><strong><code>&lt;index&gt;</code></strong>  （必需，字符串）要删除的索引的逗号分隔列表。</p>
+<p>要删除所有索引，请使用<code>_all</code>或<code>*</code>。要禁止删除带有<code>_all</code>或 通配符表达式的索引，请将 <a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-management-settings.html#action-destructive-requires-name"><code>action.destructive_requires_name</code></a>集群设置设置为<code>true</code>。</p>
+<p>设置为<code>true</code>时，表示您必须指定索引名称才能<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html">删除索引</a>。无法<code>_all</code>使用通配符删除所有索引。</p>
+<h4 id="221-删除索引的请求demo"><a href="#2-2-1-删除索引的请求Demo" class="headerlink" title="2.2.1 删除索引的请求Demo"></a>2.2.1 删除索引的请求Demo</h4><p>如果要删除多个索引,中间使用都好隔开</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE /ls_person_three,ls_person_five,ls_person_three</span><br></pre></td></tr></table></figure>
+
+<p>如下图,可以看到刚才创建的索引已经删除了</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/02%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95.png"></p>
+<h4 id="222-删除索引通过java代码方式"><a href="#2-2-2-删除索引通过Java代码方式" class="headerlink" title="2.2.2 删除索引通过Java代码方式"></a>2.2.2 删除索引通过Java代码方式</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 删除索引</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteIndexTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//1.创建Rest高级客户端</span></span><br><span class="line">    HttpHost httpHost = <span class="keyword">new</span> HttpHost(<span class="string">&quot;192.168.154.129&quot;</span>, <span class="number">9200</span>);</span><br><span class="line">    RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">    RestHighLevelClient client = <span class="keyword">new</span> RestHighLevelClient(restClientBuilder);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.创建删除索引请求</span></span><br><span class="line">    DeleteIndexRequest deleteIndexRequest = <span class="keyword">new</span> DeleteIndexRequest(<span class="string">&quot;ls_person&quot;</span>, <span class="string">&quot;person&quot;</span>);</span><br><span class="line">    AcknowledgedResponse response = client.indices().delete(deleteIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 执行结果为Ture表示创建成功  如果索引不存在,会抛出异常ElasticsearchStatusException</span></span><br><span class="line">    logger.info(<span class="string">&quot;执行结果：&quot;</span> + response.isAcknowledged());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>删除后在控制台查看如下：</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/03%E5%88%A0%E9%99%A4%E7%B4%A2%E5%BC%95.png"></p>
+<p>由此,可以看到,索引已经删除成功了</p>
+<h3 id="23-获取索引"><a href="#2-3-获取索引" class="headerlink" title="2.3 获取索引"></a>2.3 获取索引</h3><p><code>Get</code> 请求可以帮我们查看索引信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;索引名称</span><br></pre></td></tr></table></figure>
+
+<p>支持查询多个，<code>索引</code>和<code>别名</code>的逗号分隔列表。支持通配符 <code>*</code>或<code>_all</code>。</p>
+<h4 id="231-获取索引的请求demo"><a href="#2-3-1-获取索引的请求Demo" class="headerlink" title="2.3.1 获取索引的请求Demo"></a>2.3.1 获取索引的请求Demo</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 获取单个索引</span><br><span class="line">GET ls_person1</span><br><span class="line"></span><br><span class="line"># 获取多个索引,中间使用逗号隔开</span><br><span class="line">GET ls_person1,ls_person2</span><br><span class="line"></span><br><span class="line">#使用通配符获取索引</span><br><span class="line">GET user*</span><br><span class="line"></span><br><span class="line"># 获取全部索引</span><br><span class="line">GET _all</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="232-获取索引的代码实现"><a href="#2-3-2-获取索引的代码实现" class="headerlink" title="2.3.2 获取索引的代码实现"></a>2.3.2 获取索引的代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getIndexTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//1.创建Rest高级客户端</span></span><br><span class="line">    HttpHost httpHost = <span class="keyword">new</span> HttpHost(<span class="string">&quot;192.168.154.129&quot;</span>, <span class="number">9200</span>);</span><br><span class="line">    RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">    RestHighLevelClient client = <span class="keyword">new</span> RestHighLevelClient(restClientBuilder);</span><br><span class="line">    GetIndexRequest getIndexRequest = <span class="keyword">new</span> GetIndexRequest(<span class="string">&quot;ls_person1&quot;</span>,<span class="string">&quot;ls_person2&quot;</span>);</span><br><span class="line">    GetIndexResponse response = client.indices().get(getIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">    String[] indices = response.getIndices();</span><br><span class="line">    <span class="keyword">for</span> (String indexName : indices) &#123;</span><br><span class="line">        logger.info(<span class="string">&quot;查询出的索引名称：&quot;</span> + indexName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="24-检查索引是否存在"><a href="#2-4-检查索引是否存在" class="headerlink" title="2.4 检查索引是否存在"></a>2.4 检查索引是否存在</h3><p>检查<code>数据</code>、<code>索引</code>或<code>别名</code>是否存在。多个之间使用逗号隔开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HEAD &lt;target&gt; </span><br></pre></td></tr></table></figure>
+
+<h4 id="241-检查索引是否存在的请求demo"><a href="#2-4-1-检查索引是否存在的请求Demo" class="headerlink" title="2.4.1 检查索引是否存在的请求Demo"></a>2.4.1 检查索引是否存在的请求Demo</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 检查索引是否存在</span><br><span class="line">HEAD ls_person1</span><br></pre></td></tr></table></figure>
+
+<p>返回值为<code>200</code>  表示存在 <code>404</code>  表示不存在,返回值格式不一样 如下所示：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">200 - OK  # 存在</span><br><span class="line">&#123;&quot;statusCode&quot;:404,&quot;error&quot;:&quot;Not Found&quot;,&quot;message&quot;:&quot;404 - Not Found&quot;&#125;  # 不存在,如果是多个索引,有一个不存在,结果就是404</span><br></pre></td></tr></table></figure>
+
+<h4 id="242-检查索引是否存在的请求java实现"><a href="#2-4-2-检查索引是否存在的请求JAVA实现" class="headerlink" title="2.4.2  检查索引是否存在的请求JAVA实现"></a>2.4.2  检查索引是否存在的请求JAVA实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 检查索引是否存在</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkIndexExist</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//1.创建Rest高级客户端</span></span><br><span class="line">    HttpHost httpHost = <span class="keyword">new</span> HttpHost(<span class="string">&quot;192.168.154.129&quot;</span>, <span class="number">9200</span>);</span><br><span class="line">    RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">    RestHighLevelClient client = <span class="keyword">new</span> RestHighLevelClient(restClientBuilder);</span><br><span class="line">    GetIndexRequest getIndexRequest = <span class="keyword">new</span> GetIndexRequest(<span class="string">&quot;ls_person1&quot;</span>, <span class="string">&quot;ls_person1&quot;</span>);</span><br><span class="line">    <span class="keyword">boolean</span> exists = client.indices().exists(getIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">    <span class="comment">// 结果为ture表示存在,为false表示不存在</span></span><br><span class="line">    logger.info(<span class="string">&quot;索引是否存在结果：&quot;</span> + exists);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="25-关闭索引"><a href="#2-5-关闭索引" class="headerlink" title="2.5 关闭索引"></a>2.5 关闭索引</h3><p><code>API</code>:</p>
+<p>作用：不允许被关闭的索引进行任何的查询或者写入操作。无法索引文档或在封闭索引中搜索文档。这允许封闭索引不必维护用于索引或搜索文档的内部数据结构，从而减少集群上的开销。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; my-index-000001 &#x2F; _close </span><br></pre></td></tr></table></figure>
+
+<p>封闭索引会消耗大量磁盘空间，这可能会导致托管环境出现问题。关闭索引可以通过集群设置 API 设置<code>cluster.indices.close.enable</code>为来禁用<code>false</code>。默认值为<code>true</code>.</p>
+<h3 id="26-打开索引"><a href="#2-6-打开索引" class="headerlink" title="2.6 打开索引"></a>2.6 打开索引</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F; my-index-000001 &#x2F; _open </span><br></pre></td></tr></table></figure>
+
+<p>关闭索引被阻止进行读/写操作，并且不允许打开索引允许的所有操作。无法索引文档或在封闭索引中搜索文档。这允许封闭索引不必维护用于索引或搜索文档的内部数据结构，从而减少集群上的开销。</p>
+<p>在打开或关闭索引时，master 负责重新启动索引分片以反映索引的新状态。然后分片将经历正常的恢复过程。打开/关闭索引的数据由集群自动复制，以确保始终安全地保留足够的分片副本。</p>
+<h3 id="27-其他操作"><a href="#2-7-其他操作" class="headerlink" title="2.7 其他操作"></a>2.7 其他操作</h3><p>关于索引官网上还有一些其他操作，有兴趣的可以自行查看<code>索引的API</code></p>
+<blockquote>
+<p>API地址如下：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices.html?baymax=rec&amp;rogue=rec-1&amp;elektra=guide">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices.html?baymax=rec&amp;rogue=rec-1&amp;elektra=guide</a></p>
+</blockquote>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/04%E7%B4%A2%E5%BC%95%E7%9A%84API.png"></p>
+<h2 id="3-索引字段映射"><a href="#3-索引字段映射" class="headerlink" title="3 索引字段映射"></a>3 索引字段映射</h2><h3 id="31-创建索引时指定字段映射"><a href="#3-1-创建索引时指定字段映射" class="headerlink" title="3.1 创建索引时指定字段映射"></a>3.1 创建索引时指定字段映射</h3><h4 id="311-创建索引映射demo"><a href="#3-1-1-创建索引映射Demo" class="headerlink" title="3.1.1 创建索引映射Demo"></a>3.1.1 创建索引映射Demo</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">#创建索引的映射</span><br><span class="line">PUT /ls_person?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;settings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;number_of_shards&quot;</span>: <span class="number">1</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;name&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;age&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;birthday&quot;</span>:&#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;date&quot;</span>,</span><br><span class="line">        <span class="attr">&quot;format&quot;</span>: [<span class="string">&quot;yyyy-MM-dd&quot;</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="312-创建索引映射demo的java实现"><a href="#3-1-2-创建索引映射Demo的Java实现" class="headerlink" title="3.1.2 创建索引映射Demo的Java实现"></a>3.1.2 创建索引映射Demo的Java实现</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 创建索引和指定索引的映射</span></span><br><span class="line"><span class="comment"> * PUT /ls_person20?pretty</span></span><br><span class="line"><span class="comment"> * &#123;</span></span><br><span class="line"><span class="comment"> *   &quot;settings&quot;: &#123;</span></span><br><span class="line"><span class="comment"> *     &quot;number_of_shards&quot;: 1</span></span><br><span class="line"><span class="comment"> *   &#125;,</span></span><br><span class="line"><span class="comment"> *   &quot;mappings&quot;: &#123;</span></span><br><span class="line"><span class="comment"> *     &quot;properties&quot;: &#123;</span></span><br><span class="line"><span class="comment"> *       &quot;name&quot;: &#123;</span></span><br><span class="line"><span class="comment"> *         &quot;type&quot;: &quot;text&quot;</span></span><br><span class="line"><span class="comment"> *       &#125;,</span></span><br><span class="line"><span class="comment"> *       &quot;age&quot;:&#123;</span></span><br><span class="line"><span class="comment"> *         &quot;type&quot;: &quot;integer&quot;</span></span><br><span class="line"><span class="comment"> *       &#125;,</span></span><br><span class="line"><span class="comment"> *       &quot;birthday&quot;:&#123;</span></span><br><span class="line"><span class="comment"> *         &quot;type&quot;: &quot;date&quot;,</span></span><br><span class="line"><span class="comment"> *         &quot;format&quot;: [&quot;yyyy-MM-dd&quot;]</span></span><br><span class="line"><span class="comment"> *       &#125;</span></span><br><span class="line"><span class="comment"> *     &#125;</span></span><br><span class="line"><span class="comment"> *   &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">@Test</span><br><span class="line">public void createIndexAndMapping() throws IOException &#123;</span><br><span class="line">    <span class="comment">//1.创建Rest高级客户端</span></span><br><span class="line">    HttpHost httpHost = new HttpHost(&quot;192.168.154.129&quot;, 9200);</span><br><span class="line">    RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">    RestHighLevelClient client = new RestHighLevelClient(restClientBuilder);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.准备需要创建的索引的映射</span></span><br><span class="line">    Settings.Builder settings = Settings.builder().put(&quot;number_of_shards&quot;,1);</span><br><span class="line"></span><br><span class="line">    XContentBuilder xContentBuilder = JsonXContent.contentBuilder()</span><br><span class="line">            <span class="comment">// 字段需要一一映射，开始和结束。这里可以认为表示括号&#123;  endObject表示&#125;</span></span><br><span class="line">            .startObject()</span><br><span class="line">                  .startObject(&quot;properties&quot;)</span><br><span class="line">                        .startObject(&quot;name&quot;)</span><br><span class="line">                              .field(&quot;type&quot;, &quot;text&quot;)</span><br><span class="line">                         .endObject()</span><br><span class="line">                         .startObject(&quot;age&quot;)</span><br><span class="line">                              <span class="comment">// value的值不要写错了，否则会抛出 ElasticsearchException[Elasticsearch exception [type=mapper_parsing_exception, reason=No handler for type [Integer] declared on field [age]]];</span></span><br><span class="line">                              .field(&quot;type&quot;, &quot;integer&quot;)</span><br><span class="line">                         .endObject()</span><br><span class="line">                         .startObject(&quot;birthday&quot;)</span><br><span class="line">                             .field(&quot;type&quot;, &quot;date&quot;)</span><br><span class="line">                          .field(&quot;format&quot;, &quot;yyyy-MM-dd&quot;)</span><br><span class="line">                         .endObject()</span><br><span class="line">                 .endObject()</span><br><span class="line">            .endObject();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建索引</span></span><br><span class="line">    CreateIndexRequest createIndexRequest = new CreateIndexRequest(&quot;ls_person_mapping&quot;);</span><br><span class="line">    createIndexRequest.settings(settings)</span><br><span class="line">            .mapping(xContentBuilder);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通过客户端创建请求</span></span><br><span class="line">    CreateIndexResponse response = client.indices().create(createIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">    logger.info(&quot;索引创建结果：&quot; + response.isAcknowledged());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>kibana运行截图如下：</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/05%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95%E6%98%A0%E5%B0%84.png"></p>
+<p>由此，可见，索引的映射创建成功了</p>
+<h3 id="32-获取索引字段映射"><a href="#3-2-获取索引字段映射" class="headerlink" title="3.2 获取索引字段映射"></a>3.2 获取索引字段映射</h3><h4 id="321-获取索引映射请求"><a href="#3-2-1-获取索引映射请求" class="headerlink" title="3.2.1 获取索引映射请求"></a>3.2.1 获取索引映射请求</h4><p><code>语法</code> 获取<code>一个</code>或者<code>多个</code>索引的映射信息</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /&lt;target&gt;/_mapping</span><br><span class="line">GET /索引名称(多个之间使用逗号隔开)/_mapping</span><br><span class="line"># 获取多个索引,中间使用逗号隔开</span><br><span class="line">GET /ls_person,ls_person20/_mapping</span><br><span class="line"># 所有的索引映射</span><br><span class="line">GET /*/_mapping</span><br><span class="line"># 所有的索引映射</span><br><span class="line">GET /_all/_mapping </span><br><span class="line"># 所有的索引映射</span><br><span class="line">GET /_mapping </span><br></pre></td></tr></table></figure>
+
+<p><strong><code>&lt;target&gt;</code></strong></p>
+<p>（可选，字符串）用于限制请求的<code>数据流</code>、<code>索引</code>和<code>别名</code>的逗号分隔列表。支持通配符 <code>*</code>或<code>_all</code>。</p>
+<p>执行结果如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;ls_person20&quot;</span> : &#123;</span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> : &#123;</span><br><span class="line">      <span class="attr">&quot;properties&quot;</span> : &#123;</span><br><span class="line">        <span class="attr">&quot;age&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;integer&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;birthday&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;date&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;format&quot;</span> : <span class="string">&quot;[yyyy-MM-dd]&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;text&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;ls_person&quot;</span> : &#123;</span><br><span class="line">    <span class="attr">&quot;mappings&quot;</span> : &#123;</span><br><span class="line">      <span class="attr">&quot;properties&quot;</span> : &#123;</span><br><span class="line">        <span class="attr">&quot;age&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;integer&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;birthday&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;date&quot;</span>,</span><br><span class="line">          <span class="attr">&quot;format&quot;</span> : <span class="string">&quot;[yyyy-MM-dd]&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">&quot;name&quot;</span> : &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span> : <span class="string">&quot;text&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="322-获取索引映射java代码实现"><a href="#3-2-2-获取索引映射Java代码实现" class="headerlink" title="3.2.2 获取索引映射Java代码实现"></a>3.2.2 获取索引映射Java代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取索引映射的数据</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getIndexMappingTest</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    <span class="comment">//1.创建Rest高级客户端</span></span><br><span class="line">    HttpHost httpHost = <span class="keyword">new</span> HttpHost(<span class="string">&quot;192.168.154.129&quot;</span>, <span class="number">9200</span>);</span><br><span class="line">    RestClientBuilder restClientBuilder = RestClient.builder(httpHost);</span><br><span class="line">    RestHighLevelClient client = <span class="keyword">new</span> RestHighLevelClient(restClientBuilder);</span><br><span class="line">    GetIndexRequest getIndexRequest = <span class="keyword">new</span> GetIndexRequest(<span class="string">&quot;ls_person_mapping&quot;</span>);</span><br><span class="line">    GetIndexResponse response = client.indices().get(getIndexRequest, RequestOptions.DEFAULT);</span><br><span class="line">    String indexName = <span class="string">&quot;ls_person_mapping&quot;</span>;</span><br><span class="line">    MappingMetadata metaData = response.getMappings().get(indexName);</span><br><span class="line">    logger.info(<span class="string">&quot;索引名称：&quot;</span> + indexName);</span><br><span class="line">    logger.info(<span class="string">&quot;索引映射数据&quot;</span> + metaData.getSourceAsMap());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">索引名称：ls_person_mapping</span><br><span class="line">索引映射数据&#123;properties&#x3D;&#123;birthday&#x3D;&#123;format&#x3D;yyyy-MM-dd, type&#x3D;date&#125;, name&#x3D;&#123;type&#x3D;text&#125;, age&#x3D;&#123;type&#x3D;integer&#125;&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="33-获取索引mappping字段映射"><a href="#3-3-获取索引Mappping字段映射" class="headerlink" title="3.3 获取索引Mappping字段映射"></a>3.3 获取索引Mappping字段映射</h3><h4 id="331-获取索引mapping的字段映射demo"><a href="#3-3-1-获取索引Mapping的字段映射Demo" class="headerlink" title="3.3.1  获取索引Mapping的字段映射Demo"></a>3.3.1  获取索引Mapping的字段映射Demo</h4><p><code>定义</code> 检索一个或多个字段的<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">映射定义</a>。对于数据流，API 检索流的支持索引的字段映射。</p>
+<p><code>语法</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;_mapping&#x2F;field&#x2F;&lt;field&gt;</span><br><span class="line"></span><br><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_mapping&#x2F;field&#x2F;&lt;field&gt;</span><br><span class="line">&lt;target&gt;</span><br><span class="line">（可选，字符串）用于限制请求的数据流、索引和别名的逗号分隔列表。支持通配符 ( *)。要定位所有数据流和索引，请省略此参数或使用*或_all。</span><br><span class="line">&lt;field&gt;</span><br><span class="line">（可选，字符串）用于限制返回信息的字段的逗号分隔列表或通配符表达式</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>例子</code></strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">PUT /publications?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;id&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;title&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;abstract&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">&quot;author&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;id&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">          &#125;,</span><br><span class="line">          <span class="attr">&quot;name&quot;</span>: &#123;</span><br><span class="line">            <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#获取索引Mapping的字段映射</span><br><span class="line">GET ls_person20/_mapping/field/birthday</span><br><span class="line"></span><br><span class="line"># get mapping API 允许您指定以逗号分隔的字段列表。</span><br><span class="line">GET /publications/_mapping/field/author.id,abstract,name?pretty</span><br><span class="line"></span><br><span class="line"># 使用通配符形式的字段映射</span><br><span class="line">GET publications/_mapping/field/a*</span><br><span class="line"></span><br><span class="line"># 上述&lt;target&gt;和&lt;field&gt;请求路径参数都支持逗号分隔的列表和通配符表达式。  这里的ls_person是我上文中创建的索引对象</span><br><span class="line">GET ls_person,ls_person20/_mapping/field/name,birthday</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="332-获取索引mapping的字段映射java实现"><a href="#3-3-2-获取索引Mapping的字段映射Java实现" class="headerlink" title="3.3.2  获取索引Mapping的字段映射Java实现"></a>3.3.2  获取索引Mapping的字段映射Java实现</h4><h3 id="34-更新索引mapping映射"><a href="#3-4-更新索引Mapping映射" class="headerlink" title="3.4 更新索引Mapping映射"></a>3.4 更新索引Mapping映射</h3><p><code>定义 </code>：向现有数据流或索引添加新字段</p>
+<p><code>语法</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PUT &#x2F;&lt;target&gt;&#x2F;_mapping</span><br><span class="line">&lt;target&gt;</span><br><span class="line">（必需，字符串）用于限制请求的数据流、索引和别名的逗号分隔列表。支持通配符 ( *)。要定位所有数据流和索引，请省略此参数或使用*或_all。</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="341-更新索引mapping映射demo"><a href="#3-4-1-更新索引Mapping映射DEMO" class="headerlink" title="3.4.1 更新索引Mapping映射DEMO"></a>3.4.1 更新索引Mapping映射DEMO</h4><p><code>单个索引属性更新</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 创建索引</span><br><span class="line">PUT /ls_person30</span><br><span class="line"></span><br><span class="line"># 更新索引字段映射</span><br><span class="line">PUT /ls_person30/_mapping</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;properties&quot;</span>:&#123;</span><br><span class="line">    <span class="attr">&quot;name&quot;</span>:&#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>:<span class="string">&quot;keyword&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;age&quot;</span>:&#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;integer&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>多个索引更新</code></p>
+<p>更新映射 API 可以通过单个请求应用于多个索引</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># Create the two indices</span><br><span class="line">PUT /ls_person40</span><br><span class="line">PUT /ls_person41</span><br><span class="line"></span><br><span class="line"># Update both mappings</span><br><span class="line">PUT /ls_person40,ls_person41/_mapping</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;user&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;name&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET ls_person40,ls_person41/_mapping</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>向现有的字段对象中添加新的属性</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PUT &#x2F;ls_person50?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;properties&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &#123;</span><br><span class="line">        &quot;properties&quot;: &#123;</span><br><span class="line">          &quot;first&quot;: &#123;</span><br><span class="line">            &quot;type&quot;: &quot;text&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">get ls_person50</span><br><span class="line"># 向name字段中添加新的字段last</span><br><span class="line">PUT &#x2F;ls_person50&#x2F;_mapping?pretty</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;last&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>将多字段添加到现有字段中</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">PUT /ls_person60?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;mappings&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;city&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">get ls_person60</span><br><span class="line">PUT /ls_person60/_mapping?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;properties&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;city&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;fields&quot;</span>: &#123;</span><br><span class="line">        <span class="attr">&quot;raw&quot;</span>: &#123;</span><br><span class="line">          <span class="attr">&quot;type&quot;</span>: <span class="string">&quot;keyword&quot;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="342-更新索引mapping映射java实现"><a href="#3-4-2-更新索引Mapping映射Java实现" class="headerlink" title="3.4.2 更新索引Mapping映射Java实现"></a>3.4.2 更新索引Mapping映射Java实现</h4><p>略</p>
+<h3 id="35-检查索引类型是否存在"><a href="#3-5-检查索引类型是否存在" class="headerlink" title="3.5 检查索引类型是否存在"></a>3.5 检查索引类型是否存在</h3><blockquote>
+<p>ElasticSearch7.0 之后，索引类型就已经弃用了</p>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-types-exists.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-types-exists.html</a></p>
+</blockquote>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/ElasticSearch7.12/06%E7%B4%A2%E5%BC%95%E7%B1%BB%E5%9E%8B%E5%BC%83%E7%94%A8.png"></p>
+<h3 id="36-索引使用情况的api"><a href="#3-6-索引使用情况的API" class="headerlink" title="3.6 索引使用情况的API"></a>3.6 索引使用情况的API</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-disk-usage.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-disk-usage.html</a></p>
+</blockquote>
+<p><code>定义</code>：分析索引或数据流的每个字段的磁盘使用情况</p>
+<p><code>语法</code> :   有一些可选参数。实际测试没有得到我想要的结果，有兴趣的同学可以在上面的官网中查看和学习</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;&lt;target&gt;&#x2F;_disk_usage</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4索引设置"><a href="#4-索引设置" class="headerlink" title="4.索引设置"></a>4.索引设置</h2><h3 id="41-获取索引设置"><a href="#4-1-获取索引设置" class="headerlink" title="4.1 获取索引设置"></a>4.1 获取索引设置</h3><p><code>作用</code> ： 返回一个或多个索引的设置信息.</p>
+<p><code>格式</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_settings</span><br><span class="line"></span><br><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_settings&#x2F;&lt;setting&gt;</span><br></pre></td></tr></table></figure>
+
+<p>要获取集群中所有索引的设置.可以使用<code>_all</code>或<code>*</code>for <code>&lt;target&gt;</code>。还支持通配符表达式</p>
+<p>例如：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 中间不要有空格,否则会提示 illegal_argument_exception request [GET /ls_person50,ls_person40] does not support having a body</span><br><span class="line">GET /ls_person50,ls_person40/_settings</span><br><span class="line">GET /_all/_settings </span><br><span class="line">GET /ls_person*/_settings</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="42-索引分析文本"><a href="#4-2-索引分析文本" class="headerlink" title="4.2 索引分析文本"></a>4.2 索引分析文本</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html</a></p>
+</blockquote>
+<p><code>作用</code>：对文本字符串执行<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html">分析</a>并返回结果标记。</p>
+<p><code>格式</code>： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;_analyze</span><br><span class="line"></span><br><span class="line">POST &#x2F;_analyze</span><br><span class="line"></span><br><span class="line">GET &#x2F;&lt;index&gt;&#x2F;_analyze</span><br><span class="line"></span><br><span class="line">POST &#x2F;&lt;index&gt;&#x2F;_analyze</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>执行例子</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 索引分析操作  standard如果没有指定，分析器是默认的分析器。</span><br><span class="line">GET /_analyze?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;analyzer&quot;</span>: <span class="string">&quot;standard&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;小河流水哗啦啦&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 采用ik分词器的分词 需要自行安装</span><br><span class="line">GET /_analyze</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;analyzer&quot;</span>: <span class="string">&quot;ik_max_word&quot;</span>,</span><br><span class="line">   <span class="attr">&quot;text&quot;</span>: <span class="string">&quot;小河流水哗啦啦&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 文本字符串数组则将其作为多值字段进行分析</span><br><span class="line">GET /ls_person/_analyze</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;analyzer&quot;</span>: <span class="string">&quot;ik_max_word&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;text&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;小河流水哗啦啦&quot;</span>,</span><br><span class="line">    <span class="string">&quot;我和姐姐去彩花t&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+<p><strong><code>analyzer</code></strong></p>
+<p>应用于提供的<code>text</code>. 这可以是<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-analyzers.html">内置的分析器</a>，也可以是 在索引中配置的分析器。</p>
+<p>如果未指定此参数，则分析 API 使用字段映射中定义的分析器。如果未指定字段，则分析 API 使用索引的默认分析器。</p>
+<p>如果未指定索引，或者索引没有默认分析器，则分析 API 使用<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-standard-analyzer.html">标准分析器</a> <code>standard</code>。</p>
+<h3 id="43-ik分词器安装"><a href="#4-3-IK分词器安装" class="headerlink" title="4.3 IK分词器安装"></a>4.3 IK分词器安装</h3><p>Lucene的IK分词器的很早就不维护了，索引现在我们要使用的是在其基础上维护升级的版本。因为我所使用的<code>ElasticSearch</code>是<code>7.12.0</code>版本，所以我的IK分词器也下载对应的<code>7.12.0</code>的版本</p>
+<blockquote>
+<p>IK分词器安装地址:<a target="_blank" rel="noopener" href="https://github.com/medcl/elasticsearch-analysis-ik/releases/tag/v7.12.0">https://github.com/medcl/elasticsearch-analysis-ik/releases/tag/v7.12.0</a></p>
+</blockquote>
+<p>ik分词器，解压在<code>elasticsearch</code>的<code>plugin</code>目录下面。然后重新启动elasticsearch就可以使用了</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;software&#x2F;elasticsearch-7.12.0&#x2F;plugins</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="44-更新索引设置"><a href="#4-4-更新索引设置" class="headerlink" title="4.4 更新索引设置"></a>4.4 更新索引设置</h3><p><code>作用</code>：  实时更改<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings">动态索引设置</a>。</p>
+<p><code>执行例子</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PUT /ls_person/_settings?pretty</span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;index&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;number_of_replicas&quot;</span>: <span class="number">3</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="6索引的别名管理"><a href="#6-索引的别名管理" class="headerlink" title="6.索引的别名管理"></a>6.索引的别名管理</h2><p>略</p>
+<p>有兴趣的同学自行查看ES的API</p>
+<h2 id="7-索引模板"><a href="#7-索引模板" class="headerlink" title="7. 索引模板"></a>7. 索引模板</h2><p>有兴趣的同学自行查看ES的API</p>
+<h2 id="8-索引监控"><a href="#8-索引监控" class="headerlink" title="8. 索引监控"></a>8. 索引监控</h2><h3 id="81-索引统计"><a href="#8-1-索引统计" class="headerlink" title="8.1 索引统计"></a>8.1 索引统计</h3><p><code>定义</code> : 获取一个或多个数据流和索引的高级聚合和统计信息。</p>
+<p><code>格式</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_stats&#x2F;&lt;index-metric&gt;</span><br><span class="line"></span><br><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_stats</span><br><span class="line"></span><br><span class="line">GET &#x2F;_stats</span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，返回的统计信息是索引级别的<code>primaries</code>和<code>total</code>聚合。 <code>primaries</code>是仅主分片的值。 <code>total</code>是主分片和副本分片的累计值。</p>
+<p>要获取分片级别的统计信息，请将<code>level</code>参数设置为<code>shards</code>。</p>
+<p><code>执行例子</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 获取多个索引的统计信息 多个之间使用逗号隔开</span><br><span class="line">GET /ls_person,ls_person2/_stats </span><br><span class="line"></span><br><span class="line"># 获取集群中所有的索引的统计信息</span><br><span class="line">GET /_stats</span><br><span class="line">GET /_stats/merge,refresh?pretty</span><br><span class="line">GET /ls_person30/_stats/merge,refresh?pretty</span><br></pre></td></tr></table></figure>
+
+<h3 id="82-索引字段统计"><a href="#8-2-索引字段统计" class="headerlink" title="8.2 索引字段统计"></a>8.2 索引字段统计</h3><p><code>定义</code> : 返回索引的每个分片和字段的字段使用信息。当查询在集群上运行时，会自动捕获字段使用统计信息。访问给定字段的分片级搜索请求，即使在该请求期间多次，也计为一次使用。</p>
+<p><code>格式</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;&lt;index&gt;&#x2F;_field_usage_stats</span><br></pre></td></tr></table></figure>
+
+<p><code>执行例子</code></p>
+<p>略。<code>未来版本</code> 该功能可能会删除。官网提供的查询例子貌似有问题</p>
+<h3 id="83-索引分片存储"><a href="#8-3-索引分片存储" class="headerlink" title="8.3 索引分片存储"></a>8.3 索引分片存储</h3><p>略</p>
+<p><code>定义</code>： 一个或多个索引中检索有关副本分片的存储信息</p>
+<p><code>格式</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_shard_stores</span><br><span class="line"></span><br><span class="line">GET &#x2F;_shard_stores</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="84-索引恢复"><a href="#8-4-索引恢复" class="headerlink" title="8.4 索引恢复"></a>8.4 索引恢复</h3><p>略</p>
+<p><code>定义</code>：返回有关一个或多个索引的正在进行和已完成的分片恢复的信息</p>
+<p><code>格式</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_recovery</span><br><span class="line"></span><br><span class="line">GET &#x2F;_recovery</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="9索引状态管理"><a href="#9-索引状态管理" class="headerlink" title="9.索引状态管理"></a>9.索引状态管理</h2><h3 id="91-清除索引的缓存"><a href="#9-1-清除索引的缓存" class="headerlink" title="9.1 清除索引的缓存"></a>9.1 清除索引的缓存</h3><p><code>定义</code>：清除一个或多个索引的缓存</p>
+<p><code>格式</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;&lt;target&gt;&#x2F;_cache&#x2F;clear</span><br><span class="line"></span><br><span class="line">POST &#x2F;_cache&#x2F;clear</span><br></pre></td></tr></table></figure>
+
+<p>支持通配符 ( <code>*</code>)。要定位所有数据流和索引，请省略此参数或使用<code>*</code>或<code>_all</code>。</p>
+<p><code>清除特定缓存</code></p>
+<p>默认情况下，清除缓存 API 会清除所有缓存。您可以通过将以下查询参数设置为来仅清除特定缓存<code>true</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 清除特定缓存</span><br><span class="line"># 仅清除字段缓存</span><br><span class="line">POST /ls_person/_cache/clear?fielddata=true&amp;pretty</span><br><span class="line"># 只清除查询缓存</span><br><span class="line">POST /ls_person/_cache/clear?query=true&amp;pretty</span><br><span class="line"># 只清除请求缓存</span><br><span class="line">POST /ls_person/_cache/clear?request=true&amp;pretty</span><br><span class="line"># 不指定索引清除所有的缓存</span><br><span class="line">POST /_cache/clear?pretty</span><br><span class="line"># 清除多个索引的缓存 多个之间使用逗号隔开</span><br><span class="line">POST /ls_person,ls_person2/_cache/clear?pretty</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="92-索引刷新"><a href="#9-2-索引刷新" class="headerlink" title="9.2 索引刷新"></a>9.2 索引刷新</h3><blockquote>
+<p>近实时搜索：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/near-real-time.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/near-real-time.html</a></p>
+</blockquote>
+<p><code>定义</code>： 对一个或者多个索引进行刷新操作。可用于搜索</p>
+<p>使用刷新 API 显式地使自上次刷新以来对<code>一个</code>或<code>多个索引</code> 执行的所有操作可用于搜索。</p>
+<p>默认情况下，Elasticsearch<code> 每秒</code>都会定期刷新索引，但仅限于在过去 30 秒内收到一个或多个搜索请求的索引。</p>
+<p>您可以使用<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-refresh-interval-setting"><code>index.refresh_interval</code></a>设置更改此默认间隔。</p>
+<p>刷新请求是<code>同步</code>的，在刷新操作完成之前不会返回响应。</p>
+<p><code>格式</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST &lt;target&gt;&#x2F;_refresh</span><br><span class="line"></span><br><span class="line">GET &lt;target&gt;&#x2F;_refresh</span><br><span class="line"></span><br><span class="line">POST &#x2F;_refresh</span><br><span class="line"></span><br><span class="line">GET &#x2F;_refresh</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>使用例子</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># 刷新一个或者多个索引</span><br><span class="line">POST /ls_person,ls_person2/_refresh?pretty</span><br><span class="line"></span><br><span class="line"># 刷新所有的索引</span><br><span class="line">POST /_refresh</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>注意</code></p>
+<p>刷新是资源密集型的。为了确保良好的集群性能，我们建议尽可能等待 Elasticsearch 的<code>定期刷新</code>，而不是执行显式刷新。</p>
+<h3 id="93-刷新"><a href="#9-3-刷新" class="headerlink" title="9.3 刷新"></a>9.3 刷新</h3><p><code>定义</code>： 刷新一个或多个索引</p>
+<p>​    <code>刷新数据流</code>或索引是确保当前仅存储在<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-translog.html">事务日志</a>中的任何数据也<code>永久存储</code>在 Lucene 索引中的过程。</p>
+<p>重新启动时，Elasticsearch 会将所有未刷新的操作从事务日志中重放到 Lucene 索引中，以将其恢复到重新启动前的状态。Elasticsearch 会根据需要自动触发刷新.</p>
+<p>一旦每个操作被刷新，它就会永久存储在 Lucene 索引中。这可能意味着不需要在事务日志中维护它的额外副本，除非<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-translog.html#index-modules-translog-retention">它因某些其他原因被保留</a>。事务日志由多个文件组成，称为<code>generation</code>，一旦不再需要，Elasticsearch 将删除任何生成文件，从而释放磁盘空间。</p>
+<p><code>格式</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST &#x2F;&lt;target&gt;&#x2F;_flush</span><br><span class="line"></span><br><span class="line">GET &#x2F;&lt;target&gt;&#x2F;_flush</span><br><span class="line"></span><br><span class="line">POST &#x2F;_flush</span><br><span class="line"></span><br><span class="line">GET &#x2F;_flush</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>使用例子</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 刷新特定索引或者数据。支持多个,中间使用逗号隔开</span><br><span class="line">POST /ls_person,ls_person2/_flush?pretty</span><br><span class="line"></span><br><span class="line"># 刷新所有的索引和数据流</span><br><span class="line">POST /_flush </span><br></pre></td></tr></table></figure>
+
+<h3 id="94-强制合并一个或多个索引的分片"><a href="#9-4-强制合并一个或多个索引的分片" class="headerlink" title="9.4 强制合并一个或多个索引的分片"></a>9.4 强制<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-merge.html">合并</a>一个或多个索引的分片</h3><p>略</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://lswisdom.github.io/posts/221453123/" title="ElasticSearch索引学习" target="_blank" rel="external">https://lswisdom.github.io/posts/221453123/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/timg.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark"></span><small class="ml-1x">LsWisdom Blog</small></a></h3>
+        <div>宝剑锋从磨砺出，梅花香自苦寒来</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="uyan_frame"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/221454123/" title="Es简介"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/221454721/" title="线程与并发基础"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+    <script defer type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=[object Object]"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

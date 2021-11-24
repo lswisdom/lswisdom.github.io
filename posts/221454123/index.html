@@ -17,25 +17,21 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>CentOS7安装MYSLQ5.7 | Hexo</title>
-  <meta name="description" content="CentOS7.3安装mysql第一步：下载和安装mysql源 1.先下载 mysql源安装包 1wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm  2.安装mysql源 1yum -y localinstall mysql57-community-relea">
+  <title>Es简介 | Hexo</title>
+  <meta name="description" content="ElasticSearch的简介 注意： 本文及接下来的文章中,我使用的ElasticSearch是7.12.0  的版本，ElasticSearch7 和 ElasticSearch6 是有些区别的，没有了type的概念，语法使用上有一定的区别 7.12.0 官方文档的地址：https:&#x2F;&#x2F;www.elastic.co&#x2F;guide&#x2F;en&#x2F;elasticsearch&#x2F;reference&#x2F;7.12&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS7安装MYSLQ5.7">
-<meta property="og:url" content="https://lswisdom.github.io/posts/1192933728/index.html">
+<meta property="og:title" content="Es简介">
+<meta property="og:url" content="https://lswisdom.github.io/posts/221454123/index.html">
 <meta property="og:site_name" content="LsWisdom的博客">
-<meta property="og:description" content="CentOS7.3安装mysql第一步：下载和安装mysql源 1.先下载 mysql源安装包 1wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm  2.安装mysql源 1yum -y localinstall mysql57-community-relea">
+<meta property="og:description" content="ElasticSearch的简介 注意： 本文及接下来的文章中,我使用的ElasticSearch是7.12.0  的版本，ElasticSearch7 和 ElasticSearch6 是有些区别的，没有了type的概念，语法使用上有一定的区别 7.12.0 官方文档的地址：https:&#x2F;&#x2F;www.elastic.co&#x2F;guide&#x2F;en&#x2F;elasticsearch&#x2F;reference&#x2F;7.12&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/mysql5.7%E7%9A%84%E5%AF%86%E7%A0%81.png?versionId=CAEQExiBgICcvufk1hciIDJhYWI3YjU5OWQ0NzQ0OTM4ZDBkNDZmZDlmMTgxYjg4">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/Mysql5.7%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png?versionId=CAEQExiBgICQvufk1hciIDE5NDcyNzYxMWY5YzQ5N2RhNmNhMjIwM2E3ZTVhNWU0">
-<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/mysql5.7%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E8%AE%BE%E7%BD%AE.png?versionId=CAEQExiBgID.vefk1hciIGRhYjAzNTFkMzE2ZDQ4ZDQ4MGNmNzQ0ZjA4OGQyMjhm">
-<meta property="article:published_time" content="2021-04-05T09:54:08.000Z">
-<meta property="article:modified_time" content="2021-07-25T09:09:47.326Z">
+<meta property="article:published_time" content="2021-08-18T16:09:14.000Z">
+<meta property="article:modified_time" content="2021-11-24T00:28:28.640Z">
 <meta property="article:author" content="ls">
-<meta property="article:tag" content="环境安装">
+<meta property="article:tag" content="Es学习">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/mysql5.7%E7%9A%84%E5%AF%86%E7%A0%81.png?versionId=CAEQExiBgICcvufk1hciIDJhYWI3YjU5OWQ0NzQ0OTM4ZDBkNDZmZDlmMTgxYjg4">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://lswisdom.github.io/posts/1192933728/index.html">
+  <link rel="canonical" href="https://lswisdom.github.io/posts/221454123/index.html">
   
     <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
   
@@ -334,16 +330,25 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#elasticsearch%E7%9A%84%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">ElasticSearch的简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1elasticsearch%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">1.ElasticSearch基本概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#11-elasticsearch-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 ElasticSearch 是什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-elasticsearch-%E8%83%BD%E7%94%A8%E6%9D%A5%E5%B9%B2%E4%BB%80%E4%B9%88"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 ElasticSearch 能用来干什么</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
-  <article id="post-linux/CentOS7安装MySQL5.7" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-Es的学习文档/01ES的简介" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      CentOS7安装MYSLQ5.7
+      Es简介
     </h1>
   
 
@@ -351,20 +356,15 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/posts/1192933728/" class="article-date">
-	  <time datetime="2021-04-05T09:54:08.000Z" itemprop="datePublished">2021-04-05</time>
+	<a href="/posts/221454123/" class="article-date">
+	  <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
 	</a>
 </span>
         
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
-  </span>
-
         
   <span class="article-tag">
     <i class="icon icon-tags"></i>
-	<a class="article-tag-link-link" href="/tags/%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" rel="tag">环境安装</a>
+	<a class="article-tag-link-link" href="/tags/Es%E5%AD%A6%E4%B9%A0/" rel="tag">Es学习</a>
   </span>
 
 
@@ -377,10 +377,10 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/1192933728/#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/221454123/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 583(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 632(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 2(分)</span>
@@ -390,70 +390,40 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <h2 id="centos73安装mysql"><a href="#CentOS7-3安装mysql" class="headerlink" title="CentOS7.3安装mysql"></a>CentOS7.3安装mysql</h2><p><strong>第一步：下载和安装mysql源</strong></p>
-<p>1.先下载 mysql源安装包</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br></pre></td></tr></table></figure>
-
-<p>2.安装mysql源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y localinstall mysql57-community-release-el7-11.noarch.rpm </span><br></pre></td></tr></table></figure>
-<p><strong>第二步：在线安装Mysql</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install mysql-community-server</span><br></pre></td></tr></table></figure>
-<p>下载的东西比较多,要稍微等会</p>
-<p><strong>第三步：启动Mysql服务</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld</span><br></pre></td></tr></table></figure>
-<p><strong>第四步：设置开机启动</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable mysqld</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload</span><br></pre></td></tr></table></figure>
-<p><strong>第五步：修改root本地登录密码</strong></p>
-<p>mysql安装完成之后，在/var/log/mysqld.log文件中给root生成了一个临时的默认密码。</p>
-<p>[root@localhost ~]# vi /var/log/mysqld.log</p>
-<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/mysql5.7%E7%9A%84%E5%AF%86%E7%A0%81.png?versionId=CAEQExiBgICcvufk1hciIDJhYWI3YjU5OWQ0NzQ0OTM4ZDBkNDZmZDlmMTgxYjg4" alt="mysql的密码"></p>
-<p>这里的临时密码 eMV.R#mWe3ha</p>
-<p>[root@localhost ~]#  mysql -u root -p</p>
-<p>Enter password: </p>
-<p>输入临时密码 进入mysql命令行；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql&gt; ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;ZhipengWang2012@&#39;;</span><br><span class="line"></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
-
-<p>修改密码为 ZhipengWang2012@    (备注 mysql5.7默认密码策略要求密码必须是大小写字母数字特殊字母的组合，至少8位) </p>
-<p><strong>第七步：设置允许远程登录</strong></p>
-<p>Mysql默认不允许远程登录，我们需要设置下，并且防火墙开放3306端口；</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; GRANT ALL PRIVILEGES ON *.* TO &#39;root&#39;@&#39;%&#39; IDENTIFIED BY &#39;@LiShuai123&#39; WITH GRANT OPTION;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; exit;</span><br><span class="line"></span><br><span class="line">Bye</span><br></pre></td></tr></table></figure>
-
-<p>退出下；</p>
-<p>centos7开启防火墙</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# firewall-cmd --zone&#x3D;public --add-port&#x3D;3306&#x2F;tcp --permanent</span><br><span class="line"></span><br><span class="line">success</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# firewall-cmd --reload</span><br><span class="line"></span><br><span class="line">success</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# </span><br><span class="line"></span><br><span class="line">开放3306端口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p><strong>第八步：配置默认编码为utf8</strong></p>
-<p>修改/etc/my.cnf配置文件，在[mysqld]下添加编码配置，如下所示：</p>
-<p>[mysqld]</p>
-<p>character_set_server=utf8</p>
-<p>init_connect=’SET NAMES utf8’</p>
-<p>[root@localhost ~]# vi /etc/my.cnf</p>
-<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/Mysql5.7%E4%BF%AE%E6%94%B9%E7%BC%96%E7%A0%81.png?versionId=CAEQExiBgICQvufk1hciIDE5NDcyNzYxMWY5YzQ5N2RhNmNhMjIwM2E3ZTVhNWU0" alt="修改编码">  </p>
-<p>编辑保存完 重启mysql服务；</p>
-<p>[root@localhost ~]# systemctl restart mysqld</p>
-<p>[root@localhost ~]# </p>
-<p>查看下编码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &#39;%character%&#39;;</span><br><span class="line"></span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line"></span><br><span class="line">| Variable_name            | Value                      |</span><br><span class="line"></span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line"></span><br><span class="line">| character_set_client     | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_set_connection | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_set_database   | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_set_filesystem | binary                     |</span><br><span class="line"></span><br><span class="line">| character_set_results    | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_set_server     | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_set_system     | utf8                       |</span><br><span class="line"></span><br><span class="line">| character_sets_dir       | &#x2F;usr&#x2F;share&#x2F;mysql&#x2F;charsets&#x2F; |</span><br><span class="line"></span><br><span class="line">+--------------------------+----------------------------+</span><br><span class="line"></span><br><span class="line">8 rows in set (0.00 sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p>注:都安装成功了之后，那个tar.gz的压缩包就可以删掉了，节省磁盘空间</p>
-<p>linux下的mysql默认是大小写敏感的，通过java操作数据库的时候会出现找不到表的情况，需要设置大小写不敏感</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;my.cnf</span><br><span class="line">[mysqld]后添加添加lower_case_table_names&#x3D;1</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E5%88%86%E5%B8%83%E5%BC%8F/mysql/%E5%AE%89%E8%A3%85/mysql5.7%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E8%AE%BE%E7%BD%AE.png?versionId=CAEQExiBgID.vefk1hciIGRhYjAzNTFkMzE2ZDQ4ZDQ4MGNmNzQ0ZjA4OGQyMjhm" alt="设置大小写不敏感">  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">虚拟机中mysql的地址如下：</span><br><span class="line">10.9.32.171</span><br><span class="line">账号root</span><br><span class="line">密码：root</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>CentOs6.8安装mysql</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/saneri/p/6617415.html">https://www.cnblogs.com/saneri/p/6617415.html</a></p>
+        <h1 id="elasticsearch的简介"><a href="#ElasticSearch的简介" class="headerlink" title="ElasticSearch的简介"></a>ElasticSearch的简介</h1><blockquote>
+<p>注意： 本文及接下来的文章中,我使用的ElasticSearch是<code>7.12.0</code>  的版本，<code>ElasticSearch7</code> 和 <code>ElasticSearch6</code> 是有些区别的，没有了<code>type</code>的概念，语法使用上有一定的区别</p>
+<p><code>7.12.0</code> 官方文档的地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/index.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/index.html</a></p>
+<p><code>7.12.0</code> kibana<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/kibana/7.12/kuery-query.html">https://www.elastic.co/guide/en/kibana/7.12/kuery-query.html</a></p>
+<p><code>Rest API </code>地址：<a target="_blank" rel="noopener" href="https://www.elastic.co/guide/en/elasticsearch/reference/7.12/rest-apis.html">https://www.elastic.co/guide/en/elasticsearch/reference/7.12/rest-apis.html</a></p>
+<p><code>springboot data elasticsearch</code> ： <a target="_blank" rel="noopener" href="https://spring.io/projects/spring-data-elasticsearch">https://spring.io/projects/spring-data-elasticsearch</a></p>
+</blockquote>
+<h2 id="1elasticsearch基本概念"><a href="#1-ElasticSearch基本概念" class="headerlink" title="1.ElasticSearch基本概念"></a>1.ElasticSearch基本概念</h2><h3 id="11-elasticsearch-是什么"><a href="#1-1-ElasticSearch-是什么" class="headerlink" title="1.1 ElasticSearch 是什么"></a>1.1 ElasticSearch 是什么</h3><p><code>Elasticsearch</code>  是一个<code>分布式</code>、<code>RESTful 风格</code> 的<code>搜索和数据分析引</code>擎，能够解决不断涌现出的各种用例。 是 Elastic Stack 的核心。</p>
+<p> <code>Logstash </code>和<code>Beats </code>有助于收集、聚合和丰富您的数据并将其存储在 Elasticsearch 中.</p>
+<p><code>Kibana</code> 使您能够以交互方式探索、可视化和共享对数据的见解，并管理和监控堆栈。</p>
+<p>Elasticsearch 为所有类型的数据提供近乎实时的搜索和分析。无论您拥有结构化或非结构化文本、数值数据还是地理空间数据，Elasticsearch 都可以以支持快速搜索的方式高效地存储和索引它</p>
+<h3 id="12-elasticsearch-能用来干什么"><a href="#1-2-ElasticSearch-能用来干什么" class="headerlink" title="1.2 ElasticSearch 能用来干什么"></a>1.2 ElasticSearch 能用来干什么</h3><ul>
+<li><p><strong>免费开放的日志监测</strong>。Elastic Stack（旧称 ELK Stack）是深受欢迎的免费开放日志平台。将您的数据索引到 Elasticsearch 中并在 Kibana 中进行可视化，分分钟搞定。</p>
+</li>
+<li><p><strong>Elastic Metrics</strong> ： 开源基础架构监测。</p>
+</li>
+<li><p><strong>APM</strong> :  精确查看您的应用程序都在哪里耗时了，然后便可快速修复问题，</p>
+</li>
+<li><p><strong>Elastic Uptime</strong> ：免费开源的运行状态监测</p>
+</li>
+<li><p><strong>Elastic Site Search</strong> ： 轻松爬取网站内容并实现搜索功能</p>
+</li>
+<li><p><strong>ELASTIC MAPS</strong>：使用 Elastic 地图分析您的地理空间数据。对多个索引进行可视化并将其作为单一视图中的特有图层，方便您查询并关联自己 Elasticsearch 中的全部数据。</p>
+</li>
+<li><p><strong>SIEM</strong> : 对不断变化的威胁进行检测、调查和响应。利用云规模级的所有数据源。在主机层实现更好的控制。实施现代化安全用例，并迅速扩展。通过免费且开放的 Elastic 安全提高运营成熟度。</p>
+</li>
+<li><p><strong>Elastic App Search</strong> : 轻松实现高级搜索</p>
+</li>
+<li><p><strong>Elastic Workplace Search</strong>: </p>
+</li>
+<li><p><strong>Endpoint security</strong> : Elastic 安全可阻止恶意软件和勒索软件，推动集中式搜寻和检测，并支持交互式响应。</p>
+</li>
+</ul>
+<p>上面是官网介绍的一些功能,有兴趣同学，可以自己百度</p>
 
       
     </div>
@@ -463,7 +433,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://lswisdom.github.io/posts/1192933728/" title="CentOS7安装MYSLQ5.7" target="_blank" rel="external">https://lswisdom.github.io/posts/1192933728/</a>
+      <a href="https://lswisdom.github.io/posts/221454123/" title="Es简介" target="_blank" rel="external">https://lswisdom.github.io/posts/221454123/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -510,10 +480,23 @@
   <ul class="pager pull-left">
     
     <li class="prev">
-      <a href="/posts/3633779439/" title="使用CAS实现单点登录一"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+      <a href="/posts/1082886779/" title="VUE基本使用和的组件介绍"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
     </li>
     
     
+    <li class="next">
+      <a href="/posts/221453123/" title="ElasticSearch索引学习"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
     
   </ul>
   
