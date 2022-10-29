@@ -6410,6 +6410,37 @@ body.no-sidebar .sidebar {
   margin-bottom: 20px;
 }
 
+.chip-container .chip {
+  margin: 10px 10px;
+  padding: 19px 14px;
+  display: inline-flex;
+  line-height: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 3px 5px rgb(0 0 0 / 12%);
+  z-index: 0;
+}
+
+.chip-container .chip-default {
+  color: #34495e;
+}
+.chip {
+  display: inline-block;
+  height: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(0,0,0,0.6);
+  line-height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  background-color: #e4e4e4;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+
 .article-footer {
   margin-top: 20px;
 }
