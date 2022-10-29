@@ -6,7 +6,7 @@
   <link href="https://lswisdom.github.io/atom.xml" rel="self"/>
   
   <link href="https://lswisdom.github.io/"/>
-  <updated>2022-10-29T07:06:58.934Z</updated>
+  <updated>2022-10-29T07:09:54.968Z</updated>
   <id>https://lswisdom.github.io/</id>
   
   <author>
@@ -21,8 +21,15 @@
     <link href="https://lswisdom.github.io/posts/708881443/"/>
     <id>https://lswisdom.github.io/posts/708881443/</id>
     <published>2022-10-29T07:01:26.000Z</published>
-    <updated>2022-10-29T07:06:58.934Z</updated>
+    <updated>2022-10-29T07:09:54.968Z</updated>
     
+    <content type="html"><![CDATA[<h1 id="docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h1><h3 id="1配置docker安装"><a href="#1-配置docker安装" class="headerlink" title="1.配置docker安装"></a>1.配置docker安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装 Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br></pre></td></tr></table></figure><h3 id="2配置镜像加速器"><a href="#2-配置镜像加速器" class="headerlink" title="2.配置镜像加速器"></a>2.配置镜像加速器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;xxxx.mirror.aliyuncs.com&quot;]  # 配置自己的阿里云进行站</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;docker安装&quot;&gt;&lt;a href=&quot;#Docker安装&quot; class=&quot;headerlink&quot; title=&quot;Docker安装&quot;&gt;&lt;/a&gt;Docker安装&lt;/h1&gt;&lt;h3 id=&quot;1配置docker安装&quot;&gt;&lt;a href=&quot;#1-配置docker安装&quot; clas</summary>
+      
     
     
     
