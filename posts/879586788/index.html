@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Kubernetes集群公共服务 | Hexo</title>
+  <meta name="description" content="Kubernetes集群核心服务 Kubernetes公共服务 域名解析 DNS主机IP地址及域名规划   序号 提供服务 IP地址 域名 备注    1 DNS 192.168.10.211     2 Nginx 192.168.10.212 yaml.kubels.com    3 Harbor 192.168.10.213 harbor.kubels.com www.kubels.com">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes集群公共服务">
+<meta property="og:url" content="https://lswisdom.github.io/posts/879586788/index.html">
+<meta property="og:site_name" content="LsWisdom的博客">
+<meta property="og:description" content="Kubernetes集群核心服务 Kubernetes公共服务 域名解析 DNS主机IP地址及域名规划   序号 提供服务 IP地址 域名 备注    1 DNS 192.168.10.211     2 Nginx 192.168.10.212 yaml.kubels.com    3 Harbor 192.168.10.213 harbor.kubels.com www.kubels.com">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/k8s%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/k8s%E9%9B%86%E7%BE%A4%E5%85%AC%E5%85%B1%E6%9C%8D%E5%8A%A1.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/3.nginx%E5%9C%B0%E5%9D%80.png">
+<meta property="og:image" content="https://lswisdom.github.io/posts/879586788/Kubernetes%E9%9B%86%E7%BE%A4%E5%85%AC%E5%85%B1%E6%9C%8D%E5%8A%A1.assets/image-20200512094918480.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/harbor%E4%B8%8B%E8%BD%BD.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/harbor%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E9%A6%96%E9%A1%B5.png">
+<meta property="article:published_time" content="2022-10-29T10:06:57.000Z">
+<meta property="article:modified_time" content="2022-10-30T05:57:35.952Z">
+<meta property="article:author" content="ls">
+<meta property="article:tag" content="kubernetes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/k8s%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://lswisdom.github.io/posts/879586788/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/timg.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm"></h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">LsWisdom Blog</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Hangzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lswisdom" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>知识的碰撞能擦出不一样的火花!<br/> 欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK/">JDK</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/">搜索引擎</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6/">缓存中间件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Es%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">Es学习</a> <a href="/tags/Java%E9%9B%86%E5%90%88/" style="font-size: 14px;">Java集合</a> <a href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 14px;">Linux环境安装</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/kubernetes/" style="font-size: 13.5px;">kubernetes</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13px;">线程</a> <a href="/tags/%E8%AF%81%E4%B9%A6/" style="font-size: 13.5px;">证书</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled ">
+        
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/879586788/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/879586788/" class="title">Kubernetes集群公共服务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/879582920/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/879582920/" class="title">Kubeadm部署单Master节点的K8s集群</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/708881443/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/708881443/" class="title">Docker安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T07:01:26.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/1082886779/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/1082886779/" class="title">VUE基本使用和的组件介绍</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-20T13:37:58.000Z" itemprop="datePublished">2021-08-20</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/221454721/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/JDK/">JDK</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/221454721/" class="title">线程与并发基础</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-18T16:09:14.000Z" itemprop="datePublished">2021-08-19</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kubernetes%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.</span> <span class="toc-text">Kubernetes集群核心服务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#kubernetes%E5%85%AC%E5%85%B1%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.</span> <span class="toc-text">Kubernetes公共服务</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90-dns"><span class="toc-number">3.</span> <span class="toc-text">域名解析 DNS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BAip%E5%9C%B0%E5%9D%80%E5%8F%8A%E5%9F%9F%E5%90%8D%E8%A7%84%E5%88%92"><span class="toc-number">3.1.</span> <span class="toc-text">主机IP地址及域名规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#32-%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90-dns%E9%85%8D%E7%BD%AE"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 域名解析 DNS配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85dns"><span class="toc-number">3.3.</span> <span class="toc-text">安装dns</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E8%A7%A3%E6%9E%90%E9%AA%8C%E8%AF%81"><span class="toc-number">3.4.</span> <span class="toc-text">域名解析验证</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#yaml%E8%B5%84%E6%BA%90%E6%B8%85%E5%8D%95%E6%96%87%E4%BB%B6%E6%89%98%E7%AE%A1%E6%9C%8D%E5%8A%A1-nginx"><span class="toc-number">4.</span> <span class="toc-text">YAML资源清单文件托管服务 Nginx</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93-harbor"><span class="toc-number">5.</span> <span class="toc-text">容器镜像仓库 Harbor</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%8F%8Aip%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text">主机名及IP地址配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#docker-ce%E5%AE%89%E8%A3%85"><span class="toc-number">5.2.</span> <span class="toc-text">docker ce安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E5%AE%89%E8%A3%85yum%E6%BA%90%E5%87%86%E5%A4%87"><span class="toc-number">5.2.1.</span> <span class="toc-text">Docker安装YUM源准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker%E5%AE%89%E8%A3%85"><span class="toc-number">5.2.2.</span> <span class="toc-text">Docker安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8docker%E6%9C%8D%E5%8A%A1"><span class="toc-number">5.2.3.</span> <span class="toc-text">启动Docker服务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96-docker-compose%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-number">5.3.</span> <span class="toc-text">获取 docker compose二进制文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96harbor%E5%AE%89%E8%A3%85%E6%96%87%E4%BB%B6"><span class="toc-number">5.4.</span> <span class="toc-text">获取harbor安装文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96tls%E6%96%87%E4%BB%B6"><span class="toc-number">5.5.</span> <span class="toc-text">获取TLS文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">5.6.</span> <span class="toc-text">修改配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E9%A2%84%E5%A4%87%E8%84%9A%E6%9C%AC"><span class="toc-number">5.7.</span> <span class="toc-text">执行预备脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="toc-number">5.8.</span> <span class="toc-text">执行安装脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="toc-number">5.9.</span> <span class="toc-text">验证运行情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%89%A9%E7%90%86%E6%9C%BA%E9%80%9A%E8%BF%87%E6%B5%8F%E8%A7%88%E5%99%A8%E8%AE%BF%E9%97%AE"><span class="toc-number">5.9.1.</span> <span class="toc-text">在物理机通过浏览器访问</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0docker-daemon%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">5.10.</span> <span class="toc-text">本地docker daemon配置使用本地容器镜像仓库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kubernetes%E9%9B%86%E7%BE%A4%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">5.11.</span> <span class="toc-text">Kubernetes集群所有节点配置使用本地容器镜像仓库</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96%E7%BD%91%E7%BB%9C%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F-nfs"><span class="toc-number">6.</span> <span class="toc-text">持久化网络文件系统 NFS</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-number">7.</span> <span class="toc-text">应用案例</span></a></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-云原生/Kubernetes集群公共服务" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Kubernetes集群公共服务
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/879586788/" class="article-date">
+	  <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/kubernetes/" rel="tag">kubernetes</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/879586788/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 5k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 28(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="kubernetes集群核心服务"><a href="#Kubernetes集群核心服务" class="headerlink" title="Kubernetes集群核心服务"></a>Kubernetes集群核心服务</h1><p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/k8s%E9%9B%86%E7%BE%A4%E6%A0%B8%E5%BF%83%E6%9C%8D%E5%8A%A1.png"></p>
+<h1 id="kubernetes公共服务"><a href="#Kubernetes公共服务" class="headerlink" title="Kubernetes公共服务"></a>Kubernetes公共服务</h1><p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/k8s%E9%9B%86%E7%BE%A4%E5%85%AC%E5%85%B1%E6%9C%8D%E5%8A%A1.png" alt="image-20220512190022889"></p>
+<h1 id="域名解析-dns"><a href="#域名解析-DNS" class="headerlink" title="域名解析 DNS"></a>域名解析 DNS</h1><h2 id="主机ip地址及域名规划"><a href="#主机IP地址及域名规划" class="headerlink" title="主机IP地址及域名规划"></a>主机IP地址及域名规划</h2><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>提供服务</th>
+<th>IP地址</th>
+<th>域名</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>DNS</td>
+<td>192.168.10.211</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nginx</td>
+<td>192.168.10.212</td>
+<td>yaml.kubels.com</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Harbor</td>
+<td>192.168.10.213</td>
+<td>harbor.kubels.com</td>
+<td><a target="_blank" rel="noopener" href="http://www.kubels.com/">www.kubels.com</a></td>
+</tr>
+<tr>
+<td>4</td>
+<td>NFS</td>
+<td>192.168.10.214</td>
+<td>nfs.kubels.com</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="32-域名解析-dns配置"><a href="#3-2-域名解析-DNS配置" class="headerlink" title="3.2 域名解析 DNS配置"></a>3.2 域名解析 DNS配置</h2><ul>
+<li>bind9</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># hostnamectl set-hostname dns</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line"><span class="built_in">TYPE</span>=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable<span class="literal">-privacy</span></span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=<span class="number">6</span>b19f511<span class="literal">-5a6d</span><span class="literal">-4434</span><span class="literal">-bb00</span><span class="literal">-95fc19a62c39</span></span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">DNS1=<span class="number">192.168</span>.<span class="number">77.121</span>  <span class="comment">#自己的DNS服务器</span></span><br><span class="line">DNS2=<span class="number">119.29</span>.<span class="number">29.29</span></span><br><span class="line">IPADDR=<span class="number">192.168</span>.<span class="number">77.211</span>  </span><br><span class="line">NETMASK=<span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line">GATEWAY=<span class="number">192.168</span>.<span class="number">77.2</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># firewall-cmd --state</span></span><br><span class="line">not running</span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># echo $?</span></span><br><span class="line"><span class="number">252</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># sestatus</span></span><br><span class="line">SELinux status:                 disabled</span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># echo $?</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"></span><br><span class="line">或关闭</span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># systemctl disable firewalld;systemctl stop firewalld</span></span><br><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># sed -ri.bak &#x27;s/SELINUX=enforcing/SELINUX=disabled/&#x27; /etc/selinux/config</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装dns"><a href="#安装dns" class="headerlink" title="安装dns"></a>安装dns</h2><p> dns就是bind9</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># yum -y install bind</span></span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件的第<code>13行和第21行</code>，添加<code>any: </code> 空格要加上,不要动，只允许自己访问没有意义  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">listen-on port 53 &#123; 127.0.0.1; &#125;;</span><br><span class="line">修改为</span><br><span class="line">listen-on port 53 &#123; 127.0.0.1;any; &#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">allow-query     &#123; localhost; &#125;;</span><br><span class="line">修改为</span><br><span class="line">allow-query     &#123; localhost;any; &#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># cat -n /etc/named.conf</span></span><br><span class="line">     <span class="number">1</span>  //</span><br><span class="line">     <span class="number">2</span>  // named.conf</span><br><span class="line">     <span class="number">3</span>  //</span><br><span class="line">     <span class="number">4</span>  // Provided by Red Hat bind package to configure the ISC BIND named(<span class="number">8</span>) DNS</span><br><span class="line">     <span class="number">5</span>  // server as a caching only nameserver (as a localhost DNS resolver only).</span><br><span class="line">     <span class="number">6</span>  //</span><br><span class="line">     <span class="number">7</span>  // See /usr/share/doc/bind*/sample/ <span class="keyword">for</span> example named configuration files.</span><br><span class="line">     <span class="number">8</span>  //</span><br><span class="line">     <span class="number">9</span>  // See the BIND Administrator<span class="string">&#x27;s Reference Manual (ARM) for details about the</span></span><br><span class="line"><span class="string">    10  // configuration located in /usr/share/doc/bind-&#123;version&#125;/Bv9ARM.html</span></span><br><span class="line"><span class="string">    11</span></span><br><span class="line"><span class="string">    12  options &#123;</span></span><br><span class="line"><span class="string">    13          listen-on port 53 &#123; 127.0.0.1;any; &#125;;</span></span><br><span class="line"><span class="string">    14          listen-on-v6 port 53 &#123; ::1; &#125;;</span></span><br><span class="line"><span class="string">    15          directory       &quot;/var/named&quot;;</span></span><br><span class="line"><span class="string">    16          dump-file       &quot;/var/named/data/cache_dump.db&quot;;</span></span><br><span class="line"><span class="string">    17          statistics-file &quot;/var/named/data/named_stats.txt&quot;;</span></span><br><span class="line"><span class="string">    18          memstatistics-file &quot;/var/named/data/named_mem_stats.txt&quot;;</span></span><br><span class="line"><span class="string">    19          recursing-file  &quot;/var/named/data/named.recursing&quot;;</span></span><br><span class="line"><span class="string">    20          secroots-file   &quot;/var/named/data/named.secroots&quot;;</span></span><br><span class="line"><span class="string">    21          allow-query     &#123; localhost;any; &#125;;</span></span><br><span class="line"><span class="string">    22</span></span><br><span class="line"><span class="string">    23          /*</span></span><br><span class="line"><span class="string">    24           - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.</span></span><br><span class="line"><span class="string">    25           - If you are building a RECURSIVE (caching) DNS server, you need to enable</span></span><br><span class="line"><span class="string">    26             recursion.</span></span><br><span class="line"><span class="string">    27           - If your recursive DNS server has a public IP address, you MUST enable access</span></span><br><span class="line"><span class="string">    28             control to limit queries to your legitimate users. Failing to do so will</span></span><br><span class="line"><span class="string">    29             cause your server to become part of large scale DNS amplification</span></span><br><span class="line"><span class="string">    30             attacks. Implementing BCP38 within your network would greatly</span></span><br><span class="line"><span class="string">    31             reduce such attack surface</span></span><br><span class="line"><span class="string">    32          */</span></span><br><span class="line"><span class="string">    33          recursion yes;</span></span><br><span class="line"><span class="string">    34</span></span><br><span class="line"><span class="string">    35          dnssec-enable yes;</span></span><br><span class="line"><span class="string">    36          dnssec-validation yes;</span></span><br><span class="line"><span class="string">    37</span></span><br><span class="line"><span class="string">    38          /* Path to ISC DLV key */</span></span><br><span class="line"><span class="string">    39          bindkeys-file &quot;/etc/named.root.key&quot;;</span></span><br><span class="line"><span class="string">    40</span></span><br><span class="line"><span class="string">    41          managed-keys-directory &quot;/var/named/dynamic&quot;;</span></span><br><span class="line"><span class="string">    42</span></span><br><span class="line"><span class="string">    43          pid-file &quot;/run/named/named.pid&quot;;</span></span><br><span class="line"><span class="string">    44          session-keyfile &quot;/run/named/session.key&quot;;</span></span><br><span class="line"><span class="string">    45  &#125;;</span></span><br><span class="line"><span class="string">    46</span></span><br><span class="line"><span class="string">    47  logging &#123;</span></span><br><span class="line"><span class="string">    48          channel default_debug &#123;</span></span><br><span class="line"><span class="string">    49                  file &quot;data/named.run&quot;;</span></span><br><span class="line"><span class="string">    50                  severity dynamic;</span></span><br><span class="line"><span class="string">    51          &#125;;</span></span><br><span class="line"><span class="string">    52  &#125;;</span></span><br><span class="line"><span class="string">    53</span></span><br><span class="line"><span class="string">    54  zone &quot;.&quot; IN &#123;</span></span><br><span class="line"><span class="string">    55          type hint;</span></span><br><span class="line"><span class="string">    56          file &quot;named.ca&quot;;</span></span><br><span class="line"><span class="string">    57  &#125;;</span></span><br><span class="line"><span class="string">    58</span></span><br><span class="line"><span class="string">    59  include &quot;/etc/named.rfc1912.zones&quot;;</span></span><br><span class="line"><span class="string">    60  include &quot;/etc/named.root.key&quot;;</span></span><br></pre></td></tr></table></figure>
+
+<p>当然域名改自己的主机的hosts文件也是可以的，但是这里不采用这种方式处理</p>
+<p>注册域名</p>
+<p>可以直接文件里面复制，防止出现，vim里面找到要复制的行，按5 yy   在文件的最后，按一个p键就可以实现复制操作</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># tail -6 /etc/named.rfc1912.zones</span></span><br><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~] vim /etc/named.rfc1912.zones</span><br><span class="line"></span><br><span class="line">zone <span class="string">&quot;kubels.com&quot;</span> <span class="keyword">IN</span> &#123;   <span class="comment"># 这里的域名随便写</span></span><br><span class="line">          <span class="built_in">type</span> master;    <span class="comment"># dns可以主备操作，这里只有一个主操作,type选master就可以</span></span><br><span class="line">          file <span class="string">&quot;kubels.com.zone&quot;</span>;   <span class="comment"># 这里的文件名称也随便写</span></span><br><span class="line">          allow<span class="literal">-update</span> &#123; none; &#125;;   <span class="comment">#  不用变   从服务器可以允许更新，主服务器不需要变更</span></span><br><span class="line">  &#125;;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里的<code>-p</code> 必须要加上 ,复制文件的过程中权限保持不变</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> ~]<span class="comment"># cd /var/named/</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># ls</span></span><br><span class="line"><span class="keyword">data</span>  dynamic  named.ca  named.empty  named.localhost  named.loopback  slaves</span><br><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># cp named.localhost  1.conf</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># ll</span></span><br><span class="line">总用量 <span class="number">20</span></span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  root   <span class="number">152</span> <span class="number">9</span>月  <span class="number">27</span> <span class="number">23</span>:<span class="number">44</span> <span class="number">1</span>.conf</span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> <span class="keyword">data</span></span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> dynamic</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named <span class="number">2253</span> <span class="number">4</span>月   <span class="number">5</span> <span class="number">2018</span> named.ca</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">152</span> <span class="number">12</span>月 <span class="number">15</span> <span class="number">2009</span> named.empty</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">152</span> <span class="number">6</span>月  <span class="number">21</span> <span class="number">2007</span> named.localhost</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">168</span> <span class="number">12</span>月 <span class="number">15</span> <span class="number">2009</span> named.loopback</span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> slaves</span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># cp -p named.localhost kubels.com.zone</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># ll</span></span><br><span class="line">总用量 <span class="number">24</span></span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  root   <span class="number">152</span> <span class="number">9</span>月  <span class="number">27</span> <span class="number">23</span>:<span class="number">44</span> <span class="number">1</span>.conf</span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> <span class="keyword">data</span></span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> dynamic</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">152</span> <span class="number">6</span>月  <span class="number">21</span> <span class="number">2007</span> kubels.com.zone</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named <span class="number">2253</span> <span class="number">4</span>月   <span class="number">5</span> <span class="number">2018</span> named.ca</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">152</span> <span class="number">12</span>月 <span class="number">15</span> <span class="number">2009</span> named.empty</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">152</span> <span class="number">6</span>月  <span class="number">21</span> <span class="number">2007</span> named.localhost</span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-----. <span class="number">1</span> root  named  <span class="number">168</span> <span class="number">12</span>月 <span class="number">15</span> <span class="number">2009</span> named.loopback</span><br><span class="line">drwxrwx---. <span class="number">2</span> named named    <span class="number">6</span> <span class="number">2</span>月  <span class="number">24</span> <span class="number">2022</span> slaves</span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment">#</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>添加DNSzheng</p>
+<p>添加域名解析文件，把我们规划的域名最解析，解析之后，我们的网络就可以使用自己的域名了</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># vim kubels.com.zone</span></span><br><span class="line"><span class="comment"># 这里修改的是一个域名的正向查询文件。正向查询文件是指把我们的域名解析为具体的ip地址</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$TTL</span> <span class="number">1</span>D  <span class="comment">#  设置DNS的有效期为1天</span></span><br><span class="line"><span class="selector-tag">@</span>       <span class="keyword">IN</span> SOA  kubels.com admin.kubels.com. (     <span class="comment"># 第一条是起始域名机构，负责做域名解析   . 必须要加上</span></span><br><span class="line">                                        <span class="number">0</span>       ; serial</span><br><span class="line">                                        <span class="number">1</span>D      ; refresh</span><br><span class="line">                                        <span class="number">1</span><span class="built_in">H</span>      ; retry</span><br><span class="line">                                        <span class="number">1</span>W      ; expire</span><br><span class="line">                                        <span class="number">3</span><span class="built_in">H</span> )    ; minimum</span><br><span class="line"><span class="selector-tag">@</span>       NS      ns.kubels.com.    <span class="comment"># NS 就是域名服务器 起始授权结构本身要注册进来  . 必须要加上</span></span><br><span class="line">ns      A       <span class="number">192.168</span>.<span class="number">31.211</span>    <span class="comment"># 这个就是本身</span></span><br><span class="line">yaml    A       <span class="number">192.168</span>.<span class="number">31.212</span></span><br><span class="line">harbor  A       <span class="number">192.168</span>.<span class="number">31.213</span></span><br><span class="line">www     A       <span class="number">192.168</span>.<span class="number">31.213</span></span><br><span class="line">nfs     A       <span class="number">192.168</span>.<span class="number">31.214</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># systemctl enable  named</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># systemctl start named</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>注意：这里要修改<code>/etc/sysconfig/network-scripts/ifcfg-ens33</code>  修改DNS1 ,一定要把我们自己的DNS嫁到前面去</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line"><span class="built_in">TYPE</span>=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=<span class="keyword">static</span></span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable<span class="literal">-privacy</span></span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=<span class="number">6</span>b19f511<span class="literal">-5a6d</span><span class="literal">-4434</span><span class="literal">-bb00</span><span class="literal">-95fc19a62c39</span></span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line">DNS1=<span class="number">192.168</span>.<span class="number">77.121</span>  <span class="comment">#自己的DNS服务器</span></span><br><span class="line">DNS2=<span class="number">119.29</span>.<span class="number">29.29</span></span><br><span class="line">IPADDR=<span class="number">192.168</span>.<span class="number">77.211</span>  </span><br><span class="line">NETMASK=<span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line">GATEWAY=<span class="number">192.168</span>.<span class="number">77.2</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># systemctl restart network</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>因为DNS有缓存，所以这里可能更改完成后，不会立即生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable --now named</span><br></pre></td></tr></table></figure>
+
+<p>如果还是不生效,执行如下命令再看看效果</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">[root@dns named]# nslookup</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> server</span></span><br><span class="line">Default server: 192.168.77.211</span><br><span class="line">Address: 192.168.77.211#53</span><br><span class="line">Default server: 119.29.29.29</span><br><span class="line">Address: 119.29.29.29#53</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ns.kubels.com</span></span><br><span class="line">Server:         192.168.77.211</span><br><span class="line">Address:        192.168.77.211#53</span><br><span class="line"></span><br><span class="line">Name:   ns.kubels.com</span><br><span class="line">Address: 192.168.77.211</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> yaml.kubels.com</span></span><br><span class="line">Server:         192.168.77.211</span><br><span class="line">Address:        192.168.77.211#53</span><br><span class="line"></span><br><span class="line">Name:   yaml.kubels.com</span><br><span class="line">Address: 192.168.77.212</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> harbor.kubels.com</span></span><br><span class="line">Server:         192.168.77.211</span><br><span class="line">Address:        192.168.77.211#53</span><br><span class="line"></span><br><span class="line">Name:   harbor.kubels.com</span><br><span class="line">Address: 192.168.77.213</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> www.kubels.com</span></span><br><span class="line">Server:         192.168.77.211</span><br><span class="line">Address:        192.168.77.211#53</span><br><span class="line"></span><br><span class="line">Name:   www.kubels.com</span><br><span class="line">Address: 192.168.77.213</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> nfs.kubels.com</span></span><br><span class="line">Server:         192.168.77.211</span><br><span class="line">Address:        192.168.77.211#53</span><br><span class="line"></span><br><span class="line">Name:   nfs.kubels.com</span><br><span class="line">Address: 192.168.77.214</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> ^C[root@dns named]<span class="comment"># ^C</span></span></span><br><span class="line">[root@dns named]#</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h2 id="域名解析验证"><a href="#域名解析验证" class="headerlink" title="域名解析验证"></a>域名解析验证</h2><p>两种工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@dns named]# dig -t a www.baidu.com @19.96.0.10</span><br><span class="line"></span><br><span class="line">; &lt;&lt;&gt;&gt; DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.9 &lt;&lt;&gt;&gt; -t a www.baidu.com @19.96.0.10</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 8322</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 0</span><br><span class="line"></span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;www.baidu.com.                 IN      A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">www.baidu.com.          1132    IN      CNAME   www.a.shifen.com.</span><br><span class="line">www.a.shifen.com.       167     IN      A       112.80.248.75</span><br><span class="line">www.a.shifen.com.       167     IN      A       112.80.248.76</span><br><span class="line"></span><br><span class="line">;; Query time: 5 msec</span><br><span class="line">;; SERVER: 19.96.0.10#53(19.96.0.10)</span><br><span class="line">;; WHEN: 三 9月 28 00:11:20 CST 2022</span><br><span class="line">;; MSG SIZE  rcvd: 90</span><br><span class="line"></span><br><span class="line">[root@dns named]#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>第二个工具</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># yum -y  install bind-utils</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">dns</span> <span class="type">named</span>]<span class="comment"># nslookup</span></span><br><span class="line">&gt; server</span><br><span class="line">Default server: <span class="number">192.168</span>.<span class="number">10.211</span></span><br><span class="line">Address: <span class="number">192.168</span>.<span class="number">10.211</span><span class="comment">#53</span></span><br><span class="line">Default server: <span class="number">119.29</span>.<span class="number">29.29</span></span><br><span class="line">Address: <span class="number">119.29</span>.<span class="number">29.29</span><span class="comment">#53</span></span><br><span class="line">&gt; ns.kubels.com</span><br><span class="line">Server:         <span class="number">192.168</span>.<span class="number">10.211</span></span><br><span class="line">Address:        <span class="number">192.168</span>.<span class="number">10.211</span><span class="comment">#53</span></span><br><span class="line"></span><br><span class="line">Name:   ns.kubels.com</span><br><span class="line">Address: <span class="number">192.168</span>.<span class="number">10.211</span></span><br><span class="line"></span><br><span class="line">&gt; yaml.kubels.com</span><br><span class="line">Server:         <span class="number">192.168</span>.<span class="number">10.211</span></span><br><span class="line">Address:        <span class="number">192.168</span>.<span class="number">10.211</span><span class="comment">#53</span></span><br><span class="line"></span><br><span class="line">Name:   yaml.kubels.com</span><br><span class="line">Address: <span class="number">192.168</span>.<span class="number">10.212</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>k8s怎么使用呢，修改k8s的主节点和从节点都需要换的dns解析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</span><br><span class="line">修改dns1&#x3D;192.168.31.211</span><br><span class="line">保存</span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="yaml资源清单文件托管服务-nginx"><a href="#YAML资源清单文件托管服务-Nginx" class="headerlink" title="YAML资源清单文件托管服务 Nginx"></a>YAML资源清单文件托管服务 Nginx</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># hostnamectl set-hostname nginx</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># vi /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line"><span class="built_in">TYPE</span>=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=<span class="string">&quot;none&quot;</span></span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable<span class="literal">-privacy</span></span><br><span class="line">NAME=ens33</span><br><span class="line">UUID=<span class="number">6</span>b19f511<span class="literal">-5a6d</span><span class="literal">-4434</span><span class="literal">-bb00</span><span class="literal">-95fc19a62c39</span></span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DNS1=<span class="number">192.168</span>.<span class="number">77.211</span></span><br><span class="line">DNS2=<span class="string">&quot;119.29.29.29&quot;</span></span><br><span class="line">IPADDR=<span class="number">192.168</span>.<span class="number">77.212</span></span><br><span class="line">NETMASK=<span class="number">255.255</span>.<span class="number">255.0</span></span><br><span class="line">GATEWAY=<span class="number">192.168</span>.<span class="number">77.2</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># firewall-cmd --state</span></span><br><span class="line">not running</span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># sestatus</span></span><br><span class="line">SELinux status:                 disabled</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/3.nginx%E5%9C%B0%E5%9D%80.png" alt="image-20200512094822918"></p>
+<p><img src="Kubernetes%E9%9B%86%E7%BE%A4%E5%85%AC%E5%85%B1%E6%9C%8D%E5%8A%A1.assets/image-20200512094918480.png" alt="image-20200512094918480"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># wget http://nginx.org/download/nginx-1.18.0.tar.gz</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># ls soft/</span></span><br><span class="line"><span class="built_in">echo</span><span class="literal">-nginx</span><span class="literal">-module</span><span class="literal">-0</span>.<span class="number">61</span>.tar.gz  nginx<span class="literal">-1</span>.<span class="number">18.0</span>.tar.gz  ngx<span class="literal">-fancyindex</span><span class="literal">-0</span>.<span class="number">4.3</span>.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># yum -y install gcc prce-devel zlib-devel openssl-devel</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># cd soft/</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># ls</span></span><br><span class="line"><span class="built_in">echo</span><span class="literal">-nginx</span><span class="literal">-module</span><span class="literal">-0</span>.<span class="number">61</span>.tar.gz  nginx<span class="literal">-1</span>.<span class="number">18.0</span>.tar.gz  ngx<span class="literal">-fancyindex</span><span class="literal">-0</span>.<span class="number">4.3</span>.tar.gz</span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># tar xf ngx-fancyindex-0.4.3.tar.gz</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># tar xf nginx-1.18.0.tar.gz</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># tar xf echo-nginx-module-0.61.tar.gz</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># ls</span></span><br><span class="line"><span class="built_in">echo</span><span class="literal">-nginx</span><span class="literal">-module</span><span class="literal">-0</span>.<span class="number">61</span>         nginx<span class="literal">-1</span>.<span class="number">18.0</span>         ngx<span class="literal">-fancyindex</span><span class="literal">-0</span>.<span class="number">4.3</span></span><br><span class="line"><span class="built_in">echo</span><span class="literal">-nginx</span><span class="literal">-module</span><span class="literal">-0</span>.<span class="number">61</span>.tar.gz  nginx<span class="literal">-1</span>.<span class="number">18.0</span>.tar.gz  ngx<span class="literal">-fancyindex</span><span class="literal">-0</span>.<span class="number">4.3</span>.tar.gz</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">nginx</span>-<span class="number">1.18</span><span class="type">.0</span>]<span class="comment"># ./configure --prefix=/usr/local/nginx  --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --add-module=/root/soft/ngx-fancyindex-0.4.3/ --add-module=/root/soft/echo-nginx-module-0.61</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">nginx</span>-<span class="number">1.18</span><span class="type">.0</span>]<span class="comment"># make &amp;&amp; make install</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> <span class="type">soft</span>]<span class="comment"># cat nginx_manager.sh</span></span><br><span class="line"><span class="comment">#!/usr/bin/bash</span></span><br><span class="line"><span class="comment"># nginx manager</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义变量</span></span><br><span class="line">nginx_base=<span class="string">&quot;/usr/local/nginx&quot;</span></span><br><span class="line">nginxd=<span class="string">&quot;<span class="variable">$nginx_base</span>/sbin/nginx&quot;</span></span><br><span class="line">nginx_pid=<span class="string">&quot;<span class="variable">$nginx_base</span>/logs/nginx.pid&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用系统函数，为输出文字添加颜色</span></span><br><span class="line"><span class="keyword">if</span> [ -<span class="type">f</span> /<span class="type">etc</span>/<span class="type">init.d</span>/<span class="type">functions</span> ];then</span><br><span class="line">        source /etc/init.d/functions</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检测nginx进程是否存在及进程数量是否正常</span></span><br><span class="line"><span class="keyword">if</span> [ -<span class="type">f</span> <span class="variable">$nginx_pid</span> ];then</span><br><span class="line">        nginx_process_pid=`cat <span class="variable">$nginx_pid</span>`</span><br><span class="line">        nginx_process_num=`ps aux | grep <span class="string">&quot;<span class="variable">$nginx_process_pid</span>&quot;</span> | wc <span class="literal">-l</span>`</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 封装功能</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">start</span> () &#123;</span><br><span class="line">        <span class="keyword">if</span> [ -<span class="type">f</span> <span class="variable">$nginx_pid</span> ] &amp;&amp; [ <span class="variable">$nginx_process_num</span> -<span class="type">ge</span> <span class="number">2</span> ];then</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;nginx already start&quot;</span></span><br><span class="line">        elif [ ! -<span class="type">f</span> <span class="variable">$nginx_pid</span> ] || [ -<span class="type">z</span> <span class="string">&quot;<span class="variable">$nginx_process_num</span>&quot;</span> ];then</span><br><span class="line">                action <span class="string">&quot;nginx start&quot;</span> <span class="variable">$nginxd</span></span><br><span class="line">        fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">stop () &#123;</span><br><span class="line">        <span class="keyword">if</span> [ -<span class="type">f</span> <span class="variable">$nginx_pid</span> ] &amp;&amp; [ <span class="variable">$nginx_process_num</span> -<span class="type">ge</span> <span class="number">2</span> ];then</span><br><span class="line">                action <span class="string">&quot;nginx stop&quot;</span> <span class="built_in">kill</span> <span class="literal">-s</span> QUIT <span class="variable">$nginx_process_pid</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;nginx already stop&quot;</span></span><br><span class="line">        fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">status () &#123;</span><br><span class="line">        <span class="keyword">if</span> [ -<span class="type">f</span> <span class="variable">$nginx_pid</span> ] &amp;&amp; [ <span class="variable">$nginx_process_num</span> -<span class="type">ge</span> <span class="number">2</span> ];then</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;nginx running&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;nginx stopped&quot;</span></span><br><span class="line">        fi</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">reload () &#123;</span><br><span class="line">        <span class="keyword">if</span> [ -<span class="type">f</span> <span class="variable">$nginx_pid</span> ] &amp;&amp; [ <span class="variable">$nginx_process_num</span> -<span class="type">ge</span> <span class="number">2</span> ];then</span><br><span class="line">                <span class="built_in">kill</span> <span class="literal">-s</span> HUP <span class="variable">$nginx_process_pid</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;nginx stopped&quot;</span></span><br><span class="line">        fi</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用函数</span></span><br><span class="line"></span><br><span class="line">case <span class="variable">$1</span> <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">start</span>)</span><br><span class="line">                <span class="built_in">start</span></span><br><span class="line">                ;;</span><br><span class="line">        stop)</span><br><span class="line">                stop</span><br><span class="line">                ;;</span><br><span class="line">        restart)</span><br><span class="line">                stop</span><br><span class="line">                <span class="built_in">sleep</span> <span class="number">1</span></span><br><span class="line">                <span class="built_in">start</span></span><br><span class="line">                ;;</span><br><span class="line">        status)</span><br><span class="line">                status</span><br><span class="line">                ;;</span><br><span class="line">        reload)</span><br><span class="line">                reload</span><br><span class="line">                ;;</span><br><span class="line">        *)</span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;命令用法: <span class="variable">$0</span> start|stop|restart|status|reload&quot;</span></span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># cat /usr/local/nginx/conf/nginx.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#user  nobody;</span></span><br><span class="line">worker_processes  <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">#error_log  logs/error.log;</span></span><br><span class="line"><span class="comment">#error_log  logs/error.log  notice;</span></span><br><span class="line"><span class="comment">#error_log  logs/error.log  info;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#pid        logs/nginx.pid;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types;</span><br><span class="line">    default_type  application/octet<span class="literal">-stream</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span></span><br><span class="line">    <span class="comment">#                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span></span><br><span class="line">    <span class="comment">#                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#access_log  logs/access.log  main;</span></span><br><span class="line"></span><br><span class="line">    sendfile        on;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#keepalive_timeout  0;</span></span><br><span class="line">    keepalive_timeout  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    server &#123;</span><br><span class="line">        listen       <span class="number">80</span>;</span><br><span class="line">        server_name  <span class="number">192.168</span>.<span class="number">10.212</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#charset koi8-r;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">#access_log  logs/host.access.log  main;</span></span><br><span class="line">        root   html;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            fancyindex on;</span><br><span class="line">            fancyindex_exact_size off;</span><br><span class="line">            index  index;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">#error_page  404              /404.html;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        error_page   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /<span class="number">50</span>x.html;</span><br><span class="line">        location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment">#location ~ \.php$ &#123;</span></span><br><span class="line">        <span class="comment">#    proxy_pass   http://127.0.0.1;</span></span><br><span class="line">        <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment">#location ~ \.php$ &#123;</span></span><br><span class="line">        <span class="comment">#    root           html;</span></span><br><span class="line">        <span class="comment">#    fastcgi_pass   127.0.0.1:9000;</span></span><br><span class="line">        <span class="comment">#    fastcgi_index  index.php;</span></span><br><span class="line">        <span class="comment">#    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;</span></span><br><span class="line">        <span class="comment">#    include        fastcgi_params;</span></span><br><span class="line">        <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># deny access to .htaccess files, if Apache&#x27;s document root</span></span><br><span class="line">        <span class="comment"># concurs with nginx&#x27;s one</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        <span class="comment">#location ~ /\.ht &#123;</span></span><br><span class="line">        <span class="comment">#    deny  all;</span></span><br><span class="line">        <span class="comment">#&#125;</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># another virtual host using mix of IP-, name-, and port-based configuration</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#server &#123;</span></span><br><span class="line">    <span class="comment">#    listen       8000;</span></span><br><span class="line">    <span class="comment">#    listen       somename:8080;</span></span><br><span class="line">    <span class="comment">#    server_name  somename  alias  another.alias;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#    location / &#123;</span></span><br><span class="line">    <span class="comment">#        root   html;</span></span><br><span class="line">    <span class="comment">#        index  index.html index.htm;</span></span><br><span class="line">    <span class="comment">#    &#125;</span></span><br><span class="line">    <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># HTTPS server</span></span><br><span class="line">    <span class="comment">#</span></span><br><span class="line">    <span class="comment">#server &#123;</span></span><br><span class="line">    <span class="comment">#    listen       443 ssl;</span></span><br><span class="line">    <span class="comment">#    server_name  localhost;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#    ssl_certificate      cert.pem;</span></span><br><span class="line">    <span class="comment">#    ssl_certificate_key  cert.key;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#    ssl_session_cache    shared:SSL:1m;</span></span><br><span class="line">    <span class="comment">#    ssl_session_timeout  5m;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#    ssl_ciphers  HIGH:!aNULL:!MD5;</span></span><br><span class="line">    <span class="comment">#    ssl_prefer_server_ciphers  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#    location / &#123;</span></span><br><span class="line">    <span class="comment">#        root   html;</span></span><br><span class="line">    <span class="comment">#        index  index.html index.htm;</span></span><br><span class="line">    <span class="comment">#    &#125;</span></span><br><span class="line">    <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># cat /etc/rc.d/rc.local</span></span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment"># THIS FILE IS ADDED FOR COMPATIBILITY PURPOSES</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># It is highly advisable to create own systemd services or udev rules</span></span><br><span class="line"><span class="comment"># to run scripts during boot instead of using this file.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># In contrast to previous versions due to parallel execution during boot</span></span><br><span class="line"><span class="comment"># this script will NOT be run after all other services.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Please note that you must run &#x27;chmod +x /etc/rc.d/rc.local&#x27; to ensure</span></span><br><span class="line"><span class="comment"># that this script will be executed during boot.</span></span><br><span class="line"></span><br><span class="line">touch /var/lock/subsys/local</span><br><span class="line">/root/soft/nginx_manager.sh <span class="built_in">start</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># ll /etc/rc.d/rc.local</span></span><br><span class="line"><span class="literal">-rw</span><span class="literal">-r</span>-<span class="literal">-r</span>-- <span class="number">1</span> root root <span class="number">507</span> <span class="number">5</span>月  <span class="number">12</span> <span class="number">10</span>:<span class="number">27</span> /etc/rc.d/rc.local</span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># chmod 744 /etc/rc.d/rc.local</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># ll /etc/rc.d/rc.local</span></span><br><span class="line"><span class="literal">-rwxr</span>-<span class="literal">-r</span>-- <span class="number">1</span> root root <span class="number">507</span> <span class="number">5</span>月  <span class="number">12</span> <span class="number">10</span>:<span class="number">27</span> /etc/rc.d/rc.local</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="容器镜像仓库-harbor"><a href="#容器镜像仓库-Harbor" class="headerlink" title="容器镜像仓库 Harbor"></a>容器镜像仓库 Harbor</h1><h2 id="主机名及ip地址配置"><a href="#主机名及IP地址配置" class="headerlink" title="主机名及IP地址配置"></a>主机名及IP地址配置</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># hostnamectl set-hostname harbor</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line"><span class="built_in">TYPE</span>=<span class="string">&quot;Ethernet&quot;</span></span><br><span class="line">PROXY_METHOD=<span class="string">&quot;none&quot;</span></span><br><span class="line">BROWSER_ONLY=<span class="string">&quot;no&quot;</span></span><br><span class="line">BOOTPROTO=<span class="string">&quot;static&quot;</span></span><br><span class="line">DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV4_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6INIT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_AUTOCONF=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6_ADDR_GEN_MODE=<span class="string">&quot;stable-privacy&quot;</span></span><br><span class="line">NAME=<span class="string">&quot;eth0&quot;</span></span><br><span class="line">DEVICE=<span class="string">&quot;eth0&quot;</span></span><br><span class="line">ONBOOT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPADDR=<span class="string">&quot;192.168.10.213&quot;</span></span><br><span class="line">PREFIX=<span class="string">&quot;24&quot;</span></span><br><span class="line">GATEWAY=<span class="string">&quot;192.168.10.2&quot;</span></span><br><span class="line">DNS1=<span class="string">&quot;192.168.10.211&quot;</span></span><br><span class="line">DNS2=<span class="string">&quot;119.29.29.29&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="docker-ce安装"><a href="#docker-ce安装" class="headerlink" title="docker ce安装"></a>docker ce安装</h2><h3 id="docker安装yum源准备"><a href="#Docker安装YUM源准备" class="headerlink" title="Docker安装YUM源准备"></a>Docker安装YUM源准备</h3><blockquote>
+<p>使用阿里云开源软件镜像站。</p>
+</blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># wget https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo -O /etc/yum.repos.d/docker-ce.repo</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="docker安装"><a href="#Docker安装" class="headerlink" title="Docker安装"></a>Docker安装</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># yum -y install docker-ce</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="启动docker服务"><a href="#启动Docker服务" class="headerlink" title="启动Docker服务"></a>启动Docker服务</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># systemctl enable --now docker</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="获取-docker-compose二进制文件"><a href="#获取-docker-compose二进制文件" class="headerlink" title="获取 docker compose二进制文件"></a>获取 docker compose二进制文件</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载docker<span class="literal">-compose</span>二进制文件</span><br><span class="line"><span class="comment"># wget https://github.com/docker/compose/releases/download/1.25.0/docker-compose-Linux-x86_64</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看已下载二进制文件</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">docker<span class="literal">-compose</span><span class="literal">-Linux</span><span class="literal">-x86_64</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">移动二进制文件到/usr/bin目录，并更名为docker<span class="literal">-compose</span></span><br><span class="line"><span class="comment"># mv docker-compose-Linux-x86_64 /usr/bin/docker-compose</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">为二进制文件添加可执行权限</span><br><span class="line"><span class="comment"># chmod +x /usr/bin/docker-compose</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">安装完成后，查看docker<span class="literal">-compse</span>版本</span><br><span class="line"><span class="comment"># docker-compose version</span></span><br><span class="line">docker<span class="literal">-compose</span> version <span class="number">1.25</span>.<span class="number">0</span>, build <span class="number">0</span>a186604</span><br><span class="line">docker<span class="literal">-py</span> version: <span class="number">4.1</span>.<span class="number">0</span></span><br><span class="line">CPython version: <span class="number">3.7</span>.<span class="number">4</span></span><br><span class="line">OpenSSL version: OpenSSL <span class="number">1.1</span>.<span class="number">0</span>l  <span class="number">10</span> Sep <span class="number">2019</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="获取harbor安装文件"><a href="#获取harbor安装文件" class="headerlink" title="获取harbor安装文件"></a>获取harbor安装文件</h2><p>1.github上搜索harbor</p>
+<p>2.找到goharbor/harbor进入</p>
+<p>3.选择合并的tags版本</p>
+<p>4.选择离线安装包  harbor-offline-installer-v2.4.1.tgz</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/harbor%E4%B8%8B%E8%BD%BD.png" alt="image-20220125233739356"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载harbor离线安装包</span><br><span class="line"><span class="comment"># wget https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看已下载的离线安装包</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">harbor<span class="literal">-offline</span><span class="literal">-installer</span><span class="literal">-v2</span>.<span class="number">4.1</span>.tgz</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="获取tls文件"><a href="#获取TLS文件" class="headerlink" title="获取TLS文件"></a>获取TLS文件</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看准备好的证书</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">kubels.com_nginx.zip</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">解压证书压缩包文件</span><br><span class="line"><span class="comment"># unzip kubels.com_nginx.zip</span></span><br><span class="line">Archive:  kubels.com_nginx.zip</span><br><span class="line">Aliyun Certificate Download</span><br><span class="line">  inflating: <span class="number">6864844</span>_kubels.com.pem</span><br><span class="line">  inflating: <span class="number">6864844</span>_kubels.com.key</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看解压出的文件</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line"><span class="number">6864844</span>_kubels.com.key</span><br><span class="line"><span class="number">6864844</span>_kubels.com.pem</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">解压harbor离线安装包</span><br><span class="line"><span class="comment"># tar xf harbor-offline-installer-v2.4.1.tgz</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看解压出来的目录</span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line">harbor </span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">移动证书到harbor目录</span><br><span class="line"><span class="comment"># # mv 6864844_kubels.com.* harbor</span></span><br><span class="line"></span><br><span class="line">查看harbor目录</span><br><span class="line"><span class="comment"># ls harbor</span></span><br><span class="line"><span class="number">6864844</span>_kubels.com.key  <span class="number">6864844</span>_kubels.com.pem  common.sh  harbor.v2.<span class="number">4.1</span>.tar.gz  harbor.yml.tmpl  install.sh  LICENSE  prepare</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">创建配置文件</span><br><span class="line"><span class="comment"># cd harbor/</span></span><br><span class="line"><span class="comment"># mv harbor.yml.tmpl harbor.yml</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">修改配置文件内容</span><br><span class="line"></span><br><span class="line"><span class="comment"># vim harbor.yml</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration file of Harbor</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The IP address or hostname to access admin UI and registry service.</span></span><br><span class="line"><span class="comment"># DO NOT use localhost or 127.0.0.1, because Harbor needs to be accessed by external clients.</span></span><br><span class="line">hostname: www.kubels.com 修改为域名，而且一定是证书签发的域名</span><br><span class="line"></span><br><span class="line"><span class="comment"># http related config</span></span><br><span class="line">http:</span><br><span class="line">  <span class="comment"># port for http, default is 80. If https enabled, this port will redirect to https port</span></span><br><span class="line">  port: <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># https related config</span></span><br><span class="line">https:</span><br><span class="line">  <span class="comment"># https port for harbor, default is 443</span></span><br><span class="line">  port: <span class="number">443</span></span><br><span class="line">  <span class="comment"># The path of cert and key files for nginx</span></span><br><span class="line">  certificate: /root/harbor/<span class="number">6864844</span>_kubels.com.pem 证书  如果没有证书要注释掉https的这段配置</span><br><span class="line">  private_key: /root/harbor/<span class="number">6864844</span>_kubels.com.key 密钥</span><br><span class="line"></span><br><span class="line"><span class="comment"># # Uncomment following will enable tls communication between all harbor components</span></span><br><span class="line"><span class="comment"># internal_tls:</span></span><br><span class="line"><span class="comment">#   # set enabled to true means internal tls is enabled</span></span><br><span class="line"><span class="comment">#   enabled: true</span></span><br><span class="line"><span class="comment">#   # put your cert and key files on dir</span></span><br><span class="line"><span class="comment">#   dir: /etc/harbor/tls/internal</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Uncomment external_url if you want to enable external proxy</span></span><br><span class="line"><span class="comment"># And when it enabled the hostname will no longer used</span></span><br><span class="line"><span class="comment"># external_url: https://reg.mydomain.com:8433</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The initial password of Harbor admin</span></span><br><span class="line"><span class="comment"># It only works in first time to install harbor</span></span><br><span class="line"><span class="comment"># Remember Change the admin password from UI after launching Harbor.</span></span><br><span class="line">harbor_admin_password: <span class="number">12345</span> 访问密码</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="执行预备脚本"><a href="#执行预备脚本" class="headerlink" title="执行预备脚本"></a>执行预备脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">prepare base dir is set to &#x2F;home&#x2F;harbor</span><br><span class="line">Unable to find image &#39;goharbor&#x2F;prepare:v2.6.0&#39; locally</span><br><span class="line">docker: Error response from daemon: Get &quot;https:&#x2F;&#x2F;registry-1.docker.io&#x2F;v2&#x2F;&quot;: dial tcp: lookup registry-1.docker.io on 192.168.31.211:53: server misbehaving.</span><br><span class="line">See &#39;docker run --help&#39;.</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./prepare</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">输出</span><br><span class="line">prepare base <span class="built_in">dir</span> is <span class="built_in">set</span> to /root/harbor</span><br><span class="line">Clearing the configuration file: /config/portal/nginx.conf</span><br><span class="line">Clearing the configuration file: /config/log/logrotate.conf</span><br><span class="line">Clearing the configuration file: /config/log/rsyslog_docker.conf</span><br><span class="line">Generated configuration file: /config/portal/nginx.conf</span><br><span class="line">Generated configuration file: /config/log/logrotate.conf</span><br><span class="line">Generated configuration file: /config/log/rsyslog_docker.conf</span><br><span class="line">Generated configuration file: /config/nginx/nginx.conf</span><br><span class="line">Generated configuration file: /config/core/env</span><br><span class="line">Generated configuration file: /config/core/app.conf</span><br><span class="line">Generated configuration file: /config/registry/config.yml</span><br><span class="line">Generated configuration file: /config/registryctl/env</span><br><span class="line">Generated configuration file: /config/registryctl/config.yml</span><br><span class="line">Generated configuration file: /config/db/env</span><br><span class="line">Generated configuration file: /config/jobservice/env</span><br><span class="line">Generated configuration file: /config/jobservice/config.yml</span><br><span class="line">Generated and saved secret to file: /<span class="keyword">data</span>/secret/keys/secretkey</span><br><span class="line">Successfully called func: create_root_cert</span><br><span class="line">Generated configuration file: /compose_location/docker<span class="literal">-compose</span>.yml</span><br><span class="line">Clean up the input <span class="built_in">dir</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="执行安装脚本"><a href="#执行安装脚本" class="headerlink" title="执行安装脚本"></a>执行安装脚本</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ./install.sh</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">输出</span><br><span class="line">[<span class="type">Step</span> <span class="number">0</span>]: checking <span class="keyword">if</span> docker is installed ...</span><br><span class="line"></span><br><span class="line">Note: docker version: <span class="number">20.10</span>.<span class="number">12</span></span><br><span class="line"></span><br><span class="line">[<span class="type">Step</span> <span class="number">1</span>]: checking docker<span class="literal">-compose</span> is installed ...</span><br><span class="line"></span><br><span class="line">Note: docker<span class="literal">-compose</span> version: <span class="number">1.25</span>.<span class="number">0</span></span><br><span class="line"></span><br><span class="line">[<span class="type">Step</span> <span class="number">2</span>]: loading Harbor images ...</span><br><span class="line"></span><br><span class="line">[<span class="type">Step</span> <span class="number">3</span>]: preparing environment ...</span><br><span class="line"></span><br><span class="line">[<span class="type">Step</span> <span class="number">4</span>]: preparing harbor configs ...</span><br><span class="line">prepare base <span class="built_in">dir</span> is <span class="built_in">set</span> to /root/harbor</span><br><span class="line"></span><br><span class="line">[<span class="type">Step</span> <span class="number">5</span>]: starting Harbor ...</span><br><span class="line">Creating network <span class="string">&quot;harbor_harbor&quot;</span> with the default driver</span><br><span class="line">Creating harbor<span class="literal">-log</span> ... done</span><br><span class="line">Creating harbor<span class="literal">-db</span>     ... done</span><br><span class="line">Creating registry      ... done</span><br><span class="line">Creating registryctl   ... done</span><br><span class="line">Creating redis         ... done</span><br><span class="line">Creating harbor<span class="literal">-portal</span> ... done</span><br><span class="line">Creating harbor<span class="literal">-core</span>   ... done</span><br><span class="line">Creating harbor<span class="literal">-jobservice</span> ... done</span><br><span class="line">Creating nginx             ... done</span><br><span class="line">✔ ---<span class="literal">-Harbor</span> has been installed and started successfully.----</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="验证运行情况"><a href="#验证运行情况" class="headerlink" title="验证运行情况"></a>验证运行情况</h2><p>9个镜像在运行，少一个都不行</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID   IMAGE                                COMMAND                  CREATED              STATUS                        PORTS                                                                            NAMES</span><br><span class="line"><span class="number">71</span>c0db683e4a   goharbor/nginx<span class="literal">-photon</span>:v2.<span class="number">4.1</span>         <span class="string">&quot;nginx -g &#x27;daemon of…&quot;</span>   About a minute ago   Up About a minute (healthy)   <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">80</span>-&gt;<span class="number">8080</span>/tcp, :::<span class="number">80</span>-&gt;<span class="number">8080</span>/tcp, <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">443</span>-&gt;<span class="number">8443</span>/tcp, :::<span class="number">443</span>-&gt;<span class="number">8443</span>/tcp   nginx</span><br><span class="line"><span class="number">4</span>e3b53a86f01   goharbor/harbor<span class="literal">-jobservice</span>:v2.<span class="number">4.1</span>    <span class="string">&quot;/harbor/entrypoint.…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    harbor<span class="literal">-jobservice</span></span><br><span class="line">df76e1eabbf7   goharbor/harbor<span class="literal">-core</span>:v2.<span class="number">4.1</span>          <span class="string">&quot;/harbor/entrypoint.…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    harbor<span class="literal">-core</span></span><br><span class="line">eeb4d224dfc4   goharbor/harbor<span class="literal">-portal</span>:v2.<span class="number">4.1</span>        <span class="string">&quot;nginx -g &#x27;daemon of…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    harbor<span class="literal">-portal</span></span><br><span class="line"><span class="number">70</span>e162c38b59   goharbor/redis<span class="literal">-photon</span>:v2.<span class="number">4.1</span>         <span class="string">&quot;redis-server /etc/r…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    redis</span><br><span class="line"><span class="number">8</span>bcc0e9b06ec   goharbor/harbor<span class="literal">-registryctl</span>:v2.<span class="number">4.1</span>   <span class="string">&quot;/home/harbor/start.…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    registryctl</span><br><span class="line">d88196398df7   goharbor/registry<span class="literal">-photon</span>:v2.<span class="number">4.1</span>      <span class="string">&quot;/home/harbor/entryp…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    registry</span><br><span class="line">ed5ba2ba9c82   goharbor/harbor<span class="literal">-db</span>:v2.<span class="number">4.1</span>            <span class="string">&quot;/docker-entrypoint.…&quot;</span>   About a minute ago   Up About a minute (healthy)                                                                                    harbor<span class="literal">-db</span></span><br><span class="line">dcb4b57c7542   goharbor/harbor<span class="literal">-log</span>:v2.<span class="number">4.1</span>           <span class="string">&quot;/bin/sh -c /usr/loc…&quot;</span>   About a minute ago   Up About a minute (healthy)   <span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">1514</span>-&gt;<span class="number">10514</span>/tcp                                                        harbor<span class="literal">-log</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<p>##访问harbor UI界面</p>
+<h3 id="在物理机通过浏览器访问"><a href="#在物理机通过浏览器访问" class="headerlink" title="在物理机通过浏览器访问"></a>在物理机通过浏览器访问</h3><p>访问102.168.10.213 进入harbor的ui页面</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/harbor%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E9%A6%96%E9%A1%B5.png" alt="image-20220126000840905"></p>
+<h2 id="本地docker-daemon配置使用本地容器镜像仓库"><a href="#本地docker-daemon配置使用本地容器镜像仓库" class="headerlink" title="本地docker daemon配置使用本地容器镜像仓库"></a>本地docker daemon配置使用本地容器镜像仓库</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">harbor</span> ~]<span class="comment"># vim /etc/docker/daemon.json</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">harbor</span> ~]<span class="comment"># cat /etc/docker/daemon.json</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;insecure-registries&quot;</span>: [<span class="string">&quot;http://www.kubels.com&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">harbor</span> ~]<span class="comment"># systemctl restart docker</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">harbor</span> ~]<span class="comment"># docker login www.kubels.com</span></span><br><span class="line">Username: admin</span><br><span class="line">Password: <span class="number">12345</span></span><br><span class="line">WARNING! Your password will be stored unencrypted <span class="keyword">in</span> /root/.docker/config.json.</span><br><span class="line">Configure a credential helper to remove this warning. See</span><br><span class="line">https://docs.docker.com/engine/reference/commandline/login/<span class="comment">#credentials-store</span></span><br><span class="line"></span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="kubernetes集群所有节点配置使用本地容器镜像仓库"><a href="#Kubernetes集群所有节点配置使用本地容器镜像仓库" class="headerlink" title="Kubernetes集群所有节点配置使用本地容器镜像仓库"></a>Kubernetes集群所有节点配置使用本地容器镜像仓库</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-* ~]<span class="comment"># vim /etc/docker/daemon.json</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-* ~]<span class="comment"># cat /etc/docker/daemon.json</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="string">&quot;insecure-registries&quot;</span>: [<span class="string">&quot;http://www.kubels.com&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-* ~]<span class="comment"># systemctl restart docker</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-* ~]<span class="comment"># docker login www.kubels.com</span></span><br><span class="line">Username: admin</span><br><span class="line">Password: <span class="number">12345</span></span><br><span class="line">WARNING! Your password will be stored unencrypted <span class="keyword">in</span> /root/.docker/config.json.</span><br><span class="line">Configure a credential helper to remove this warning. See</span><br><span class="line">https://docs.docker.com/engine/reference/commandline/login/<span class="comment">#credentials-store</span></span><br><span class="line"></span><br><span class="line">Login Succeeded</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="持久化网络文件系统-nfs"><a href="#持久化网络文件系统-NFS" class="headerlink" title="持久化网络文件系统 NFS"></a>持久化网络文件系统 NFS</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># hostnamectl set-hostname nfs</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">localhost</span> ~]<span class="comment"># cat /etc/sysconfig/network-scripts/ifcfg-ens33</span></span><br><span class="line"><span class="built_in">TYPE</span>=<span class="string">&quot;Ethernet&quot;</span></span><br><span class="line">PROXY_METHOD=<span class="string">&quot;none&quot;</span></span><br><span class="line">BROWSER_ONLY=<span class="string">&quot;no&quot;</span></span><br><span class="line">BOOTPROTO=<span class="string">&quot;static&quot;</span></span><br><span class="line">DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV4_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6INIT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_AUTOCONF=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_DEFROUTE=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPV6_FAILURE_FATAL=<span class="string">&quot;no&quot;</span></span><br><span class="line">IPV6_ADDR_GEN_MODE=<span class="string">&quot;stable-privacy&quot;</span></span><br><span class="line">NAME=<span class="string">&quot;eth0&quot;</span></span><br><span class="line">DEVICE=<span class="string">&quot;eth0&quot;</span></span><br><span class="line">ONBOOT=<span class="string">&quot;yes&quot;</span></span><br><span class="line">IPADDR=<span class="string">&quot;192.168.10.214&quot;</span></span><br><span class="line">PREFIX=<span class="string">&quot;24&quot;</span></span><br><span class="line">GATEWAY=<span class="string">&quot;192.168.10.2&quot;</span></span><br><span class="line">DNS1=<span class="string">&quot;192.168.10.211&quot;</span></span><br><span class="line">DNS2=<span class="string">&quot;119.29.29.29&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># firewall-cmd --state</span></span><br><span class="line">not running</span><br><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># sestatus</span></span><br><span class="line">SELinux status:                 disabled</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># lsblk</span></span><br><span class="line">NAME                MAJ:MIN <span class="built_in">RM</span>  SIZE RO <span class="built_in">TYPE</span> MOUNTPOINT</span><br><span class="line">vda                 <span class="number">252</span>:<span class="number">0</span>    <span class="number">0</span>  <span class="number">100</span>G  <span class="number">0</span> disk</span><br><span class="line">├─vda1              <span class="number">252</span>:<span class="number">1</span>    <span class="number">0</span>    <span class="number">1</span>G  <span class="number">0</span> part /boot</span><br><span class="line">└─vda2              <span class="number">252</span>:<span class="number">2</span>    <span class="number">0</span>   <span class="number">99</span>G  <span class="number">0</span> part</span><br><span class="line">  ├─centos_192<span class="literal">-root</span> <span class="number">253</span>:<span class="number">0</span>    <span class="number">0</span>   <span class="number">50</span>G  <span class="number">0</span> lvm  /</span><br><span class="line">  ├─centos_192<span class="literal">-swap</span> <span class="number">253</span>:<span class="number">1</span>    <span class="number">0</span>  <span class="number">3.9</span>G  <span class="number">0</span> lvm  [<span class="type">SWAP</span>]</span><br><span class="line">  └─centos_192<span class="literal">-home</span> <span class="number">253</span>:<span class="number">2</span>    <span class="number">0</span> <span class="number">45.1</span>G  <span class="number">0</span> lvm  /home</span><br><span class="line">sdb                 <span class="number">252</span>:<span class="number">16</span>   <span class="number">0</span>  <span class="number">100</span>G  <span class="number">0</span> disk</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># mkfs.xfs /dev/sdb</span></span><br><span class="line">meta<span class="literal">-data</span>=/dev/vdb               isize=<span class="number">512</span>    agcount=<span class="number">4</span>, agsize=<span class="number">6553600</span> blks</span><br><span class="line">         =                       sectsz=<span class="number">512</span>   attr=<span class="number">2</span>, projid32bit=<span class="number">1</span></span><br><span class="line">         =                       crc=<span class="number">1</span>        finobt=<span class="number">0</span>, sparse=<span class="number">0</span></span><br><span class="line"><span class="keyword">data</span>     =                       bsize=<span class="number">4096</span>   blocks=<span class="number">26214400</span>, imaxpct=<span class="number">25</span></span><br><span class="line">         =                       sunit=<span class="number">0</span>      swidth=<span class="number">0</span> blks</span><br><span class="line">naming   =version <span class="number">2</span>              bsize=<span class="number">4096</span>   ascii<span class="literal">-ci</span>=<span class="number">0</span> ftype=<span class="number">1</span></span><br><span class="line">log      =internal log           bsize=<span class="number">4096</span>   blocks=<span class="number">12800</span>, version=<span class="number">2</span></span><br><span class="line">         =                       sectsz=<span class="number">512</span>   sunit=<span class="number">0</span> blks, lazy<span class="literal">-count</span>=<span class="number">1</span></span><br><span class="line">realtime =none                   extsz=<span class="number">4096</span>   blocks=<span class="number">0</span>, rtextents=<span class="number">0</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># mkdir /sdb</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># echo -e &quot;/dev/sdb\t/sdb\txfs\tdefaults\t0 0&quot; &gt;&gt; /etc/fstab</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># tail -1 /etc/fstab</span></span><br><span class="line">/dev/vdb        /vdb    xfs     defaults <span class="number">0</span> <span class="number">0</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># mount -a</span></span><br><span class="line"></span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># df -Th</span></span><br><span class="line">文件系统                    类型      容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                    devtmpfs  <span class="number">2.0</span>G     <span class="number">0</span>  <span class="number">2.0</span>G    <span class="number">0</span>% /dev</span><br><span class="line">tmpfs                       tmpfs     <span class="number">2.0</span>G     <span class="number">0</span>  <span class="number">2.0</span>G    <span class="number">0</span>% /dev/shm</span><br><span class="line">tmpfs                       tmpfs     <span class="number">2.0</span>G  <span class="number">8.6</span>M  <span class="number">2.0</span>G    <span class="number">1</span>% /run</span><br><span class="line">tmpfs                       tmpfs     <span class="number">2.0</span>G     <span class="number">0</span>  <span class="number">2.0</span>G    <span class="number">0</span>% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/centos_192<span class="literal">-root</span> xfs        <span class="number">50</span>G  <span class="number">2.1</span>G   <span class="number">48</span>G    <span class="number">5</span>% /</span><br><span class="line">/dev/mapper/centos_192<span class="literal">-home</span> xfs        <span class="number">46</span>G   <span class="number">33</span>M   <span class="number">46</span>G    <span class="number">1</span>% /home</span><br><span class="line">/dev/vda1                   xfs      <span class="number">1014</span>M  <span class="number">163</span>M  <span class="number">852</span>M   <span class="number">16</span>% /boot</span><br><span class="line">tmpfs                       tmpfs     <span class="number">250</span>M     <span class="number">0</span>  <span class="number">250</span>M    <span class="number">0</span>% /run/user/<span class="number">0</span></span><br><span class="line">/dev/sdb                    xfs       <span class="number">100</span>G   <span class="number">33</span>M  <span class="number">100</span>G    <span class="number">1</span>% /vdb</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># yum -y install nfs-utils</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># cat /etc/exports</span></span><br><span class="line">/sdb *(rw,sync,no_root_squash)</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># systemctl enable nfs-server;systemctl start nfs-server</span></span><br><span class="line">Created symlink from /etc/systemd/system/multi<span class="literal">-user</span>.target.wants/nfs<span class="literal">-server</span>.service to /usr/lib/systemd/system/nfs<span class="literal">-server</span>.service.</span><br><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># systemctl status nfs-server</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nfs</span> ~]<span class="comment"># showmount -e</span></span><br><span class="line">Export list <span class="keyword">for</span> nfs:</span><br><span class="line">/sdb *</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">为了模拟在k8s集群主机中验证nfs可用性</span><br><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-<span class="type">master01</span> ~]<span class="comment"># yum -y install nfs-utils</span></span><br><span class="line">[<span class="type">root</span>@<span class="type">k8s</span>-<span class="type">master01</span> ~]<span class="comment"># showmount -e nfs.kubels.com</span></span><br><span class="line">Export list <span class="keyword">for</span> nfs.kubels.com:</span><br><span class="line">/sdb *</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">创建Pod资源清单文件</span><br><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># cat 01-create-pod.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: pod1</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: c1</span><br><span class="line">    image: www.kubels.com/library/nginx:latest</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="type">root</span>@<span class="type">nginx</span> ~]<span class="comment"># kubectl apply -f http://yaml.kubels.com/01-create-pod.yaml</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://lswisdom.github.io/posts/879586788/" title="Kubernetes集群公共服务" target="_blank" rel="external">https://lswisdom.github.io/posts/879586788/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/timg.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark"></span><small class="ml-1x">LsWisdom Blog</small></a></h3>
+        <div>宝剑锋从磨砺出，梅花香自苦寒来</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/posts/879582920/" title="Kubeadm部署单Master节点的K8s集群"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lswisdom" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+    <script defer>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://lswisdom.github.io/posts/879586788/';
+        
+        this.page.identifier = '云原生/Kubernetes集群公共服务';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + '' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>
