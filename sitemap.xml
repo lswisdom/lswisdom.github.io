@@ -232,13 +232,6 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2022-10-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://lswisdom.github.io/tags/vue/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -253,6 +246,13 @@
   </url>
   
   <url>
+    <loc>https://lswisdom.github.io/tags/docker/</loc>
+    <lastmod>2022-10-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://lswisdom.github.io/tags/kubernetes/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -260,7 +260,7 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/tags/docker/</loc>
+    <loc>https://lswisdom.github.io/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -290,13 +290,6 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/categories/linux/</loc>
-    <lastmod>2022-10-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://lswisdom.github.io/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -305,6 +298,13 @@
   
   <url>
     <loc>https://lswisdom.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
+    <lastmod>2022-10-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://lswisdom.github.io/categories/linux/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
