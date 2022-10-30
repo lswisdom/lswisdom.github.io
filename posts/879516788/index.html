@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>Rancher安装使用 | Hexo</title>
+  <meta name="description" content="Rancher安装使用   CPU 内存 硬盘 角色 主机名称 ip地址    2Core 4G 50G rancher rancher 192.168.77.150   2Core 4G 50G master k8s-master-01 192.168.77.151   2Core 4G 50G worker k8s-node-02 192.168.77.152   2Core 4G 50G w">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rancher安装使用">
+<meta property="og:url" content="https://lswisdom.github.io/posts/879516788/index.html">
+<meta property="og:site_name" content="LsWisdom的博客">
+<meta property="og:description" content="Rancher安装使用   CPU 内存 硬盘 角色 主机名称 ip地址    2Core 4G 50G rancher rancher 192.168.77.150   2Core 4G 50G master k8s-master-01 192.168.77.151   2Core 4G 50G worker k8s-node-02 192.168.77.152   2Core 4G 50G w">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/1.%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/1%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE2.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0master%E5%92%8Cnode%E8%8A%82%E7%82%B9.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E5%A4%B1%E8%B4%A5.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/5.%E7%BC%96%E8%BE%91%E9%9B%86%E7%BE%A4.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0node%E8%8A%82%E7%82%B92.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E4%B8%BB%E6%9C%BA%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%8A%A0%E5%85%A5%E8%8A%82%E7%82%B9%E5%90%8E%E7%BB%93%E6%9E%9C.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A81.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE2.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%95%B0%E6%8D%AE%E5%8D%B7%E9%85%8D%E7%BD%AE-%E6%98%A0%E5%B0%84%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%AE%B9%E5%99%A8%E5%8D%B7%E9%85%8D%E7%BD%AE2.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/nginx%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F%E5%90%8E%E6%88%AA%E5%9B%BE1.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F%E5%90%8E%E6%88%AA%E5%9B%BE2.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/nginx%E9%A6%96%E9%A1%B5%E6%88%90%E5%8A%9F%E8%AE%BF%E9%97%AE%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/kubectl%E5%AE%89%E8%A3%851.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/rancher%E9%9B%86%E7%BE%A4%E7%9A%84kubeconfig%E6%96%87%E4%BB%B6.png">
+<meta property="article:published_time" content="2022-10-29T10:06:57.000Z">
+<meta property="article:modified_time" content="2022-10-30T08:33:45.812Z">
+<meta property="article:author" content="ls">
+<meta property="article:tag" content="kubernetes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/1.%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://lswisdom.github.io/posts/879516788/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/timg.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm"></h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">LsWisdom Blog</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Hangzhou, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lswisdom" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>知识的碰撞能擦出不一样的火花!<br/> 欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JDK/">JDK</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/">搜索引擎</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6/">缓存中间件</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/Es%E5%AD%A6%E4%B9%A0/" style="font-size: 14px;">Es学习</a> <a href="/tags/Java%E9%9B%86%E5%90%88/" style="font-size: 14px;">Java集合</a> <a href="/tags/Linux%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85/" style="font-size: 14px;">Linux环境安装</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/kubernetes/" style="font-size: 14px;">kubernetes</a> <a href="/tags/vue/" style="font-size: 13px;">vue</a> <a href="/tags/%E7%BA%BF%E7%A8%8B/" style="font-size: 13px;">线程</a> <a href="/tags/%E8%AF%81%E4%B9%A6/" style="font-size: 13.5px;">证书</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled ">
+        
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/879516788/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/879516788/" class="title">Rancher安装使用</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/879586788/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/879586788/" class="title">Kubernetes集群公共服务</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/879582920/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/879582920/" class="title">Kubeadm部署单Master节点的K8s集群</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/708881443/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/708881443/" class="title">Docker安装</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-10-29T07:01:26.000Z" itemprop="datePublished">2022-10-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-thumb">
+              <a href="/posts/1082886779/" class="thumb">
+    
+    
+        <span class="thumb-image thumb-none"></span>
+    
+</a>
+
+            </div>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+              </p>
+              <p class="item-title">
+                <a href="/posts/1082886779/" class="title">VUE基本使用和的组件介绍</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2021-08-20T13:37:58.000Z" itemprop="datePublished">2021-08-20</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#rancher%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">Rancher安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker"><span class="toc-number">1.1.</span> <span class="toc-text">安装docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85docker%E6%89%80%E6%9C%89%E7%9A%84%E8%8A%82%E7%82%B9%E9%83%BD%E8%A6%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.1.1.</span> <span class="toc-text">安装Docker（所有的节点都要执行）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEdocker%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">配置docker安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">配置镜像加速器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%BC%80%E5%90%AF%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">配置开启自启动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9cgroup-%E6%96%B9%E5%BC%8F"><span class="toc-number">1.1.1.4.</span> <span class="toc-text">修改cgroup 方式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">主机配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%90%8D%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.0.1.</span> <span class="toc-text">主机名配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BAip%E5%9C%B0%E5%9D%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.0.2.</span> <span class="toc-text">主机ip地址配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BB%E6%9C%BA%E5%90%8D%E5%92%8Cip%E5%9C%B0%E5%9D%80%E8%A7%A3%E6%9E%90"><span class="toc-number">1.2.0.3.</span> <span class="toc-text">主机名和IP地址解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5%E9%85%8D%E7%BD%AE%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9"><span class="toc-number">1.2.0.4.</span> <span class="toc-text">时间同步配置（所有节点）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E9%97%ADswap%E5%88%86%E5%8C%BA%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E9%83%BD%E8%A6%81%E6%89%A7%E8%A1%8C"><span class="toc-number">1.2.0.5.</span> <span class="toc-text">关闭swap分区(所有节点都要执行)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDrancher"><span class="toc-number">1.3.</span> <span class="toc-text">下载rancher</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BArancher%E7%9A%84%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建rancher的主机目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AErancher%E9%A6%96%E9%A1%B5"><span class="toc-number">1.3.2.</span> <span class="toc-text">访问rancher首页</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-number">1.4.</span> <span class="toc-text">创建集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E8%83%BD%E5%87%BA%E7%8E%B0%E7%9A%84%E9%94%99%E8%AF%AF"><span class="toc-number">1.4.1.</span> <span class="toc-text">可能出现的错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%B6%E4%BB%96%E7%9A%84%E8%8A%82%E7%82%B9"><span class="toc-number">1.4.2.</span> <span class="toc-text">添加其他的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8"><span class="toc-number">1.4.3.</span> <span class="toc-text">部署应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.4.</span> <span class="toc-text">数据卷配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kubectl-%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.5.</span> <span class="toc-text">kubectl 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#30-%E5%AE%89%E8%A3%85kubectl-%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%B7%A5%E5%85%B7"><span class="toc-number">1.4.6.</span> <span class="toc-text">3.0 安装kubectl 客户端工具</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-云原生/Rancher安装" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Rancher安装使用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/posts/879516788/" class="article-date">
+	  <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/kubernetes/" rel="tag">kubernetes</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/879516788/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 1.3k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 6(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="rancher安装使用"><a href="#Rancher安装使用" class="headerlink" title="Rancher安装使用"></a>Rancher安装使用</h1><table>
+<thead>
+<tr>
+<th>CPU</th>
+<th>内存</th>
+<th>硬盘</th>
+<th>角色</th>
+<th>主机名称</th>
+<th>ip地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2Core</td>
+<td>4G</td>
+<td>50G</td>
+<td>rancher</td>
+<td>rancher</td>
+<td>192.168.77.150</td>
+</tr>
+<tr>
+<td>2Core</td>
+<td>4G</td>
+<td>50G</td>
+<td>master</td>
+<td>k8s-master-01</td>
+<td>192.168.77.151</td>
+</tr>
+<tr>
+<td>2Core</td>
+<td>4G</td>
+<td>50G</td>
+<td>worker</td>
+<td>k8s-node-02</td>
+<td>192.168.77.152</td>
+</tr>
+<tr>
+<td>2Core</td>
+<td>4G</td>
+<td>50G</td>
+<td>worker</td>
+<td>k8s-node-03</td>
+<td>192.168.77.153</td>
+</tr>
+</tbody></table>
+<h2 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h2><h3 id="安装docker所有的节点都要执行"><a href="#安装Docker（所有的节点都要执行）" class="headerlink" title="安装Docker（所有的节点都要执行）"></a>安装Docker（所有的节点都要执行）</h3><p>下面是阿里云官网提供的安装的方式</p>
+<p>查看可以安装的docker的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list docker-ce.x86_64 --showduplicates |sort -r</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置docker安装"><a href="#配置docker安装" class="headerlink" title="配置docker安装"></a>配置docker安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装 Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置镜像加速器"><a href="#配置镜像加速器" class="headerlink" title="配置镜像加速器"></a>配置镜像加速器</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">&quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;rv0ikufp.mirror.aliyuncs.com&quot;]   # 配置自己的阿里云容器镜像站</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="配置开启自启动"><a href="#配置开启自启动" class="headerlink" title="配置开启自启动"></a>配置开启自启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker;systemctl start docker</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="修改cgroup-方式"><a href="#修改cgroup-方式" class="headerlink" title="修改cgroup 方式"></a>修改cgroup 方式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json 中添加如下内容</span><br><span class="line">&#123;</span><br><span class="line">	&quot;exec-opts&quot;:[&quot;native.cgroupdriver&#x3D;systemd&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="主机配置"><a href="#主机配置" class="headerlink" title="主机配置"></a>主机配置</h2><h4 id="主机名配置"><a href="#主机名配置" class="headerlink" title="主机名配置"></a>主机名配置</h4><blockquote>
+<p>所有主机均需要配置对应主机名称</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl set-hostname k8s-master01 </span><br><span class="line">或者</span><br><span class="line">nmtui-hostname 设置主机名称</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="主机ip地址配置"><a href="#主机ip地址配置" class="headerlink" title="主机ip地址配置"></a>主机ip地址配置</h4><p>所有的主机地址都应该是一个静态的ip</p>
+<figure class="highlight vim"><figcaption><span>/etc/sysconfig/network-scripts/ifcfg-ens33</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vim</span> /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>k8s-master01的ip地址配置  其他的以此类推</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">TYPE=&quot;Ethernet&quot;</span><br><span class="line">PROXY_METHOD=&quot;none&quot;</span><br><span class="line">BROWSER_ONLY=&quot;no&quot;</span><br><span class="line">BOOTPROTO=&quot;static&quot;</span><br><span class="line">DEFROUTE=&quot;yes&quot;</span><br><span class="line">IPV4_FAILURE_FATAL=&quot;no&quot;</span><br><span class="line">IPV6INIT=&quot;yes&quot;</span><br><span class="line">IPV6_AUTOCONF=&quot;yes&quot;</span><br><span class="line">IPV6_DEFROUTE=&quot;yes&quot;</span><br><span class="line">IPV6_FAILURE_FATAL=&quot;no&quot;</span><br><span class="line">IPV6_ADDR_GEN_MODE=&quot;stable-privacy&quot;</span><br><span class="line">NAME=&quot;ens33&quot;</span><br><span class="line">UUID=&quot;f693d834-f55e-4c2e-8329-957cc221303d&quot;</span><br><span class="line">DEVICE=&quot;ens33&quot;</span><br><span class="line">ONBOOT=&quot;yes&quot;</span><br><span class="line">IPADDR=&quot;192.168.77.150&quot;</span><br><span class="line">GATEWAY=&quot;192.168.77.2&quot;</span><br><span class="line">DNS1=&quot;119.29.29.29&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="主机名和ip地址解析"><a href="#主机名和IP地址解析" class="headerlink" title="主机名和IP地址解析"></a>主机名和IP地址解析</h4><blockquote>
+<p>所有的集群主机都需要配置  vim /etc/hosts  追加如下配置</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">192.168.77.150 rancher</span><br><span class="line">192.168.77.151 k8s-master-01</span><br><span class="line">192.168.77.152 k8s-node-02</span><br><span class="line">192.168.77.153 k8s-node-03</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="时间同步配置所有节点"><a href="#时间同步配置（所有节点）" class="headerlink" title="时间同步配置（所有节点）"></a>时间同步配置（所有节点）</h4><p>同步时间服务器需要安装ntpdate</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install ntpdate</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># which ntpdate  查看</span><br><span class="line">crontab -e</span><br><span class="line">0 *&#x2F;1 * * * ntpdate time1.aliyun.com  #每隔一小时同步一下阿里云服务器</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="关闭swap分区所有节点都要执行"><a href="#关闭swap分区-所有节点都要执行" class="headerlink" title="关闭swap分区(所有节点都要执行)"></a>关闭swap分区(所有节点都要执行)</h4><p>因为关闭后，可以提高k8s的性能。且初始化master节点的时候不会报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;fstab</span><br><span class="line">#</span><br><span class="line"># &#x2F;etc&#x2F;fstab</span><br><span class="line"># Created by anaconda on Mon Oct  3 15:41:00 2022</span><br><span class="line">#</span><br><span class="line"># Accessible filesystems, by reference, are maintained under &#39;&#x2F;dev&#x2F;disk&#39;</span><br><span class="line"># See man pages fstab(5), findfs(8), mount(8) and&#x2F;or blkid(8) for more info</span><br><span class="line">#</span><br><span class="line">&#x2F;dev&#x2F;mapper&#x2F;centos-root &#x2F;                       xfs     defaults        0 0</span><br><span class="line">UUID&#x3D;715915d4-5b52-469f-a69d-f92410a28415 &#x2F;boot                   xfs     defaults        0 0</span><br><span class="line">#&#x2F;dev&#x2F;mapper&#x2F;centos-swap swap                    swap    defaults        0 0  swap前加个#号</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="下载rancher"><a href="#下载rancher" class="headerlink" title="下载rancher"></a>下载rancher</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull rancher&#x2F;rancher:v2.5.2-linux-amd64</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="创建rancher的主机目录"><a href="#创建rancher的主机目录" class="headerlink" title="创建rancher的主机目录"></a>创建rancher的主机目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir  -p &#x2F;mnt&#x2F;d&#x2F;rancher_data </span><br><span class="line"></span><br><span class="line">docker run -itd --privileged  -p 80:80  -p 443:443 -v &#x2F;mnt&#x2F;d&#x2F;rancher_data:&#x2F;var&#x2F;lib&#x2F;rancher&#x2F; --restart&#x3D;always  --name rancher-server rancher&#x2F;rancher:v2.5.2-linux-amd64</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="访问rancher首页"><a href="#访问rancher首页" class="headerlink" title="访问rancher首页"></a>访问rancher首页</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;192.168.77.150&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第一次进入rancher的首页面，页面是英文的，需要进行设置登陆密码</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/1.%E8%AE%BE%E7%BD%AE%E5%AF%86%E7%A0%81.png" alt="image-20221028212856603"></p>
+<h2 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h2><p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/1%E6%96%B0%E5%A2%9E%E9%9B%86%E7%BE%A4.png" alt="image-20221028223437497"></p>
+<p>进入如下页面，选择自定义</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE2.png" alt="image-20221028223527824"></p>
+<p>添加一些配置之后，直接下一步</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0master%E5%92%8Cnode%E8%8A%82%E7%82%B9.png" alt="image-20221028223650812"></p>
+<h3 id="可能出现的错误"><a href="#可能出现的错误" class="headerlink" title="可能出现的错误"></a>可能出现的错误</h3><p>这个不用管，一会儿就消失了，这是rancher的最后一个注册过程，根据自己的电脑配置情况，几分钟之后，就可以了</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E5%A4%B1%E8%B4%A5.png" alt="image-20221028221832111"></p>
+<h3 id="添加其他的节点"><a href="#添加其他的节点" class="headerlink" title="添加其他的节点"></a>添加其他的节点</h3><p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/5.%E7%BC%96%E8%BE%91%E9%9B%86%E7%BE%A4.png" alt="image-20221028222147641"></p>
+<p>点击编辑集群-&gt;选择worker-&gt;复制命令在需要添加的节点上执行-&gt; 点击ok-&gt;node节点不需要etcd和control了</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%B7%BB%E5%8A%A0node%E8%8A%82%E7%82%B92.png" alt="image-20221028222253323"></p>
+<p>如下所示：</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E4%B8%BB%E6%9C%BA%E6%88%AA%E5%9B%BE.png" alt="image-20221028222519527"></p>
+<p>等待一段时间之后，效果图如下：</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%8A%A0%E5%85%A5%E8%8A%82%E7%82%B9%E5%90%8E%E7%BB%93%E6%9E%9C.png" alt="image-20221028223237457"></p>
+<h3 id="部署应用"><a href="#部署应用" class="headerlink" title="部署应用"></a>部署应用</h3><blockquote>
+<p>选择操作的集群-&gt;default项目 -&gt;部署应用</p>
+</blockquote>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A81.png" alt="image-20221028223928072"></p>
+<p>进行一些初始化操作</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B7%BB%E5%8A%A0%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE2.png" alt="image-20221028224200291"></p>
+<h3 id="数据卷配置"><a href="#数据卷配置" class="headerlink" title="数据卷配置"></a>数据卷配置</h3><p>映射主机目录</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E6%95%B0%E6%8D%AE%E5%8D%B7%E9%85%8D%E7%BD%AE-%E6%98%A0%E5%B0%84%E4%B8%BB%E6%9C%BA%E7%9B%AE%E5%BD%95.png" alt="image-20221028224311400"></p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%AE%B9%E5%99%A8%E5%8D%B7%E9%85%8D%E7%BD%AE2.png" alt="image-20221028224445433"></p>
+<p>上面的意思就是容器内的路径，映射到宿主机的data目录下面 —&gt;其他操作—&gt;点击启动</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/nginx%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F%E5%90%8E%E6%88%AA%E5%9B%BE1.png" alt="image-20221028224638120"></p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F%E5%90%8E%E6%88%AA%E5%9B%BE2.png" alt="image-20221028224719795"></p>
+<p>nginx首页成功访问截图</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/nginx%E9%A6%96%E9%A1%B5%E6%88%90%E5%8A%9F%E8%AE%BF%E9%97%AE%E6%88%AA%E5%9B%BE.png" alt="image-20221028225017174"></p>
+<h3 id="kubectl-安装"><a href="#kubectl-安装" class="headerlink" title="kubectl 安装"></a>kubectl 安装</h3><h3 id="30-安装kubectl-客户端工具"><a href="#3-0-安装kubectl-客户端工具" class="headerlink" title="3.0 安装kubectl 客户端工具"></a>3.0 安装kubectl 客户端工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在k8s-master01上操作</span><br><span class="line">wget https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&#x2F;v1.21.9&#x2F;bin&#x2F;linux&#x2F;amd64&#x2F;kubectl</span><br><span class="line">chmod +x kubectl</span><br><span class="line">mv kubectl &#x2F;usr&#x2F;local&#x2F;bin&#x2F;kubectl</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/kubectl%E5%AE%89%E8%A3%851.png" alt="image-20221028225924758"></p>
+<p>上面发现还是运行不了，需要下载kubeconfig文件，然后执行如下操作</p>
+<p>在安装好的kubectl的机器上配置kubeconfig,将复制的文件内容全部保存到config文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~&#x2F;.kube</span><br><span class="line">vim ~&#x2F;.kube&#x2F;config  # 添加k8s集群中的kubeconfig文件到该文件中，保存之后继续执行</span><br><span class="line">kubectl get nodes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/k8s/rancher%E9%9B%86%E7%BE%A4%E7%9A%84kubeconfig%E6%96%87%E4%BB%B6.png" alt="image-20221028230301543"></p>
+<p>完整过程如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@k8s-master-01 ~]# chmod +x kubectl</span><br><span class="line">[root@k8s-master-01 ~]# mv kubectl &#x2F;usr&#x2F;local&#x2F;bin&#x2F;kubectl</span><br><span class="line">[root@k8s-master-01 ~]# kubectl get pods</span><br><span class="line">The connection to the server localhost:8080 was refused - did you specify the right host or port?</span><br><span class="line">[root@k8s-master-01 ~]# mkdir ~&#x2F;.kube</span><br><span class="line">您在 &#x2F;var&#x2F;spool&#x2F;mail&#x2F;root 中有邮件</span><br><span class="line">[root@k8s-master-01 ~]# vim ~&#x2F;.kube&#x2F;config</span><br><span class="line">[root@k8s-master-01 ~]# kubectl get nodes</span><br><span class="line">NAME            STATUS   ROLES                      AGE   VERSION</span><br><span class="line">k8s-master-01   Ready    controlplane,etcd,worker   48m   v1.19.15</span><br><span class="line">k8s-node-02     Ready    worker                     34m   v1.19.15</span><br><span class="line">k8s-node-03     Ready    worker                     34m   v1.19.15</span><br><span class="line">[root@k8s-master-01 ~]#</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://lswisdom.github.io/posts/879516788/" title="Rancher安装使用" target="_blank" rel="external">https://lswisdom.github.io/posts/879516788/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/timg.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark"></span><small class="ml-1x">LsWisdom Blog</small></a></h3>
+        <div>宝剑锋从磨砺出，梅花香自苦寒来</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      </div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/posts/879586788/" title="Kubernetes集群公共服务"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/lswisdom" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+    <script defer>
+    var disqus_config = function () {
+        
+            this.page.url = 'https://lswisdom.github.io/posts/879516788/';
+        
+        this.page.identifier = '云原生/Rancher安装';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + '' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+
+
+
+
+</body>
+</html>

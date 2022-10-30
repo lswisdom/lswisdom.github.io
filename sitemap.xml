@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lswisdom.github.io/posts/879516788/</loc>
+    
+    <lastmod>2022-10-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://lswisdom.github.io/posts/879586788/</loc>
     
     <lastmod>2022-10-30</lastmod>
@@ -239,7 +248,7 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/tags/vue/</loc>
+    <loc>https://lswisdom.github.io/tags/%E8%AF%81%E4%B9%A6/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -253,14 +262,14 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/tags/%E8%AF%81%E4%B9%A6/</loc>
+    <loc>https://lswisdom.github.io/tags/kubernetes/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/tags/kubernetes/</loc>
+    <loc>https://lswisdom.github.io/tags/vue/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -297,14 +306,14 @@
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/categories/%E5%89%8D%E7%AB%AF/</loc>
+    <loc>https://lswisdom.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://lswisdom.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/</loc>
+    <loc>https://lswisdom.github.io/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2022-10-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
