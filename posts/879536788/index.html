@@ -17,20 +17,29 @@
   <meta http-equiv="window-target" content="_top" />
   
   
-  <title>高达护体 永无BUG | Hexo</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="高达护体 永无BUG">
-<meta property="og:url" content="https://lswisdom.github.io/about/index.html">
+  <title>Rancher中安装NFS | Hexo</title>
+  <meta name="description" content="Rancher里面安装NFS官网地址：https:&#x2F;&#x2F;docs.rancher.cn&#x2F;docs&#x2F;rancher2.5&#x2F;cluster-admin&#x2F;volumes-and-storage&#x2F;examples&#x2F;nfs&#x2F;_index&#x2F; 所有的节点都要安装  150节点作为nfs的服务端 12345678910111213141516171819202122232425262728yum install -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rancher中安装NFS">
+<meta property="og:url" content="https://lswisdom.github.io/posts/879536788/index.html">
 <meta property="og:site_name" content="LsWisdom的博客">
+<meta property="og:description" content="Rancher里面安装NFS官网地址：https:&#x2F;&#x2F;docs.rancher.cn&#x2F;docs&#x2F;rancher2.5&#x2F;cluster-admin&#x2F;volumes-and-storage&#x2F;examples&#x2F;nfs&#x2F;_index&#x2F; 所有的节点都要安装  150节点作为nfs的服务端 12345678910111213141516171819202122232425262728yum install -">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://lswisdom.github.io/about/image/诺艾尔.jpeg">
-<meta property="article:published_time" content="2022-10-30T03:16:21.000Z">
-<meta property="article:modified_time" content="2022-10-30T04:02:11.293Z">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/%E6%8C%81%E4%B9%85%E5%8C%96%E5%8D%B71.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/1.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpv.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/2.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpv%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/3.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpvc.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%89%E8%A3%851.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%89%E8%A3%852.png">
+<meta property="og:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%95%B0%E6%8D%AE%E5%8D%B7%E6%88%AA%E5%9B%BE.png">
+<meta property="article:published_time" content="2022-10-29T10:06:57.000Z">
+<meta property="article:modified_time" content="2022-10-30T14:46:37.159Z">
 <meta property="article:author" content="ls">
+<meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://lswisdom.github.io/about/image/诺艾尔.jpeg">
+<meta name="twitter:image" content="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/%E6%8C%81%E4%B9%85%E5%8C%96%E5%8D%B71.png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://lswisdom.github.io/about/index.html">
+  <link rel="canonical" href="https://lswisdom.github.io/posts/879536788/index.html">
   
     <link rel="alternate" href="/atom.xml" title="LsWisdom的博客" type="application/atom+xml">
   
@@ -359,16 +368,25 @@
 
   
   
+<aside class="sidebar sidebar-toc collapse" id="collapseToc" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    <nav id="toc" class="article-toc">
+      <h3 class="toc-title">文章目录</h3>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#rancher%E9%87%8C%E9%9D%A2%E5%AE%89%E8%A3%85nfs"><span class="toc-number">1.</span> <span class="toc-text">Rancher里面安装NFS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#rancher%E5%88%9B%E5%BB%BA%E6%8C%81%E4%B9%85%E5%8D%B7pv"><span class="toc-number">1.1.</span> <span class="toc-text">Rancher创建持久卷PV</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BApvc"><span class="toc-number">1.2.</span> <span class="toc-text">创建PVC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%88%9B%E5%BB%BAmysql"><span class="toc-number">1.3.</span> <span class="toc-text">测试创建mysql</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAmysql%E9%95%9C%E5%83%8F"><span class="toc-number">1.3.1.</span> <span class="toc-text">创建mysql镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8mysql%E5%AE%B9%E5%99%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">启动mysql容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%BB%93%E6%9E%9C"><span class="toc-number">1.3.3.</span> <span class="toc-text">验证结果</span></a></li></ol></li></ol></li></ol>
+    </nav>
+  </div>
+</aside>
+
 <main class="main" role="main">
   <div class="content">
-  <article id="page-" class="article article-type-page" itemscope itemtype="http://schema.org/BlogPosting">
+  <article id="post-云原生/Rancher安装NFS服务" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
     <div class="article-header">
       
         
   
     <h1 class="article-title" itemprop="name">
-      高达护体 永无BUG
+      Rancher中安装NFS
     </h1>
   
 
@@ -376,12 +394,22 @@
       <div class="article-meta">
         <span class="article-date">
     <i class="icon icon-calendar-check"></i>
-	<a href="/about/index.html" class="article-date">
-	  <time datetime="2022-10-30T03:16:21.000Z" itemprop="datePublished">2022-10-30</time>
+	<a href="/posts/879536788/" class="article-date">
+	  <time datetime="2022-10-29T10:06:57.000Z" itemprop="datePublished">2022-10-29</time>
 	</a>
 </span>
         
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a>
+  </span>
+
         
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/kubernetes/" rel="tag">kubernetes</a>
+  </span>
+
 
         
 	<span class="article-read hidden-xs">
@@ -392,10 +420,10 @@
 	</span>
 
 
-        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/about/index.html#comments" class="article-comment-link">评论</a></span>
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/posts/879536788/#comments" class="article-comment-link">评论</a></span>
         
 	
-		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 0(字)</span>
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 347(字)</span>
 	
 	
 		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 1(分)</span>
@@ -405,7 +433,40 @@
     </div>
     <div class="article-entry marked-body" itemprop="articleBody">
       
-        <img src="image/诺艾尔.jpeg">
+        <h1 id="rancher里面安装nfs"><a href="#Rancher里面安装NFS" class="headerlink" title="Rancher里面安装NFS"></a>Rancher里面安装NFS</h1><p>官网地址：<a target="_blank" rel="noopener" href="https://docs.rancher.cn/docs/rancher2.5/cluster-admin/volumes-and-storage/examples/nfs/_index/">https://docs.rancher.cn/docs/rancher2.5/cluster-admin/volumes-and-storage/examples/nfs/_index/</a></p>
+<p>所有的节点都要安装  150节点作为nfs的服务端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">yum install -y nfs-utils rpcbind</span><br><span class="line"></span><br><span class="line">在某个节点上 192.168.77.150(我的rancher节点,) 节点创建目录</span><br><span class="line"></span><br><span class="line">mkdir -p &#x2F;nfs</span><br><span class="line">chmod 777 &#x2F;nfs</span><br><span class="line"></span><br><span class="line">更改归属组和用户</span><br><span class="line">chown nfsnobody &#x2F;nfs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vi &#x2F;etc&#x2F;exports</span><br><span class="line">&#x2F;nfs *(rw,sync,no_subtree_check,no_root_squash)</span><br><span class="line">启动服务</span><br><span class="line">systemctl start rpcbind &amp;&amp; systemctl start nfs</span><br><span class="line">设置开启启动</span><br><span class="line">systemctl enable rpcbind &amp;&amp; systemctl enable nfs</span><br><span class="line">检查配置是否生效</span><br><span class="line">exportfs</span><br><span class="line"></span><br><span class="line">启动其他节点执行nfs的节点的命令</span><br><span class="line">showmount -e 192.168.77.150</span><br><span class="line"></span><br><span class="line">[root@k8s-node-02 ~]# showmount -e 192.168.77.150</span><br><span class="line">Export list for 192.168.77.150:</span><br><span class="line">&#x2F;nfs *</span><br><span class="line"></span><br><span class="line">看到上述界面,就是配置成功了</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="rancher创建持久卷pv"><a href="#Rancher创建持久卷PV" class="headerlink" title="Rancher创建持久卷PV"></a>Rancher创建持久卷PV</h2><ul>
+<li><p>选择集群</p>
+</li>
+<li><p>选择存储选项卡</p>
+</li>
+<li><p>选择持久卷</p>
+<p>如下图所示</p>
+</li>
+</ul>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/%E6%8C%81%E4%B9%85%E5%8C%96%E5%8D%B71.png"></p>
+<p>进入如下页面</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/1.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpv.png"></p>
+<p>基本配置之后，点击保存按钮，当出现<code>Available</code>的时候，就是配置完成了</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/2.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpv%E6%88%90%E5%8A%9F%E6%88%AA%E5%9B%BE.png"></p>
+<h2 id="创建pvc"><a href="#创建PVC" class="headerlink" title="创建PVC"></a>创建PVC</h2><ul>
+<li>点击dev集群</li>
+<li>点击对应的命名空间(default)</li>
+<li>选择PVC选项卡</li>
+<li>点击右侧添加PVC</li>
+</ul>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/3.rancher%E4%B8%AD%E9%85%8D%E7%BD%AEpvc.png"></p>
+<p>创建完成 PVC之后就可以使用了</p>
+<h2 id="测试创建mysql"><a href="#测试创建mysql" class="headerlink" title="测试创建mysql"></a>测试创建mysql</h2><h3 id="创建mysql镜像"><a href="#创建mysql镜像" class="headerlink" title="创建mysql镜像"></a>创建mysql镜像</h3><p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%89%E8%A3%851.png"></p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%8C%81%E4%B9%85%E5%8C%96%E5%AE%89%E8%A3%852.png"></p>
+<p>指定持久卷的相对目录是mysql</p>
+<h3 id="启动mysql容器"><a href="#启动mysql容器" class="headerlink" title="启动mysql容器"></a>启动mysql容器</h3><h3 id="验证结果"><a href="#验证结果" class="headerlink" title="验证结果"></a>验证结果</h3><p>效果图如下：可以看到，装nfs存储服务的节点，对应的nfs目录下面有一个mysql的挂载目录</p>
+<p><img src="https://ls-picture-oss.oss-cn-hangzhou.aliyuncs.com/%E4%BA%91%E5%8E%9F%E7%94%9F/rancher/mysql%E6%95%B0%E6%8D%AE%E5%8D%B7%E6%88%AA%E5%9B%BE.png"></p>
+
       
     </div>
     <div class="article-footer">
@@ -414,7 +475,7 @@
     
     <li class="post-copyright-link hidden-xs">
       <strong>本文链接：</strong>
-      <a href="https://lswisdom.github.io/about/index.html" title="高达护体 永无BUG" target="_blank" rel="external">https://lswisdom.github.io/about/index.html</a>
+      <a href="https://lswisdom.github.io/posts/879536788/" title="Rancher中安装NFS" target="_blank" rel="external">https://lswisdom.github.io/posts/879536788/</a>
     </li>
     
     <li class="post-copyright-license">
@@ -459,6 +520,29 @@
 
   <nav class="bar bar-footer clearfix" data-stick-bottom>
   <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/posts/879516718/" title="Rancher安装Mysql"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/posts/879582920/" title="Kubeadm部署单Master节点的K8s集群"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+    <li class="toggle-toc">
+      <a class="toggle-btn collapsed" data-toggle="collapse" href="#collapseToc" aria-expanded="false" title="文章目录" role="button">
+        <span>[&nbsp;</span><span>文章目录</span>
+        <i class="text-collapsed icon icon-anchor"></i>
+        <i class="text-in icon icon-close"></i>
+        <span>]</span>
+      </a>
+    </li>
+    
+  </ul>
   
   
   
@@ -525,15 +609,21 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 
 
 
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
 
    
     
     <script defer>
     var disqus_config = function () {
         
-            this.page.url = 'https://lswisdom.github.io/about/index.html';
+            this.page.url = 'https://lswisdom.github.io/posts/879536788/';
         
-        this.page.identifier = '';
+        this.page.identifier = '云原生/Rancher安装NFS服务';
     };
     (function() { 
         var d = document, s = d.createElement('script');  
